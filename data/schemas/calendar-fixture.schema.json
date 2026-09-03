@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ChroneraCalendarFixture",
+  "type": "object",
+  "required": ["calendar", "algorithm", "source", "cases"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "calendar": { "type": "string" },
+    "algorithm": { "type": "string" },
+    "source": {
+      "type": "object",
+      "required": ["manifestReference", "accessed"],
+      "properties": {
+        "manifestReference": { "type": "string" },
+        "accessed": { "type": "string" }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gregorian", "target"],
+        "properties": {
+          "gregorian": {
+            "type": "object",
+            "required": ["year", "monthCode", "day"],
+            "properties": {
+              "year": { "type": "integer" },
+              "monthCode": { "type": "string", "pattern": "^M\\d{2}$" },
+              "day": { "type": "integer" }
+            }
+          },
+          "target": {
+            "type": "object",
+            "required": ["year", "monthCode", "day"],
+            "properties": {
+              "era": { "type": "string" },
+              "eraYear": { "type": "integer" },
+              "year": { "type": "integer" },
+              "monthCode": { "type": "string", "pattern": "^M\\d{2}$" },
+              "day": { "type": "integer" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

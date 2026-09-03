@@ -1,0 +1,18 @@
+{
+  "thai-buddhist-proleptic": {
+    "title": "Royal Institute of Thailand - Thai Civil Calendar and Buddhist Era Reference",
+    "publisher": "Royal Society of Thailand",
+    "version": "1.0",
+    "license": "Public Domain",
+    "accessed": "2026-09-02",
+    "url": "http://www.royin.go.th"
+  },
+  "islamic-tabular": {
+    "title": "ICU Islamic Calendar Calculation Types",
+    "publisher": "Unicode Consortium",
+    "version": "CLDR 43",
+    "license": "Unicode-DFS-2016",
+    "accessed": "2026-09-02",
+    "url": "https://unicode-org.github.io/icu-docs/apidoc/released/icu4j/com/ibm/icu/util/IslamicCalendar.CalculationType.html"
+  }
+}
