@@ -1,0 +1,31 @@
+# Global Code Owners
+# Exclusive Owner: Pawapon Thammalangka (@ParkPawapon)
+# All paths, configurations, and core packages require exclusive review and authorization.
+* @ParkPawapon
+
+# Project Governance and CI/CD Infrastructure
+/.github/ @ParkPawapon
+/.github/workflows/ @ParkPawapon
+/package.json @ParkPawapon
+/pnpm-lock.yaml @ParkPawapon
+/pnpm-workspace.yaml @ParkPawapon
+/tsconfig.json @ParkPawapon
+/tsconfig.build.json @ParkPawapon
+/SECURITY.md @ParkPawapon
+/LICENSE @ParkPawapon
+
+# Build and Verification Tooling
+/scripts/ @ParkPawapon
+
+# Core Source Architecture
+/src/ @ParkPawapon
+/src/core/ @ParkPawapon
+/src/calendar/ @ParkPawapon
+/src/format/ @ParkPawapon
+/src/parse/ @ParkPawapon
+/src/operations/ @ParkPawapon
+/src/runtime/ @ParkPawapon
+
+# Test Suites and Conformance Fixtures
+/tests/ @ParkPawapon
+/data/ @ParkPawapon

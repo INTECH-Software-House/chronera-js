@@ -1,0 +1,29 @@
+name: Feature Request / Calendar Proposal
+description: Propose a new calendar system, astronomical formula, locale preset, or operation
+labels: ["enhancement", "proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please verify that your proposed calendar or formatting specification is grounded in official national or international standards (e.g. Unicode CLDR, ISO, national civil gazettes).
+  - type: input
+    id: title
+    attributes:
+      label: Proposal Title
+      placeholder: e.g. Add Ethiopian (Amharic) civil calendar adapter
+    validations:
+      required: true
+  - type: textarea
+    id: specification
+    attributes:
+      label: Normative Specification & Historical Standard
+      description: What official international or governmental standard defines this calendar or format?
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Real-World Use Case & Enterprise Application
+      description: Explain why this is needed and which applications/locales benefit.
+    validations:
+      required: true

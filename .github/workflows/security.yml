@@ -1,0 +1,66 @@
+name: Security Analysis
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 4 * * 1" # Weekly Monday 04:00 UTC
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  codeql:
+    name: CodeQL Semantic Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          queries: security-extended,security-and-quality
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"
+
+  audit:
+    name: Dependency Vulnerability Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 11.13.0
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - name: Audit dependencies
+        run: pnpm audit --prod --audit-level=high

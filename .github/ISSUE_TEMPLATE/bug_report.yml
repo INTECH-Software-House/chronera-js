@@ -1,0 +1,52 @@
+name: Bug Report
+description: Report a reproducible defect or unexpected behavior in Chronera
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting an issue! Please verify that your issue is not a security vulnerability.
+        Security vulnerabilities should be reported privately via [GitHub Security Advisories](https://github.com/INTECH-Software-House/chronera-js/security/advisories/new).
+  - type: input
+    id: version
+    attributes:
+      label: Package Version
+      description: What version of `@intech/chronera` are you using?
+      placeholder: e.g. 0.0.0-development
+    validations:
+      required: true
+  - type: dropdown
+    id: runtime
+    attributes:
+      label: Runtime Environment
+      options:
+        - Node.js 22 LTS
+        - Node.js 24 LTS
+        - Bun
+        - Deno
+        - Modern Browser (Chrome/Firefox/Safari/Edge)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description of the Problem
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal Reproduction Code Snippet
+      description: Self-contained TypeScript/JavaScript code reproducing the behavior.
+      render: typescript
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What behavior or output did you expect according to standards or specifications?
+    validations:
+      required: true
