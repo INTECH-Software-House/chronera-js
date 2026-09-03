@@ -1,0 +1,39 @@
+{
+  "$schema": "../../../data/schemas/calendar-fixture.schema.json",
+  "calendar": "gregory",
+  "algorithm": "chronera-proleptic-gregorian-v1",
+  "source": {
+    "manifestReference": "data/sources/sources.json#gregorian",
+    "accessed": "2026-09-02"
+  },
+  "cases": [
+    {
+      "gregorian": {
+        "year": 2026,
+        "monthCode": "M09",
+        "day": 2
+      },
+      "target": {
+        "era": "CE",
+        "eraYear": 2026,
+        "year": 2026,
+        "monthCode": "M09",
+        "day": 2
+      }
+    },
+    {
+      "gregorian": {
+        "year": 2000,
+        "monthCode": "M02",
+        "day": 29
+      },
+      "target": {
+        "era": "CE",
+        "eraYear": 2000,
+        "year": 2000,
+        "monthCode": "M02",
+        "day": 29
+      }
+    }
+  ]
+}
