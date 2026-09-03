@@ -48,13 +48,14 @@
     "README.md"
   ],
   "sideEffects": false,
+  "dependencies": {},
   "engines": {
     "node": ">=22.14.0"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "clean": "node scripts/clean.mjs",
-    "check": "pnpm format:check && pnpm lint && pnpm check:architecture && pnpm typecheck && pnpm test && pnpm build && pnpm pack:check",
+    "check": "pnpm build && pnpm format:check && pnpm lint && pnpm check:architecture && pnpm typecheck && pnpm test && pnpm pack:check",
     "check:architecture": "node --import tsx scripts/check-architecture.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -80,13 +81,12 @@
     "provenance": true
   },
   "packageManager": "pnpm@11.13.0",
-  "dependencies": {},
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
     "@changesets/cli": "3.0.1",
     "@playwright/test": "1.62.1",
     "@size-limit/file": "13.0.3",
-    "@types/node": "22.20.1",
+    "@types/node": "26.4.0",
     "@typescript-eslint/eslint-plugin": "8.69.0",
     "@typescript-eslint/parser": "8.69.0",
     "@vitest/coverage-v8": "4.1.11",

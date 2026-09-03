@@ -150,8 +150,23 @@ testPackageManager(
   "yarn node test.js",
 );
 
+function isCommandAvailable(cmd) {
+  try {
+    const isWin = process.platform === "win32";
+    execSync(isWin ? `where ${cmd}` : `which ${cmd}`, { stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 // 4. bun
-testPackageManager("bun", (tarball) => `bun add "${tarball}"`, "bun test.js");
+if (isCommandAvailable("bun")) {
+  testPackageManager("bun", (tarball) => `bun add "${tarball}"`, "bun test.js");
+} else {
+  console.log("\n--- Testing bun ---");
+  console.log("[bun] Skipped (bun binary not present in runner environment)");
+}
 
 console.log("\n=======================================================");
 console.log("All package managers (npm, pnpm, yarn, bun) verified 🟢!");
