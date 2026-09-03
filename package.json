@@ -1,0 +1,103 @@
+{
+  "name": "@intech/chronera",
+  "version": "0.0.0-development",
+  "description": "A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.",
+  "keywords": [
+    "date",
+    "time",
+    "calendar",
+    "timezone",
+    "internationalization",
+    "i18n",
+    "buddhist-calendar",
+    "hijri",
+    "typescript"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/intech/chronera-js.git"
+  },
+  "homepage": "https://github.com/intech/chronera-js#readme",
+  "bugs": {
+    "url": "https://github.com/intech/chronera-js/issues"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./calendar": {
+      "types": "./dist/calendar/index.d.ts",
+      "import": "./dist/calendar/index.js"
+    },
+    "./format": {
+      "types": "./dist/format/index.d.ts",
+      "import": "./dist/format/index.js"
+    },
+    "./parse": {
+      "types": "./dist/parse/index.d.ts",
+      "import": "./dist/parse/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "node scripts/clean.mjs",
+    "check": "pnpm format:check && pnpm lint && pnpm check:architecture && pnpm typecheck && pnpm test && pnpm build && pnpm pack:check",
+    "check:architecture": "node --import tsx scripts/check-architecture.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:types": "tstyche",
+    "test:browser": "playwright test",
+    "test:property": "vitest run tests/property",
+    "test:fuzz": "vitest run tests/fuzz",
+    "benchmark": "vitest bench",
+    "data:build": "node --import tsx scripts/build-calendar-data.ts",
+    "data:check": "node --import tsx scripts/validate-fixtures.ts",
+    "pack:artifact": "pnpm build && pnpm pack --pack-destination artifacts",
+    "pack:check": "node scripts/check-package.mjs && node scripts/verify-consumers.mjs",
+    "verify:consumers": "node scripts/verify-consumers.mjs",
+    "prepack": "pnpm build",
+    "release:check": "pnpm check && pnpm test:types && pnpm data:check"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "packageManager": "pnpm@11.13.0",
+  "dependencies": {},
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "@changesets/cli": "3.0.1",
+    "@playwright/test": "1.62.1",
+    "@size-limit/file": "13.0.3",
+    "@types/node": "22.20.1",
+    "@typescript-eslint/eslint-plugin": "8.69.0",
+    "@typescript-eslint/parser": "8.69.0",
+    "@vitest/coverage-v8": "4.1.11",
+    "eslint": "10.9.1",
+    "fast-check": "4.9.0",
+    "prettier": "3.9.6",
+    "publint": "0.3.24",
+    "size-limit": "13.0.3",
+    "tstyche": "7.2.3",
+    "tsx": "4.23.13",
+    "typescript": "6.0.3",
+    "vitest": "4.1.11"
+  }
+}
