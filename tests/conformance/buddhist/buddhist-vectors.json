@@ -1,0 +1,67 @@
+{
+  "$schema": "../../../data/schemas/calendar-fixture.schema.json",
+  "calendar": "buddhist",
+  "algorithm": "chronera-buddhist-v1",
+  "source": {
+    "manifestReference": "data/sources/sources.json#thai-buddhist-proleptic",
+    "accessed": "2026-09-02"
+  },
+  "cases": [
+    {
+      "gregorian": {
+        "year": 2026,
+        "monthCode": "M09",
+        "day": 2
+      },
+      "target": {
+        "era": "BE",
+        "eraYear": 2569,
+        "year": 2569,
+        "monthCode": "M09",
+        "day": 2
+      }
+    },
+    {
+      "gregorian": {
+        "year": 2024,
+        "monthCode": "M02",
+        "day": 29
+      },
+      "target": {
+        "era": "BE",
+        "eraYear": 2567,
+        "year": 2567,
+        "monthCode": "M02",
+        "day": 29
+      }
+    },
+    {
+      "gregorian": {
+        "year": 1,
+        "monthCode": "M01",
+        "day": 1
+      },
+      "target": {
+        "era": "BE",
+        "eraYear": 544,
+        "year": 544,
+        "monthCode": "M01",
+        "day": 1
+      }
+    },
+    {
+      "gregorian": {
+        "year": 9999,
+        "monthCode": "M12",
+        "day": 31
+      },
+      "target": {
+        "era": "BE",
+        "eraYear": 10542,
+        "year": 10542,
+        "monthCode": "M12",
+        "day": 31
+      }
+    }
+  ]
+}
