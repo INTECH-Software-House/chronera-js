@@ -292,3 +292,24 @@ export interface ChroneraInstance {
 }
 
 export type { IsoWeekFields } from "./core/iso-week.js";
+
+export interface FormatInTimeZoneOptions {
+  readonly locale?: string;
+  readonly numberingSystem?: NumberingSystemId;
+  readonly calendar?: CalendarId;
+}
+
+export type TimeZoneOffsetFormat =
+  "string" | "minutes" | "totalSeconds" | "object";
+
+export interface TimeZoneOffsetInfo {
+  readonly formatted: string;
+  readonly minutes: number;
+  readonly totalSeconds: number;
+  readonly isDst: boolean;
+}
+
+export interface SameTimeZoneOptions {
+  readonly instant?: Instant | Date;
+  readonly mode?: "canonical" | "offset";
+}

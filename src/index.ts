@@ -49,6 +49,12 @@ export {
   diffInBusinessDays,
 } from "./operations/business-days.js";
 
+export {
+  formatInTimeZone,
+  getTimeZoneOffset,
+  isSameTimeZone,
+} from "./operations/timezone.js";
+
 export { convertCalendarDate } from "./operations/convert-calendar-date.js";
 
 export {
@@ -171,6 +177,7 @@ export type {
   FormatDateOptions,
   FormatDateRangeOptions,
   FormatDateTimeOptions,
+  FormatInTimeZoneOptions,
   FormatRelativeOptions,
   FormatTimeOptions,
   Instant,
@@ -191,7 +198,10 @@ export type {
   Rfc2822Options,
   RuntimeCapabilities,
   SafeParseResult,
+  SameTimeZoneOptions,
   TimeZoneId,
+  TimeZoneOffsetFormat,
+  TimeZoneOffsetInfo,
   TimeOrDateTimeOrInstant,
   ZonedDateTime,
 } from "./public-types.js";

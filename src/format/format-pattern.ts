@@ -15,9 +15,54 @@ import type { CalendarRegistry } from "../calendar/registry.js";
 import type {
   CalendarDate,
   FormatDateInput,
+  Instant,
   LocalDateTime,
   PatternFormatOptions,
 } from "../public-types.js";
+
+function formatIsoOffset(offsetStr: string, token: string): string {
+  if (offsetStr === "Z" || offsetStr === "+00:00" || offsetStr === "-00:00") {
+    switch (token) {
+      case "X":
+      case "XX":
+      case "XXX":
+        return "Z";
+      case "x":
+        return "+00";
+      case "xx":
+        return "+0000";
+      case "xxx":
+        return "+00:00";
+      default:
+        return "Z";
+    }
+  }
+
+  const m = offsetStr.match(/^([+-])(\d{2}):(\d{2})$/);
+  if (!m) {
+    return offsetStr;
+  }
+  const sign = m[1]!;
+  const h = m[2]!;
+  const min = m[3]!;
+
+  switch (token) {
+    case "X":
+      return min === "00" ? `${sign}${h}` : `${sign}${h}${min}`;
+    case "XX":
+      return `${sign}${h}${min}`;
+    case "XXX":
+      return `${sign}${h}:${min}`;
+    case "x":
+      return min === "00" ? `${sign}${h}` : `${sign}${h}${min}`;
+    case "xx":
+      return `${sign}${h}${min}`;
+    case "xxx":
+      return `${sign}${h}:${min}`;
+    default:
+      return offsetStr;
+  }
+}
 
 export function formatWithPatternWithRegistry(
   registry: CalendarRegistry,
@@ -45,6 +90,8 @@ export function formatWithPatternWithRegistry(
   let second = 0;
   let millisecond = 0;
   let offsetString = "Z";
+  let resolvedInstant: Instant | undefined;
+  let tzId = "UTC";
 
   if (isLocalDateTime && localDt) {
     calDate = {
@@ -76,8 +123,10 @@ export function formatWithPatternWithRegistry(
     absDay = resolved.absoluteDay;
 
     if (resolved.instant) {
+      resolvedInstant = resolved.instant;
+      tzId = resolved.timeZone ?? "UTC";
       const date = new Date(resolved.instant.epochMilliseconds);
-      const tz = resolved.timeZone ?? "UTC";
+      const tz = tzId;
 
       // Project fields using Intl
       const dtf = new Intl.DateTimeFormat("en-US", {
@@ -107,6 +156,44 @@ export function formatWithPatternWithRegistry(
       millisecond = ((resolved.instant.epochMilliseconds % 1000) + 1000) % 1000;
     }
   }
+
+  let tzShortName: string | undefined;
+  let tzLongName: string | undefined;
+
+  const getTzShort = (): string => {
+    if (tzShortName !== undefined) return tzShortName;
+    if (!resolvedInstant) {
+      tzShortName = offsetString === "Z" ? "UTC" : offsetString;
+      return tzShortName;
+    }
+    const d = new Date(resolvedInstant.epochMilliseconds);
+    const parts = new Intl.DateTimeFormat(locale, {
+      timeZone: tzId,
+      timeZoneName: "short",
+    }).formatToParts(d);
+    const p = parts.find((part) => part.type === "timeZoneName");
+    tzShortName = p?.value ?? (offsetString === "Z" ? "UTC" : offsetString);
+    return tzShortName;
+  };
+
+  const getTzLong = (): string => {
+    if (tzLongName !== undefined) return tzLongName;
+    if (!resolvedInstant) {
+      tzLongName =
+        offsetString === "Z" ? "Coordinated Universal Time" : offsetString;
+      return tzLongName;
+    }
+    const d = new Date(resolvedInstant.epochMilliseconds);
+    const parts = new Intl.DateTimeFormat(locale, {
+      timeZone: tzId,
+      timeZoneName: "long",
+    }).formatToParts(d);
+    const p = parts.find((part) => part.type === "timeZoneName");
+    tzLongName =
+      p?.value ??
+      (offsetString === "Z" ? "Coordinated Universal Time" : offsetString);
+    return tzLongName;
+  };
 
   const month =
     calDate.month ?? Number.parseInt(calDate.monthCode.slice(1), 10);
@@ -260,8 +347,21 @@ export function formatWithPatternWithRegistry(
           numberingSystem,
         );
         break;
+      case "X":
+      case "XX":
       case "XXX":
-        out += offsetString === "+00:00" ? "Z" : offsetString;
+      case "x":
+      case "xx":
+      case "xxx":
+        out += formatIsoOffset(offsetString, t.symbol);
+        break;
+      case "z":
+      case "zz":
+      case "zzz":
+        out += getTzShort();
+        break;
+      case "zzzz":
+        out += getTzLong();
         break;
       case "Q": {
         const qNum = Math.floor((month - 1) / 3) + 1;
