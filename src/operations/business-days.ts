@@ -76,3 +76,45 @@ export function subtractBusinessDays<T extends DateOrCalendarDate>(
 ): T {
   return addBusinessDays(date, -amount);
 }
+
+/**
+ * Returns the signed count of business days between two dates (left - right).
+ * Positive if left is after right, negative if left is before right, 0 if identical.
+ * Works across all calendar systems with O(1) mathematical week acceleration.
+ */
+export function diffInBusinessDays(
+  left: DateOrCalendarDate,
+  right: DateOrCalendarDate,
+): number {
+  const absLeft = getAbsoluteDay(left);
+  const absRight = getAbsoluteDay(right);
+
+  if (absLeft === absRight) {
+    return 0;
+  }
+
+  if (absLeft < absRight) {
+    return -diffInBusinessDays(right, left);
+  }
+
+  let count = 0;
+  let current = absRight;
+
+  // O(1) acceleration: any consecutive 7 calendar days contains exactly 5 business days
+  const fullWeeks = Math.floor((absLeft - current) / 7);
+  if (fullWeeks > 0) {
+    count += fullWeeks * 5;
+    current += fullWeeks * 7;
+  }
+
+  // Step through remainder (at most 6 days)
+  while (current < absLeft) {
+    current++;
+    const dow = getIsoDayOfWeek(current);
+    if (dow !== 6 && dow !== 7) {
+      count++;
+    }
+  }
+
+  return count;
+}

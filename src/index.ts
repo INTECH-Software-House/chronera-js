@@ -46,6 +46,7 @@ export {
   isWeekday,
   addBusinessDays,
   subtractBusinessDays,
+  diffInBusinessDays,
 } from "./operations/business-days.js";
 
 export { convertCalendarDate } from "./operations/convert-calendar-date.js";
