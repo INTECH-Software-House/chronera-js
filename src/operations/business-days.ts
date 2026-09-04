@@ -33,7 +33,7 @@ export function addBusinessDays<T extends DateOrCalendarDate>(
 ): T {
   if (!Number.isFinite(amount)) {
     throw new ChroneraError(
-      "CHRONERA_INVALID_ARGUMENT",
+      "CHRONERA_OUT_OF_RANGE",
       "Amount must be a finite integer.",
     );
   }
