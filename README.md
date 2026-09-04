@@ -5335,11 +5335,11 @@ jobs:
 
       - name: Publish stable tarball through trusted publishing
         if: ${{ !github.event.release.prerelease }}
-        run: npm publish artifacts/chronera.tgz --access public --tag latest
+        run: npm publish ./artifacts/chronera.tgz --access public --tag latest
 
       - name: Publish prerelease tarball through trusted publishing
         if: ${{ github.event.release.prerelease }}
-        run: npm publish artifacts/chronera.tgz --access public --tag next
+        run: npm publish ./artifacts/chronera.tgz --access public --tag next
 ```
 
 There is no `NODE_AUTH_TOKEN` because OIDC trusted publishing supplies short-lived authentication.
