@@ -1,4 +1,4 @@
-import type { LocalDate, LocalDateTime } from "../public-types.js";
+import type { Instant, LocalDate, LocalDateTime } from "../public-types.js";
 
 /**
  * Returns the start of the day (00:00:00.000) as a LocalDateTime.
@@ -36,4 +36,30 @@ export function endOfDay(input: LocalDate | LocalDateTime): LocalDateTime {
       millisecond: 999,
     },
   };
+}
+
+/**
+ * Returns true if the specified Instant, Date, or epoch millisecond timestamp is in the past.
+ */
+export function isPast(target: Instant | Date | number): boolean {
+  const epochMs =
+    typeof target === "number"
+      ? target
+      : target instanceof Date
+        ? target.getTime()
+        : target.epochMilliseconds;
+  return epochMs < Date.now();
+}
+
+/**
+ * Returns true if the specified Instant, Date, or epoch millisecond timestamp is in the future.
+ */
+export function isFuture(target: Instant | Date | number): boolean {
+  const epochMs =
+    typeof target === "number"
+      ? target
+      : target instanceof Date
+        ? target.getTime()
+        : target.epochMilliseconds;
+  return epochMs > Date.now();
 }
