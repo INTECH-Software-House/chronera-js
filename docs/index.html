@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chronera — The Universal Date & Multi-Calendar Engine</title>
+    <meta
+      name="description"
+      content="A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript. 100% Zero Dependencies."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏳</text></svg>"
+    />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: ["selector", '[data-theme="dark"]'],
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="relative">
+    <!-- Background Ambient Glow -->
+    <div class="glow-blob glow-blob-1"></div>
+    <div class="glow-blob glow-blob-2"></div>
+    <div class="glow-blob glow-blob-3"></div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 glass border-b border-slate-800/80">
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/20 text-white font-bold text-lg"
+          >
+            ⏳
+          </div>
+          <div class="flex flex-col">
+            <span class="text-xl font-extrabold tracking-tight gradient-text"
+              >Chronera</span
+            >
+            <span class="text-[10px] text-slate-400 -mt-1 font-mono"
+              >@intech-software/chronera</span
+            >
+          </div>
+        </div>
+
+        <nav
+          class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300"
+        >
+          <a href="#playground" class="hover:text-sky-400 transition-colors"
+            >Playground</a
+          >
+          <a href="#timezone" class="hover:text-sky-400 transition-colors"
+            >TimeZones</a
+          >
+          <a href="#business-days" class="hover:text-sky-400 transition-colors"
+            >Business Days</a
+          >
+          <a href="#docs" class="hover:text-sky-400 transition-colors"
+            >Documentation</a
+          >
+          <a
+            href="https://github.com/INTECH-Software-House/chronera-js"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-sky-400 transition-colors"
+            >GitHub</a
+          >
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <button
+            id="theme-toggle"
+            class="p-2 rounded-lg glass-interactive text-slate-300 hover:text-white"
+            title="Toggle theme"
+          >
+            <i
+              data-lucide="sun"
+              class="w-4 h-4 hidden [data-theme=dark]:block"
+            ></i>
+            <i
+              data-lucide="moon"
+              class="w-4 h-4 block [data-theme=dark]:hidden"
+            ></i>
+          </button>
+
+          <a
+            href="https://github.com/INTECH-Software-House/chronera-js"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all"
+          >
+            <i
+              data-lucide="star"
+              class="w-3.5 h-3.5 text-amber-400 fill-amber-400"
+            ></i>
+            <span>Star on GitHub</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section
+      class="relative z-10 pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center"
+    >
+      <div
+        class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-cyan mb-6 text-xs font-medium"
+      >
+        <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+        Zero Dependencies • Pure TypeScript • Clean Architecture
+      </div>
+
+      <h1
+        class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6"
+      >
+        The Universal Date & <br />
+        <span class="gradient-text">Multi-Calendar Engine</span>
+      </h1>
+
+      <p
+        class="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed"
+      >
+        Type-safe date semantics, 7 cultural calendar systems, official legal
+        presets, and timezone conversion in one blazing-fast, deterministic
+        library for JavaScript & TypeScript.
+      </p>
+
+      <!-- Quick Install Command Box -->
+      <div
+        class="max-w-xl mx-auto glass rounded-2xl p-3 mb-10 shadow-2xl border border-slate-800"
+      >
+        <div
+          class="flex items-center justify-between border-b border-slate-800/80 pb-2 mb-2 px-2"
+        >
+          <div class="flex gap-1.5">
+            <button
+              class="pm-tab-btn active px-2.5 py-1 text-xs rounded font-mono"
+              data-pm="pnpm"
+            >
+              pnpm
+            </button>
+            <button
+              class="pm-tab-btn px-2.5 py-1 text-xs rounded font-mono text-slate-400"
+              data-pm="npm"
+            >
+              npm
+            </button>
+            <button
+              class="pm-tab-btn px-2.5 py-1 text-xs rounded font-mono text-slate-400"
+              data-pm="yarn"
+            >
+              yarn
+            </button>
+            <button
+              class="pm-tab-btn px-2.5 py-1 text-xs rounded font-mono text-slate-400"
+              data-pm="bun"
+            >
+              bun
+            </button>
+          </div>
+          <span class="text-[11px] font-mono text-slate-500">v0.1.4 Ready</span>
+        </div>
+        <div
+          class="flex items-center justify-between px-3 py-2 bg-black/40 rounded-xl"
+        >
+          <code
+            id="install-command"
+            class="text-sm sm:text-base text-sky-400 font-mono select-all"
+            >pnpm add @intech-software/chronera</code
+          >
+          <button
+            id="copy-install-btn"
+            class="ml-3 px-3 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 text-xs font-semibold transition-all"
+          >
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Action Links -->
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="#playground"
+          class="px-6 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold shadow-lg shadow-sky-500/25 transition-all"
+        >
+          ⚡ Explore Live Playground
+        </a>
+        <a
+          href="#docs"
+          class="px-6 py-3 rounded-xl glass-interactive text-slate-300 hover:text-white font-semibold border border-slate-700"
+        >
+          📖 Read Documentation
+        </a>
+      </div>
+    </section>
+
+    <!-- Key Pillars Grid -->
+    <section class="relative z-10 py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass glass-interactive rounded-2xl p-6">
+          <div
+            class="w-10 h-10 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center mb-4"
+          >
+            <i data-lucide="globe" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold mb-2">7 Native Calendar Systems</h3>
+          <p class="text-sm text-slate-400">
+            พุทธศักราช (ไทย), 令和 (ญี่ปุ่น), 民國 (ไต้หวัน), Hijri Umm al-Qura
+            (ซาอุดีฯ), Persian Jalali (อิหร่าน), Indian Saka (อินเดีย) และ
+            ISO-8601 สากล
+          </p>
+        </div>
+
+        <div class="glass glass-interactive rounded-2xl p-6">
+          <div
+            class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center mb-4"
+          >
+            <i data-lucide="clock" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold mb-2">Global TimeZone Studio</h3>
+          <p class="text-sm text-slate-400">
+            จัดรูปแบบเวลาใน TimeZone ปลายทางทันทีด้วย
+            <code>formatInTimeZone</code> พร้อมคำนวณ Daylight Saving Time (DST)
+            และ Canonical equivalence
+          </p>
+        </div>
+
+        <div class="glass glass-interactive rounded-2xl p-6">
+          <div
+            class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4"
+          >
+            <i data-lucide="briefcase" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold mb-2">Business & Working Days</h3>
+          <p class="text-sm text-slate-400">
+            คำนวณวันทำการ <code>addBusinessDays</code> และ
+            <code>diffInBusinessDays</code> ข้ามวันเสาร์-อาทิตย์ด้วย $O(1)$
+            Mathematical week acceleration
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE PLAYGROUND SECTION 1: Multi-Calendar Matrix -->
+    <section
+      id="playground"
+      class="relative z-10 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+    >
+      <div class="text-center mb-10">
+        <span class="badge badge-purple mb-3">Live Interactive Matrix</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+          Real-Time Multi-Calendar Conversion
+        </h2>
+        <p class="text-slate-400 mt-2 max-w-2xl mx-auto">
+          เปลี่ยนวันที่ด้านล่าง และดู Chronera คำนวณและประสานวันที่ข้ามปฏิทิน 7
+          ประเทศในเสี้ยววินาทีด้วย Zero-Dependency Engine
+        </p>
+      </div>
+
+      <!-- Date Control Toolbar -->
+      <div
+        class="glass rounded-2xl p-4 sm:p-6 mb-8 border border-slate-800 max-w-3xl mx-auto"
+      >
+        <div
+          class="flex flex-col sm:flex-row items-center justify-between gap-4"
+        >
+          <div class="w-full sm:w-auto flex items-center gap-3">
+            <label
+              for="matrix-date-input"
+              class="text-sm font-semibold text-slate-300"
+              >Select Date:</label
+            >
+            <input
+              type="date"
+              id="matrix-date-input"
+              class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-sky-400 font-mono focus:outline-none focus:border-sky-500 transition-colors"
+            />
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              class="quick-jump-btn px-2.5 py-1 text-xs rounded-lg glass-interactive text-slate-300"
+              data-date="today"
+            >
+              Today
+            </button>
+            <button
+              class="quick-jump-btn px-2.5 py-1 text-xs rounded-lg glass-interactive text-slate-300"
+              data-date="2026-04-13"
+            >
+              Songkran 2026
+            </button>
+            <button
+              class="quick-jump-btn px-2.5 py-1 text-xs rounded-lg glass-interactive text-slate-300"
+              data-date="2019-05-01"
+            >
+              Reiwa 1 Rollover
+            </button>
+            <button
+              class="quick-jump-btn px-2.5 py-1 text-xs rounded-lg glass-interactive text-slate-300"
+              data-date="2026-06-16"
+            >
+              Hijri 1448
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 Calendar Result Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <!-- 1. ISO 8601 -->
+        <div
+          id="card-iso"
+          class="glass glass-interactive rounded-2xl p-5 border border-slate-800"
+        >
+          <div class="flex items-center justify-between mb-3">
+            <span
+              class="text-xs font-bold uppercase tracking-wider text-slate-400"
+              >🌐 ISO 8601 / Gregorian</span
+            >
+            <span class="badge badge-cyan">Standard</span>
+          </div>
+          <div
+            class="card-value text-2xl font-bold font-mono text-sky-400 mb-1"
+          >
+            Loading...
+          </div>
+          <div class="card-detail text-xs text-slate-400">Loading...</div>
+        </div>
+
+        <!-- 2. Thai Buddhist -->
+        <div
+          id="card-thai"
+          class="glass glass-interactive rounded-2xl p-5 border border-amber-500/20 bg-amber-950/10"
+        >
+          <div class="flex items-center justify-between mb-3">
+            <span
+              class="text-xs font-bold uppercase tracking-wider text-amber-300"
+              >🇹🇭 ไทย (พุทธศักราช)</span
+            >
+            <span class="badge badge-amber">Official</span>
+          </div>
+          <div
+            class="card-value text-lg sm:text-xl font-bold text-amber-300 mb-1"
+          >
+            Loading...
+          </div>
+          <div class="card-detail text-xs text-amber-400/80">Loading...</div>
+        </div>
+
+        <!-- 3. Japanese Era -->
+        <div
+          id="card-japanese"
+          class="glass glass-interactive rounded-2xl p-5 border border-rose-500/20 bg-rose-950/10"
+        >
+          <div class="flex items-center justify-between mb-3">
+            <span
+              class="text-xs font-bold uppercase tracking-wider text-rose-300"
+              >🇯🇵 日本 (元号 - Reiwa)</span
+            >
+            <span class="badge badge-purple">Imperial</span>
+          </div>
+          <div class="card-value text-xl font-bold text-rose-300 mb-1">
+            Loading...
+          </div>
+          <div class="card-detail text-xs text-rose-400/80">Loading...</div>
+        </div>
+
+        <!-- 4. Taiwan Minguo -->
+        <div
+          id="card-roc"
+          class="glass glass-interactive rounded-2xl p-5 border border-blue-500/20 bg-blue-950/10"
+        >
+          <div class="flex items-center justify-between mb-3">
+            <span
+              class="text-xs font-bold uppercase tracking-wider text-blue-300"
+              >🇹🇼 台灣 (民國紀年)</span
+            >
+            <span class="badge badge-cyan">Official</span>
+          </div>
+          <div class="card-value text-xl font-bold text-blue-300 mb-1">
+            Loading...
+          </div>
+          <div class="card-detail text-xs text-blue-400/80">Loading...</div>
+        </div>
+
+        <!-- 5. Islamic Hijri -->
+        <div
+          id="card-hijri"
+          class="glass glass-interactive rounded-2xl p-5 border border-emerald-500/20 bg-emerald-950/10"
+        >
+          <div class="flex items-center justify-between mb-3">
+            <span
+              class="text-xs font-bold uppercase tracking-wider text-emerald-300"
+              >🇸🇦 العالم الإسلامي (Hijri)</span
+            >
+            <span class="badge badge-emerald">Umm al-Qura</span>
+          </div>
+          <div
+            class="card-value text-xl font-bold text-emerald-300 mb-1"
+            dir="rtl"
+          >
+            Loading...
+          </div>
+          <div class="card-detail text-xs text-emerald-400/80">Loading...</div>
+        </div>
+
+        <!-- 6. Persian Jalali -->
+        <div
+          id="card-persian"
+          class="glass glass-interactive rounded-2xl p-5 border border-slate-800"
+        >
+          <div class="flex items-center justify-between mb-3">
+            <span
+              class="text-xs font-bold uppercase tracking-wider text-slate-400"
+              >🇮🇷 ایران (Solar Hijri)</span
+            >
+            <span class="badge badge-purple">Khayyami</span>
+          </div>
+          <div class="card-value text-xl font-bold text-slate-200 mb-1">
+            Loading...
+          </div>
+          <div class="card-detail text-xs text-slate-400">Loading...</div>
+        </div>
+
+        <!-- 7. Indian National Saka -->
+        <div
+          id="card-indian"
+          class="glass glass-interactive rounded-2xl p-5 border border-slate-800"
+        >
+          <div class="flex items-center justify-between mb-3">
+            <span
+              class="text-xs font-bold uppercase tracking-wider text-slate-400"
+              >🇮🇳 भारत (National Saka)</span
+            >
+            <span class="badge badge-cyan">Saka Era</span>
+          </div>
+          <div class="card-value text-xl font-bold text-slate-200 mb-1">
+            Loading...
+          </div>
+          <div class="card-detail text-xs text-slate-400">Loading...</div>
+        </div>
+      </div>
+
+      <!-- Live Code Preview -->
+      <div class="code-block max-w-3xl mx-auto">
+        <div class="text-xs text-slate-400 mb-2 font-mono">
+          // Generated Code from live state
+        </div>
+        <pre id="live-matrix-code"><code>Loading code...</code></pre>
+      </div>
+    </section>
+
+    <!-- LIVE PLAYGROUND SECTION 2: Global TimeZone Studio -->
+    <section
+      id="timezone"
+      class="relative z-10 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-800/60"
+    >
+      <div class="text-center mb-10">
+        <span class="badge badge-cyan mb-3">v0.1.4 Feature Studio</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+          Global TimeZone Studio
+        </h2>
+        <p class="text-slate-400 mt-2 max-w-2xl mx-auto">
+          ทดสอบฟังก์ชัน <code>formatInTimeZone</code> และ
+          <code>getTimeZoneOffset</code> แบบเรียลไทม์กับเมืองสำคัญทั่วโลก
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-5xl mx-auto">
+        <!-- Controls -->
+        <div
+          class="lg:col-span-5 glass rounded-2xl p-6 border border-slate-800 flex flex-col gap-4"
+        >
+          <div>
+            <label
+              class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2"
+              >Target IANA TimeZone</label
+            >
+            <select
+              id="tz-select"
+              class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-sky-400 font-mono"
+            >
+              <option value="Asia/Bangkok" selected>
+                Asia/Bangkok (UTC+07:00)
+              </option>
+              <option value="Asia/Tokyo">Asia/Tokyo (UTC+09:00)</option>
+              <option value="America/New_York">
+                America/New_York (EDT / EST)
+              </option>
+              <option value="Europe/London">Europe/London (BST / GMT)</option>
+              <option value="Asia/Dubai">Asia/Dubai (UTC+04:00)</option>
+              <option value="Australia/Sydney">
+                Australia/Sydney (AEST / AEDT)
+              </option>
+              <option value="Asia/Kolkata">Asia/Kolkata (UTC+05:30)</option>
+              <option value="America/Los_Angeles">
+                America/Los_Angeles (PDT / PST)
+              </option>
+              <option value="Etc/UTC">Etc/UTC (UTC+00:00)</option>
+            </select>
+          </div>
+
+          <div>
+            <label
+              class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2"
+              >LDML Pattern Format</label
+            >
+            <select
+              id="tz-pattern-select"
+              class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-sky-400 font-mono"
+            >
+              <option value="yyyy-MM-dd HH:mm:ss XXX" selected>
+                yyyy-MM-dd HH:mm:ss XXX
+              </option>
+              <option value="d MMMM yyyy, HH:mm:ss (zzzz)">
+                d MMMM yyyy, HH:mm:ss (zzzz)
+              </option>
+              <option value="hh:mm:ss a zzz">hh:mm:ss a zzz (12-Hour)</option>
+              <option value="EEEE, d MMMM yyyy">
+                EEEE, d MMMM yyyy (Long Weekday)
+              </option>
+            </select>
+          </div>
+
+          <div class="pt-2 flex flex-wrap gap-2">
+            <span id="tz-offset-badge" class="badge badge-cyan"
+              >UTC Offset: ...</span
+            >
+            <span id="tz-dst-badge" class="badge badge-emerald"
+              >Standard Time</span
+            >
+          </div>
+        </div>
+
+        <!-- Output Screen & Code -->
+        <div class="lg:col-span-7 flex flex-col gap-4">
+          <div
+            class="glass rounded-2xl p-6 border border-sky-500/20 bg-sky-950/10"
+          >
+            <div
+              class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2"
+            >
+              Live Target Clock
+            </div>
+            <div
+              id="tz-output"
+              class="text-2xl sm:text-3xl font-mono font-extrabold text-white"
+            >
+              Loading...
+            </div>
+          </div>
+
+          <div class="code-block flex-1">
+            <pre id="live-tz-code"><code>Loading...</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE PLAYGROUND SECTION 3: Business Days Simulator -->
+    <section
+      id="business-days"
+      class="relative z-10 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-800/60"
+    >
+      <div class="text-center mb-10">
+        <span class="badge badge-emerald mb-3">v0.1.3 Feature Studio</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+          Business Days Simulator
+        </h2>
+        <p class="text-slate-400 mt-2 max-w-2xl mx-auto">
+          คำนวณวันจัดส่งสินค้า, SLA, และวันทำการ
+          โดยข้ามวันเสาร์-อาทิตย์ให้อัตโนมัติด้วย <code>addBusinessDays</code>
+        </p>
+      </div>
+
+      <div
+        class="max-w-4xl mx-auto glass rounded-2xl p-6 sm:p-8 border border-slate-800"
+      >
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div>
+            <label
+              class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2"
+              >Start Date</label
+            >
+            <input
+              type="date"
+              id="biz-start-date"
+              class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-emerald-400 font-mono"
+            />
+          </div>
+
+          <div>
+            <label
+              class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2"
+              >Business Days to Add</label
+            >
+            <input
+              type="number"
+              id="biz-amount"
+              value="5"
+              min="-30"
+              max="60"
+              class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-emerald-400 font-mono"
+            />
+          </div>
+        </div>
+
+        <!-- Result Banner -->
+        <div
+          id="biz-output"
+          class="glass rounded-xl p-4 mb-6 border border-emerald-500/20 bg-emerald-950/10"
+        >
+          Loading...
+        </div>
+
+        <!-- Timeline visual -->
+        <div class="mb-6">
+          <div
+            class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3"
+          >
+            Day-by-Day Timeline Preview
+          </div>
+          <div
+            id="biz-timeline"
+            class="grid grid-cols-4 sm:grid-cols-7 gap-2"
+          ></div>
+        </div>
+
+        <!-- Code block -->
+        <div class="code-block">
+          <pre id="live-biz-code"><code>Loading...</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOCUMENTATION & CODE SAMPLES TABS -->
+    <section
+      id="docs"
+      class="relative z-10 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-800/60"
+    >
+      <div class="text-center mb-10">
+        <span class="badge badge-purple mb-3">Developer Documentation</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+          API Reference & Code Guides
+        </h2>
+        <p class="text-slate-400 mt-2 max-w-2xl mx-auto">
+          ตัวอย่างการเรียกใช้งานฟังก์ชันหลักของ Chronera ในโปรเจกต์ของคุณ
+        </p>
+      </div>
+
+      <div class="max-w-4xl mx-auto">
+        <!-- Tabs Nav -->
+        <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3 mb-6">
+          <button
+            class="doc-tab-btn tab-btn active"
+            data-target="doc-quickstart"
+          >
+            Quick Start
+          </button>
+          <button class="doc-tab-btn tab-btn" data-target="doc-convenience">
+            Convenience (v0.1.1)
+          </button>
+          <button class="doc-tab-btn tab-btn" data-target="doc-time">
+            Time & Status (v0.1.2)
+          </button>
+          <button class="doc-tab-btn tab-btn" data-target="doc-business">
+            Business Days (v0.1.3)
+          </button>
+          <button class="doc-tab-btn tab-btn" data-target="doc-timezone">
+            TimeZones (v0.1.4)
+          </button>
+        </div>
+
+        <!-- Pane 1: Quick Start -->
+        <div id="doc-quickstart" class="doc-content-pane space-y-4">
+          <div class="code-block">
+            <pre><code>import { localDate, formatDate, convertCalendarDate } from "@intech-software/chronera";
+
+// 1. Create a clean date primitive
+const date = localDate(2026, 9, 4);
+
+// 2. Format with standard presets
+console.log(formatDate(date, { dateStyle: "long" })); 
+// -> "September 4, 2026"
+
+// 3. Convert to Thai Buddhist calendar
+const thai = convertCalendarDate(date, "buddhist");
+console.log(thai.value.year); 
+// -> 2569 (พ.ศ.)</code></pre>
+          </div>
+        </div>
+
+        <!-- Pane 2: Convenience -->
+        <div id="doc-convenience" class="doc-content-pane hidden space-y-4">
+          <div class="code-block">
+            <pre><code>import { isBefore, isEqual, isBetween, addDays, endOfMonth } from "@intech-software/chronera";
+
+const d1 = localDate(2026, 9, 4);
+const d2 = localDate(2026, 9, 10);
+
+// Comparisons
+isBefore(d1, d2); // true
+isEqual(d1, d2);  // false
+
+// Range checking
+isBetween(d1, localDate(2026, 9, 1), localDate(2026, 9, 30)); // true
+
+// Arithmetic shortcuts
+const nextWeek = addDays(d1, 7); // 2026-09-11
+const monthEnd = endOfMonth(d1);  // 2026-09-30</code></pre>
+          </div>
+        </div>
+
+        <!-- Pane 3: Time -->
+        <div id="doc-time" class="doc-content-pane hidden space-y-4">
+          <div class="code-block">
+            <pre><code>import { startOfDay, endOfDay, isPast, isFuture, addHours } from "@intech-software/chronera";
+
+const today = localDate(2026, 9, 4);
+
+// Time boundaries
+startOfDay(today); // 2026-09-04 00:00:00.000
+endOfDay(today);   // 2026-09-04 23:59:59.999
+
+// Expiration checking (e.g. Tokens, Coupons)
+const expireAt = new Date("2026-09-01T00:00:00Z");
+isPast(expireAt); // true (Coupon expired!)</code></pre>
+          </div>
+        </div>
+
+        <!-- Pane 4: Business -->
+        <div id="doc-business" class="doc-content-pane hidden space-y-4">
+          <div class="code-block">
+            <pre><code>import { isWeekend, isWeekday, addBusinessDays, diffInBusinessDays } from "@intech-software/chronera";
+
+const friday = localDate(2026, 9, 4); // Friday
+
+// Adding 2 business days skips Saturday and Sunday!
+const delivery = addBusinessDays(friday, 2); 
+// -> 2026-09-08 (Tuesday)
+
+// Signed business days difference
+const diff = diffInBusinessDays(delivery, friday);
+// -> 2 business days</code></pre>
+          </div>
+        </div>
+
+        <!-- Pane 5: TimeZone -->
+        <div id="doc-timezone" class="doc-content-pane hidden space-y-4">
+          <div class="code-block">
+            <pre><code>import { formatInTimeZone, getTimeZoneOffset, isSameTimeZone } from "@intech-software/chronera";
+
+const instant = new Date("2026-09-04T12:00:00Z");
+
+// Format instant directly into target time zone
+formatInTimeZone(instant, "Asia/Bangkok", "yyyy-MM-dd HH:mm:ss XXX");
+// -> "2026-09-04 19:00:00 +07:00"
+
+formatInTimeZone(instant, "America/New_York", "yyyy-MM-dd HH:mm:ss (zzzz)");
+// -> "2026-09-04 08:00:00 (Eastern Daylight Time)"
+
+// Retrieve offset details (including DST)
+getTimeZoneOffset("America/New_York", instant, "object");
+// -> { formatted: "-04:00", minutes: -240, totalSeconds: -14400, isDst: true }
+
+// Compare zones
+isSameTimeZone("UTC", "Etc/UTC"); // true (Canonical match)
+isSameTimeZone("Asia/Bangkok", "Asia/Jakarta", "offset"); // true (Both UTC+7)</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+      class="relative z-10 py-12 px-4 sm:px-6 lg:px-8 border-t border-slate-800/80 text-center text-xs text-slate-500"
+    >
+      <div
+        class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4"
+      >
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-slate-300">Chronera</span>
+          <span>• Released under Apache-2.0 License</span>
+        </div>
+        <div>
+          Maintained by
+          <a
+            href="https://github.com/INTECH-Software-House"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sky-400 hover:underline"
+            >INTECH Software House</a
+          >
+        </div>
+        <div class="flex items-center gap-4">
+          <a
+            href="https://github.com/INTECH-Software-House/chronera-js"
+            class="hover:text-slate-300"
+            >GitHub</a
+          >
+          <a
+            href="https://www.npmjs.com/package/@intech-software/chronera"
+            class="hover:text-slate-300"
+            >npm</a
+          >
+        </div>
+      </div>
+    </footer>
+
+    <!-- Lucide Icon Renderer -->
+    <script>
+      lucide.createIcons();
+    </script>
+
+    <!-- Main Application Script -->
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

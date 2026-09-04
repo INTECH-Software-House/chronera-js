@@ -7,6 +7,7 @@ export default [
       "dist/**",
       "artifacts/**",
       "coverage/**",
+      "docs/chronera/**",
       "node_modules/**",
       ".cache/**",
       "**/*.d.ts",
