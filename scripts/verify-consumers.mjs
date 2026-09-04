@@ -9,8 +9,15 @@ const TARBALL_PATH = path.join(ROOT_DIR, "artifacts", "chronera.tgz");
 console.log("Packing fresh package tarball...");
 execSync("pnpm pack:artifact", { stdio: "inherit" });
 const artifactsDir = path.join(ROOT_DIR, "artifacts");
+const pkg = JSON.parse(
+  fs.readFileSync(path.join(ROOT_DIR, "package.json"), "utf-8"),
+);
+const expectedName = pkg.name.replace(/^@/, "").replace(/\//, "-");
+const expectedFile = `${expectedName}-${pkg.version}.tgz`;
 const files = fs.readdirSync(artifactsDir);
-const tgzFile = files.find((f) => f.endsWith(".tgz") && f !== "chronera.tgz");
+const tgzFile = files.includes(expectedFile)
+  ? expectedFile
+  : files.find((f) => f.endsWith(".tgz") && f !== "chronera.tgz");
 if (tgzFile) {
   fs.copyFileSync(path.join(artifactsDir, tgzFile), TARBALL_PATH);
 }
@@ -33,15 +40,15 @@ import {
   instantFromEpochMilliseconds,
   convertCalendarDate,
   calendarDate
-} from "@intech/chronera";
-import { japaneseAdapter, rocAdapter, persianAdapter, indianAdapter } from "@intech/chronera/calendar";
+} from "@intech-software/chronera";
+import { japaneseAdapter, rocAdapter, persianAdapter, indianAdapter } from "@intech-software/chronera/calendar";
 import {
   formatJapaneseOfficialPreset,
   formatTaiwanOfficialPreset,
   formatGermanDinStandardPreset,
   formatUsLongPreset,
-} from "@intech/chronera/format";
-import { safeParseLocalDate } from "@intech/chronera/parse";
+} from "@intech-software/chronera/format";
+import { safeParseLocalDate } from "@intech-software/chronera/parse";
 
 const d = localDate(2026, 9, 2);
 const formatted = formatDate(d, { preset: "japanese-official" });
@@ -156,7 +163,7 @@ testPackageManager(
 testPackageManager(
   "yarn",
   (tarball) =>
-    `yarn add "@intech/chronera@file:${tarball.replace(/\\/g, "/")}"`,
+    `yarn add "@intech-software/chronera@file:${tarball.replace(/\\/g, "/")}"`,
   "yarn node test.js",
 );
 

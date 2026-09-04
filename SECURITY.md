@@ -13,7 +13,7 @@ Security updates and critical vulnerability fixes are actively provided for the 
 
 ## Supply Chain & Architecture Guarantees
 
-Chronera (`@intech/chronera`) is engineered for mission-critical enterprise environments with strict security constraints:
+Chronera (`@intech-software/chronera`) is engineered for mission-critical enterprise environments with strict security constraints:
 
 1. **Zero Runtime Dependencies**:
    The production package contains exactly zero third-party runtime dependencies (`"dependencies": {}`). There is no transitive runtime attack surface or prototype pollution vector introduced by external packages.
@@ -61,7 +61,7 @@ If you cannot use GitHub Security Advisories, contact the repository owner direc
 
 To help us investigate and remediate promptly, please include:
 
-- Affected version(s) of `@intech/chronera`;
+- Affected version(s) of `@intech-software/chronera`;
 - Runtime environment (Node.js version, browser, OS);
 - Proof-of-concept (PoC) or minimal reproduction code snippet;
 - Potential security impact (e.g. ReDoS, memory consumption, unhandled exception);

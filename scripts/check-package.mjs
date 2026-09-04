@@ -14,8 +14,13 @@ async function checkPackage() {
     encoding: "utf-8",
   });
 
+  const pkg = JSON.parse(await readFile("package.json", "utf-8"));
+  const expectedName = pkg.name.replace(/^@/, "").replace(/\//, "-");
+  const expectedFile = `${expectedName}-${pkg.version}.tgz`;
   const files = await readdir(artifactsDir);
-  const tgzFile = files.find((f) => f.endsWith(".tgz") && f !== "chronera.tgz");
+  const tgzFile = files.includes(expectedFile)
+    ? expectedFile
+    : files.find((f) => f.endsWith(".tgz") && f !== "chronera.tgz");
   if (!tgzFile) {
     throw new Error("No .tgz artifact found after pnpm pack.");
   }

@@ -1,6 +1,6 @@
 # Support Policy
 
-This document describes support channels, version lifecycles, and service level objectives for `@intech/chronera`.
+This document describes support channels, version lifecycles, and service level objectives for `@intech-software/chronera`.
 
 ---
 

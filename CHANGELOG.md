@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Initial enterprise release of `@intech/chronera`.
+- Initial enterprise release of `@intech-software/chronera`.
 - Core domain date and time primitives: `AbsoluteDay`, `LocalDate`, `LocalTime`, `LocalDateTime`, `Instant`, `CalendarDate`.
 - Civil calendar adapters: Gregorian, Thai Buddhist, Hijri (Tabular, Civil, Umm al-Qura), ROC (Minguo), Japanese Era (Reiwa, Heisei, Showa, Taisho, Meiji), Indian National Saka, and Persian Solar Hijri.
 - High-performance LDML format string parser with zero runtime dependencies.

@@ -14,7 +14,7 @@
 - Architecture specification: Draft 0.1.
 - Implementation status: Pre-1.0; the repository is at the architecture stage and the API is subject to change.
 - Repository identity: `intech/chronera-js`.
-- Provisional npm identity: `@intech/chronera`.
+- Provisional npm identity: `@intech-software/chronera`.
 
 Chronera is the JavaScript and TypeScript implementation of the Chronera ecosystem.
 It is designed as infrastructure for applications that need explicit date semantics,
@@ -29,11 +29,8 @@ This document is both the package README and the governing engineering specifica
 It defines the product contract before implementation begins.
 Statements using **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** are normative in the RFC 2119 sense.
 
-The scoped package name is an initial architecture decision.
-Registry queries on 2026-09-02 found neither `chronera` nor `@intech/chronera` published,
-but a registry lookup does not reserve a name or prove that the `@intech` scope is controlled by the project.
-The maintainers MUST verify npm scope ownership immediately before the first publication.
-All examples use `@intech/chronera` consistently.
+The official package scope `@intech-software` is owned and controlled by the project on npmjs.com.
+All examples use `@intech-software/chronera` consistently.
 
 > [!IMPORTANT]
 > No package has been published by this specification alone.
@@ -183,7 +180,7 @@ They become runnable when the corresponding feature is released.
 ### JavaScript
 
 ```js
-import { formatDate, parseLocalDate } from "@intech/chronera";
+import { formatDate, parseLocalDate } from "@intech-software/chronera";
 
 const date = parseLocalDate("2026-09-02");
 
@@ -204,8 +201,11 @@ Chronera does not classify that native output as an exact-string guarantee.
 ### TypeScript
 
 ```ts
-import { convertCalendarDate, parseLocalDate } from "@intech/chronera";
-import type { CalendarConversionResult, LocalDate } from "@intech/chronera";
+import { convertCalendarDate, parseLocalDate } from "@intech-software/chronera";
+import type {
+  CalendarConversionResult,
+  LocalDate,
+} from "@intech-software/chronera";
 
 const gregorian: LocalDate = parseLocalDate("2026-09-02");
 
@@ -227,7 +227,10 @@ console.log(buddhist.metadata.deterministic); // true
 ### Instant projection
 
 ```ts
-import { formatDateTime, instantFromEpochMilliseconds } from "@intech/chronera";
+import {
+  formatDateTime,
+  instantFromEpochMilliseconds,
+} from "@intech-software/chronera";
 
 const instant = instantFromEpochMilliseconds(
   Date.parse("2026-09-02T06:45:00Z"),
@@ -254,12 +257,12 @@ not the instant.
 The same npm-compatible artifact is consumed by all supported package managers.
 Chronera does not maintain package-manager-specific implementations.
 
-| Package manager | Consumer command               |
-| --------------- | ------------------------------ |
-| npm             | `npm install @intech/chronera` |
-| pnpm            | `pnpm add @intech/chronera`    |
-| Yarn            | `yarn add @intech/chronera`    |
-| Bun             | `bun add @intech/chronera`     |
+| Package manager | Consumer command                        |
+| --------------- | --------------------------------------- |
+| npm             | `npm install @intech-software/chronera` |
+| pnpm            | `pnpm add @intech-software/chronera`    |
+| Yarn            | `yarn add @intech-software/chronera`    |
+| Bun             | `bun add @intech-software/chronera`     |
 
 The repository uses pnpm for contributor workflows.
 That choice does not require consumers to use pnpm.
@@ -947,7 +950,7 @@ An explicit operation-level timezone on a date-only input is rejected; the insta
 `parseLocalDate` always constructs a Gregorian `LocalDate` and does not inherit an instance's display-calendar default.
 
 ```ts
-import { createChronera } from "@intech/chronera";
+import { createChronera } from "@intech-software/chronera";
 
 const thai = createChronera({
   locale: "th-TH",
@@ -1109,7 +1112,7 @@ Instant input with ordinary native styles explicitly uses the runtime calendar e
 Examples:
 
 ```ts
-import { formatDate, parseLocalDate } from "@intech/chronera";
+import { formatDate, parseLocalDate } from "@intech-software/chronera";
 
 const fixedDate = parseLocalDate("2026-09-02");
 
@@ -1563,7 +1566,7 @@ parseInstant("2026-09-02T13:45:00"); // error: offset required
 ### Safe parsing
 
 ```ts
-import { safeParseLocalDate } from "@intech/chronera";
+import { safeParseLocalDate } from "@intech-software/chronera";
 
 const result = safeParseLocalDate("2026-02-30");
 
@@ -1579,7 +1582,7 @@ TypeScript narrowing requires no assertion.
 JavaScript uses the same shape:
 
 ```js
-import { safeParseLocalDate } from "@intech/chronera";
+import { safeParseLocalDate } from "@intech-software/chronera";
 
 function handleDateSubmit(userInput, showValidationMessage, submitDate) {
   const result = safeParseLocalDate(userInput);
@@ -2545,7 +2548,7 @@ Initial architecture decision:
   never assumed;
 - no Temporal polyfill is bundled or required by core;
 - no global Temporal polyfill is installed;
-- an optional `@intech/chronera/temporal` adapter may be added after runtime tests exist;
+- an optional `@intech-software/chronera/temporal` adapter may be added after runtime tests exist;
 - Temporal adapter functions perform explicit conversion to Chronera records;
 - core calendar adapters do not import Temporal;
 - adoption can expand without changing the root domain model.
@@ -3496,7 +3499,7 @@ The imported Gregorian conversion functions share the core absolute-day epoch.
 ```ts
 import { describe, expect, it } from "vitest";
 
-import { isLeapYear } from "@intech/chronera/calendar";
+import { isLeapYear } from "@intech-software/chronera/calendar";
 
 describe("Gregorian leap years", () => {
   const cases = [
@@ -3674,7 +3677,7 @@ JavaScript consumers use ordinary ESM without TypeScript syntax or extra type pa
 
 ```js
 // report-date.mjs
-import { formatDate, parseLocalDate } from "@intech/chronera";
+import { formatDate, parseLocalDate } from "@intech-software/chronera";
 
 const reportDate = parseLocalDate("2026-09-02");
 
@@ -3705,7 +3708,7 @@ the application may use:
 
 ```js
 async function loadChronera() {
-  const { formatDate } = await import("@intech/chronera");
+  const { formatDate } = await import("@intech-software/chronera");
   return formatDate;
 }
 ```
@@ -3716,7 +3719,7 @@ not a CJS package contract.
 JSDoc users receive bundled declaration assistance:
 
 ```js
-/** @type {import("@intech/chronera").FormatDateOptions} */
+/** @type {import("@intech-software/chronera").FormatDateOptions} */
 const options = {
   locale: "th-TH",
   calendar: "buddhist",
@@ -3736,8 +3739,8 @@ None of these frameworks is a dependency or peer dependency.
 ### React
 
 ```tsx
-import { formatDate } from "@intech/chronera";
-import type { LocalDate } from "@intech/chronera";
+import { formatDate } from "@intech-software/chronera";
+import type { LocalDate } from "@intech-software/chronera";
 
 interface DateLabelProps {
   readonly value: LocalDate;
@@ -3769,7 +3772,7 @@ The machine-readable `dateTime` attribute must not receive the localized label.
 ### Next.js Server Component
 
 ```tsx
-import { formatDate, parseLocalDate } from "@intech/chronera";
+import { formatDate, parseLocalDate } from "@intech-software/chronera";
 
 export default function InvoiceDate() {
   const date = parseLocalDate("2026-09-02");
@@ -3787,8 +3790,8 @@ export default function InvoiceDate() {
 ```tsx
 "use client";
 
-import { formatDate } from "@intech/chronera";
-import type { LocalDate } from "@intech/chronera";
+import { formatDate } from "@intech-software/chronera";
+import type { LocalDate } from "@intech-software/chronera";
 
 interface ClientDateProps {
   readonly date: LocalDate;
@@ -3816,8 +3819,8 @@ or `navigator` at module evaluation time.
 ```vue
 <script setup lang="ts">
 import { computed } from "vue";
-import { formatDate } from "@intech/chronera";
-import type { LocalDate } from "@intech/chronera";
+import { formatDate } from "@intech-software/chronera";
+import type { LocalDate } from "@intech-software/chronera";
 
 const props = defineProps<{
   date: LocalDate;
@@ -3841,8 +3844,8 @@ const label = computed(() =>
 
 ```svelte
 <script lang="ts">
-  import { formatDate } from "@intech/chronera";
-  import type { LocalDate } from "@intech/chronera";
+  import { formatDate } from "@intech-software/chronera";
+  import type { LocalDate } from "@intech-software/chronera";
 
   export let date: LocalDate;
 
@@ -3867,13 +3870,13 @@ Chronera is ESM-first and ESM-only for the initial release.
 Supported:
 
 ```js
-import { formatDate } from "@intech/chronera";
+import { formatDate } from "@intech-software/chronera";
 ```
 
 Not supported initially:
 
 ```js
-const { formatDate } = require("@intech/chronera");
+const { formatDate } = require("@intech-software/chronera");
 ```
 
 This is an explicit compatibility boundary,
@@ -3900,7 +3903,7 @@ Automated dependency updates may advance them after CI review.
 
 ```json
 {
-  "name": "@intech/chronera",
+  "name": "@intech-software/chronera",
   "version": "0.0.0-development",
   "description": "A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.",
   "keywords": [
@@ -4046,10 +4049,10 @@ new repository files are excluded from publication unless deliberately included.
 
 Public subpaths are limited to:
 
-- `@intech/chronera` for the common API;
-- `@intech/chronera/calendar` for calendar capability and conversion APIs;
-- `@intech/chronera/format` for formatting-only consumers;
-- `@intech/chronera/parse` for parsing-only consumers.
+- `@intech-software/chronera` for the common API;
+- `@intech-software/chronera/calendar` for calendar capability and conversion APIs;
+- `@intech-software/chronera/format` for formatting-only consumers;
+- `@intech-software/chronera/parse` for parsing-only consumers.
 
 The subpaths have concrete tree-shaking and discoverability value.
 They are not mirrors of every source directory.
@@ -4057,9 +4060,9 @@ They are not mirrors of every source directory.
 Forbidden consumer imports:
 
 ```ts
-import { absoluteDay } from "@intech/chronera/dist/core/absolute-day.js";
-import { parser } from "@intech/chronera/src/parse/pattern-parser.ts";
-import metadata from "@intech/chronera/package.json";
+import { absoluteDay } from "@intech-software/chronera/dist/core/absolute-day.js";
+import { parser } from "@intech-software/chronera/src/parse/pattern-parser.ts";
+import metadata from "@intech-software/chronera/package.json";
 ```
 
 Those paths are blocked by `exports`.
@@ -5063,7 +5066,7 @@ The first stable release publishes absolute budgets.
 Tree-shaking tests bundle:
 
 ```ts
-import { parseLocalDate } from "@intech/chronera/parse";
+import { parseLocalDate } from "@intech-software/chronera/parse";
 
 console.log(parseLocalDate("2026-09-02"));
 ```

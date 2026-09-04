@@ -1,5 +1,5 @@
 {
-  "name": "@intech/chronera",
+  "name": "@intech-software/chronera",
   "version": "0.1.0",
   "description": "A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.",
   "keywords": [
@@ -106,22 +106,22 @@
   },
   "size-limit": [
     {
-      "name": "Root (@intech/chronera)",
+      "name": "Root (@intech-software/chronera)",
       "path": "dist/index.js",
       "limit": "25 KB"
     },
     {
-      "name": "Calendar (@intech/chronera/calendar)",
+      "name": "Calendar (@intech-software/chronera/calendar)",
       "path": "dist/calendar/index.js",
       "limit": "15 KB"
     },
     {
-      "name": "Format (@intech/chronera/format)",
+      "name": "Format (@intech-software/chronera/format)",
       "path": "dist/format/index.js",
       "limit": "15 KB"
     },
     {
-      "name": "Parse (@intech/chronera/parse)",
+      "name": "Parse (@intech-software/chronera/parse)",
       "path": "dist/parse/index.js",
       "limit": "10 KB"
     }
