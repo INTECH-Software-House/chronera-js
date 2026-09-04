@@ -68,7 +68,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "clean": "node scripts/clean.mjs",
-    "check": "pnpm build && pnpm format:check && pnpm lint && pnpm check:architecture && pnpm typecheck && pnpm test && pnpm pack:check",
+    "check": "pnpm build && pnpm format:check && pnpm lint && pnpm check:architecture && pnpm typecheck && pnpm test && pnpm size-limit && pnpm pack:check",
     "check:architecture": "node --import tsx scripts/check-architecture.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -81,6 +81,8 @@
     "test:property": "vitest run tests/property",
     "test:fuzz": "vitest run tests/fuzz",
     "benchmark": "vitest bench",
+    "size-limit": "size-limit",
+    "prepare": "simple-git-hooks",
     "data:build": "node --import tsx scripts/build-calendar-data.ts",
     "data:check": "node --import tsx scripts/validate-fixtures.ts",
     "pack:artifact": "pnpm build && pnpm pack --pack-destination artifacts",
@@ -89,6 +91,41 @@
     "prepack": "pnpm build",
     "release:check": "pnpm check && pnpm test:types && pnpm data:check"
   },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged",
+    "commit-msg": "pnpm commitlint --edit \"$1\""
+  },
+  "lint-staged": {
+    "*.{ts,js,mjs}": [
+      "eslint --max-warnings 0",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "size-limit": [
+    {
+      "name": "Root (@intech/chronera)",
+      "path": "dist/index.js",
+      "limit": "25 KB"
+    },
+    {
+      "name": "Calendar (@intech/chronera/calendar)",
+      "path": "dist/calendar/index.js",
+      "limit": "15 KB"
+    },
+    {
+      "name": "Format (@intech/chronera/format)",
+      "path": "dist/format/index.js",
+      "limit": "15 KB"
+    },
+    {
+      "name": "Parse (@intech/chronera/parse)",
+      "path": "dist/parse/index.js",
+      "limit": "10 KB"
+    }
+  ],
   "publishConfig": {
     "access": "public",
     "provenance": true
@@ -97,16 +134,21 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
     "@changesets/cli": "3.0.1",
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
     "@playwright/test": "1.62.1",
     "@size-limit/file": "13.0.3",
+    "@size-limit/preset-small-lib": "^13.0.3",
     "@types/node": "26.4.0",
     "@typescript-eslint/eslint-plugin": "8.69.0",
     "@typescript-eslint/parser": "8.69.0",
     "@vitest/coverage-v8": "4.1.11",
     "eslint": "10.9.1",
     "fast-check": "4.9.0",
+    "lint-staged": "^17.4.1",
     "prettier": "3.9.6",
     "publint": "0.3.24",
+    "simple-git-hooks": "^2.14.0",
     "size-limit": "13.0.3",
     "tstyche": "7.2.3",
     "tsx": "4.23.13",

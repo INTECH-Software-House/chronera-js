@@ -1,5 +1,14 @@
 # Chronera
 
+[![CI](https://github.com/INTECH-Software-House/chronera-js/actions/workflows/ci.yml/badge.svg)](https://github.com/INTECH-Software-House/chronera-js/actions/workflows/ci.yml)
+[![Security Analysis](https://github.com/INTECH-Software-House/chronera-js/actions/workflows/security.yml/badge.svg)](https://github.com/INTECH-Software-House/chronera-js/actions/workflows/security.yml)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/INTECH-Software-House/chronera-js/badge)](https://securityscorecards.dev/viewer/?run=github.com/INTECH-Software-House/chronera-js)
+[![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](package.json)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Clean Architecture](https://img.shields.io/badge/architecture-Clean%20Architecture-informational.svg)](CONTRIBUTING.md)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict%205.x-3178c6.svg)](tsconfig.json)
+[![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](prettier.config.js)
+
 > A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.
 
 - Architecture specification: Draft 0.1.
