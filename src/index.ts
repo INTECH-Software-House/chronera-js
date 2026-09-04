@@ -28,6 +28,8 @@ export {
   endOfYear,
 } from "./operations/convenience.js";
 
+export { startOfDay, endOfDay } from "./operations/time-convenience.js";
+
 export { convertCalendarDate } from "./operations/convert-calendar-date.js";
 
 export {
