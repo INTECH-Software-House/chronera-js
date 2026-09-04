@@ -181,3 +181,43 @@ export function subtractHours<T extends TimeOrDateTimeOrInstant>(
 ): T {
   return addHours(target, -amount);
 }
+
+/**
+ * Adds minutes to a LocalTime, LocalDateTime, or Instant.
+ */
+export function addMinutes<T extends TimeOrDateTimeOrInstant>(
+  target: T,
+  amount: number,
+): T {
+  return addMillisecondsInternal(target, amount * 60_000);
+}
+
+/**
+ * Subtracts minutes from a LocalTime, LocalDateTime, or Instant.
+ */
+export function subtractMinutes<T extends TimeOrDateTimeOrInstant>(
+  target: T,
+  amount: number,
+): T {
+  return addMinutes(target, -amount);
+}
+
+/**
+ * Adds seconds to a LocalTime, LocalDateTime, or Instant.
+ */
+export function addSeconds<T extends TimeOrDateTimeOrInstant>(
+  target: T,
+  amount: number,
+): T {
+  return addMillisecondsInternal(target, amount * 1_000);
+}
+
+/**
+ * Subtracts seconds from a LocalTime, LocalDateTime, or Instant.
+ */
+export function subtractSeconds<T extends TimeOrDateTimeOrInstant>(
+  target: T,
+  amount: number,
+): T {
+  return addSeconds(target, -amount);
+}
