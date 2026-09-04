@@ -7,6 +7,27 @@ export {
   sameCalendarDate,
 } from "./operations/compare.js";
 
+export {
+  getAbsoluteDay,
+  isBefore,
+  isAfter,
+  isEqual,
+  isSameDay,
+  isBetween,
+  isToday,
+  addDays,
+  subtractDays,
+  addMonths,
+  subtractMonths,
+  addYears,
+  subtractYears,
+  diffInDays,
+  startOfMonth,
+  endOfMonth,
+  startOfYear,
+  endOfYear,
+} from "./operations/convenience.js";
+
 export { convertCalendarDate } from "./operations/convert-calendar-date.js";
 
 export {
@@ -117,6 +138,7 @@ export type {
   ChroneraIssue,
   Comparison,
   ConvertCalendarOptions,
+  DateOrCalendarDate,
   DateRange,
   DayOfYearFields,
   Duration,
@@ -131,6 +153,7 @@ export type {
   FormatRelativeOptions,
   FormatTimeOptions,
   Instant,
+  IntervalInclusivity,
   IsoWeekFields,
   LocalDate,
   LocalDateTime,

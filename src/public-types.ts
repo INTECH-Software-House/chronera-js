@@ -91,6 +91,8 @@ export interface ZonedDateTime {
 }
 
 export type FormatDateInput = LocalDate | CalendarDate | Instant | Date;
+export type DateOrCalendarDate = LocalDate | CalendarDate;
+export type IntervalInclusivity = "()" | "[]" | "[)" | "(]";
 
 export interface Duration {
   readonly years?: number;
