@@ -11,17 +11,30 @@
     "i18n",
     "buddhist-calendar",
     "hijri",
+    "iso8601",
+    "rfc2822",
+    "julian-day",
+    "cldr",
+    "clean-architecture",
+    "zero-dependencies",
     "typescript"
   ],
+  "author": "Pawapon Thammalangka <108130529+ParkPawapon@users.noreply.github.com> (https://github.com/ParkPawapon)",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/intech/chronera-js.git"
+    "url": "git+https://github.com/INTECH-Software-House/chronera-js.git"
   },
-  "homepage": "https://github.com/intech/chronera-js#readme",
+  "homepage": "https://github.com/INTECH-Software-House/chronera-js#readme",
   "bugs": {
-    "url": "https://github.com/intech/chronera-js/issues"
+    "url": "https://github.com/INTECH-Software-House/chronera-js/issues"
   },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/ParkPawapon"
+    }
+  ],
   "type": "module",
   "types": "./dist/index.d.ts",
   "exports": {
