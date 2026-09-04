@@ -33,6 +33,8 @@ export {
   endOfDay,
   isPast,
   isFuture,
+  addHours,
+  subtractHours,
 } from "./operations/time-convenience.js";
 
 export { convertCalendarDate } from "./operations/convert-calendar-date.js";
