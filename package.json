@@ -1,6 +1,6 @@
 {
   "name": "@intech-software/chronera",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.",
   "keywords": [
     "date",
@@ -89,7 +89,8 @@
     "pack:check": "node scripts/check-package.mjs && node scripts/verify-consumers.mjs",
     "verify:consumers": "node scripts/verify-consumers.mjs",
     "prepack": "pnpm build",
-    "release:check": "pnpm check && pnpm test:types && pnpm data:check"
+    "release:check": "pnpm check && pnpm test:types && pnpm data:check",
+    "release:automated": "node --import tsx scripts/automate-release.ts"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged",
