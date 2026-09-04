@@ -1,0 +1,63 @@
+name: Scheduled Release v0.1.2
+
+on:
+  schedule:
+    # 17:00:00 UTC on 2026-09-05 corresponds exactly to 00:00:00 UTC+7 on 2026-09-06 (6 กันยายน 2569)
+    - cron: "0 17 5 9 *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Perform dry run without pushing or publishing"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: npm-release-v0.1.2
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Automated Release v0.1.2
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: npm
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 11.25.0
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Execute automated release pipeline for v0.1.2
+        run: node --import tsx scripts/automate-release.ts --version 0.1.2 --target 2026-09-06T00:00:00+07:00 --now ${{ inputs.dry_run && '--dry-run' || '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
