@@ -35,6 +35,10 @@ export {
   isFuture,
   addHours,
   subtractHours,
+  addMinutes,
+  subtractMinutes,
+  addSeconds,
+  subtractSeconds,
 } from "./operations/time-convenience.js";
 
 export { convertCalendarDate } from "./operations/convert-calendar-date.js";
