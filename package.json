@@ -1,6 +1,6 @@
 {
   "name": "@intech/chronera",
-  "version": "0.0.0-development",
+  "version": "0.1.0",
   "description": "A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.",
   "keywords": [
     "date",
