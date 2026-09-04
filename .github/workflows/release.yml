@@ -60,6 +60,8 @@ jobs:
 
       - name: Run release gates
         run: pnpm release:check
+        env:
+          NODE_AUTH_TOKEN: mock_token_for_release_verification
 
       - name: Publish stable tarball through trusted publishing
         if: ${{ !github.event.release.prerelease }}

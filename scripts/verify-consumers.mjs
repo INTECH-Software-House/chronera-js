@@ -115,12 +115,22 @@ function testPackageManager(name, installCmd, runCmd) {
     );
     fs.writeFileSync(path.join(tempDir, "test.js"), TEST_SCRIPT_CONTENT);
 
+    const childEnv = {
+      ...process.env,
+      NODE_AUTH_TOKEN:
+        process.env.NODE_AUTH_TOKEN || "mock_token_for_consumer_verification",
+    };
+
     const fullInstallCmd = installCmd(TARBALL_PATH);
     console.log(`[${name}] Executing: ${fullInstallCmd}`);
-    execSync(fullInstallCmd, { cwd: tempDir, stdio: "inherit" });
+    execSync(fullInstallCmd, { cwd: tempDir, stdio: "inherit", env: childEnv });
 
     console.log(`[${name}] Executing test runner...`);
-    const output = execSync(runCmd, { cwd: tempDir, encoding: "utf8" });
+    const output = execSync(runCmd, {
+      cwd: tempDir,
+      encoding: "utf8",
+      env: childEnv,
+    });
     console.log(`[${name}] Output: ${output.trim()}`);
     console.log(`[${name}] PASSED 🟢`);
   } finally {
