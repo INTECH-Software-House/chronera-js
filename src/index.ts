@@ -171,5 +171,6 @@ export type {
   RuntimeCapabilities,
   SafeParseResult,
   TimeZoneId,
+  TimeOrDateTimeOrInstant,
   ZonedDateTime,
 } from "./public-types.js";
