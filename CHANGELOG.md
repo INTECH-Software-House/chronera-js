@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-09-06
+
+### Added
+
+- **Time & Instant Convenience Helpers**:
+  - **Day Boundary Helpers**: `startOfDay(input)` (00:00:00.000) and `endOfDay(input)` (23:59:59.999) accepting `LocalDate` or `LocalDateTime`.
+  - **Temporal Expiration & Status**: `isPast(target)` and `isFuture(target)` for Instant, Date, or numeric timestamps.
+  - **Polymorphic Time Arithmetic**:
+    - `addHours(target, n)` / `subtractHours(target, n)`
+    - `addMinutes(target, n)` / `subtractMinutes(target, n)`
+    - `addSeconds(target, n)` / `subtractSeconds(target, n)`
+    - Seamless polymorphic support for `LocalTime`, `LocalDateTime`, and `Instant` with automatic calendar-date rollover across midnights and leap days.
+- **Exported Types**: `TimeOrDateTimeOrInstant` in root barrel.
+
 ## [0.1.1] - 2026-09-05
 
 ### Added
