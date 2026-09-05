@@ -40,14 +40,16 @@ auth.otplease = async (npm, opts, fn) => {
 
 async function main() {
   const tarballPath =
-    process.argv[2] || "./artifacts/intech-software-chronera-0.1.1.tgz";
+    process.argv[2] || "./artifacts/intech-software-chronera-0.1.2.tgz";
+  const { resolve } = await import("node:path");
+  const resolvedPath = resolve(process.cwd(), tarballPath);
 
   // Set process.argv for npm CLI parser
   process.argv = [
     "node",
     "npm",
     "publish",
-    tarballPath,
+    resolvedPath,
     "--access",
     "public",
     "--provenance=false",
