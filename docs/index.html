@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chronera — The Universal Date & Multi-Calendar Engine</title>
+    <title>Chronera — Universal Date, Time & Multi-Calendar Engine</title>
     <meta
       name="description"
       content="A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript. 100% Zero Dependencies."
@@ -40,804 +40,1070 @@
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body class="relative">
-    <!-- Background Ambient Glow -->
-    <div class="glow-blob glow-blob-1"></div>
-    <div class="glow-blob glow-blob-2"></div>
-    <div class="glow-blob glow-blob-3"></div>
-
-    <!-- Navigation Bar -->
-    <header class="sticky top-0 z-50 glass border-b border-slate-800/80">
+  <body class="tech-grid min-h-screen">
+    <!-- Top Navigation -->
+    <header class="header-nav">
       <div
         class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
       >
+        <!-- Logo & Branding -->
         <div class="flex items-center gap-3">
           <div
-            class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/20 text-white font-bold text-lg"
+            class="w-8 h-8 rounded-lg bg-[var(--accent-primary)] text-white flex items-center justify-center font-bold text-base shadow-sm"
           >
             ⏳
           </div>
-          <div class="flex flex-col">
-            <span class="text-xl font-extrabold tracking-tight gradient-text"
+          <div class="flex items-center gap-2">
+            <span
+              class="text-lg font-bold tracking-tight text-[var(--text-primary)]"
               >Chronera</span
             >
-            <span class="text-[10px] text-slate-400 -mt-1 font-mono"
-              >@intech-software/chronera</span
-            >
+            <span class="badge badge-emerald">v0.1.2</span>
           </div>
         </div>
 
+        <!-- Desktop Navigation -->
         <nav
-          class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300"
+          class="hidden md:flex items-center gap-6 text-sm font-medium text-[var(--text-secondary)]"
         >
-          <a href="#playground" class="hover:text-sky-400 transition-colors"
-            >Playground</a
-          >
-          <a href="#timezone" class="hover:text-sky-400 transition-colors"
-            >TimeZones</a
-          >
-          <a href="#business-days" class="hover:text-sky-400 transition-colors"
-            >Business Days</a
-          >
-          <a href="#docs" class="hover:text-sky-400 transition-colors"
-            >Documentation</a
+          <a
+            href="#workbench"
+            class="hover:text-[var(--text-primary)] transition-colors"
+            >Workbench</a
           >
           <a
-            href="https://github.com/INTECH-Software-House/chronera-js"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hover:text-sky-400 transition-colors"
-            >GitHub</a
+            href="#features"
+            class="hover:text-[var(--text-primary)] transition-colors"
+            >Architecture</a
+          >
+          <a
+            href="#api"
+            class="hover:text-[var(--text-primary)] transition-colors"
+            >API Reference</a
+          >
+          <a
+            href="#benchmarks"
+            class="hover:text-[var(--text-primary)] transition-colors"
+            >Benchmarks</a
           >
         </nav>
 
+        <!-- Right Controls -->
         <div class="flex items-center gap-3">
-          <button
-            id="theme-toggle"
-            class="p-2 rounded-lg glass-interactive text-slate-300 hover:text-white"
-            title="Toggle theme"
-          >
-            <i
-              data-lucide="sun"
-              class="w-4 h-4 hidden [data-theme=dark]:block"
-            ></i>
-            <i
-              data-lucide="moon"
-              class="w-4 h-4 block [data-theme=dark]:hidden"
-            ></i>
-          </button>
-
           <a
             href="https://github.com/INTECH-Software-House/chronera-js"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all"
+            class="btn-secondary text-xs py-1.5 px-3"
+          >
+            <i data-lucide="github" class="w-3.5 h-3.5"></i>
+            <span>GitHub</span>
+          </a>
+          <button
+            id="theme-toggle"
+            class="btn-secondary text-xs p-1.5"
+            title="Toggle theme (Light / Dark)"
+            aria-label="Toggle theme"
           >
             <i
-              data-lucide="star"
-              class="w-3.5 h-3.5 text-amber-400 fill-amber-400"
+              data-lucide="sun"
+              class="w-4 h-4 hidden [html[data-theme=dark]_&]:block"
             ></i>
-            <span>Star on GitHub</span>
-          </a>
+            <i
+              data-lucide="moon"
+              class="w-4 h-4 block [html[data-theme=dark]_&]:hidden"
+            ></i>
+          </button>
         </div>
       </div>
     </header>
 
-    <!-- Hero Section -->
-    <section
-      class="relative z-10 pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center"
+    <!-- Main Content Container -->
+    <main
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 space-y-16"
     >
-      <div
-        class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-cyan mb-6 text-xs font-medium"
-      >
-        <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
-        Zero Dependencies • Pure TypeScript • Clean Architecture
-      </div>
-
-      <h1
-        class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6"
-      >
-        The Universal Date & <br />
-        <span class="gradient-text">Multi-Calendar Engine</span>
-      </h1>
-
-      <p
-        class="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed"
-      >
-        Type-safe date semantics, 7 cultural calendar systems, official legal
-        presets, and timezone conversion in one blazing-fast, deterministic
-        library for JavaScript & TypeScript.
-      </p>
-
-      <!-- Quick Install Command Box -->
-      <div
-        class="max-w-xl mx-auto glass rounded-2xl p-3 mb-10 shadow-2xl border border-slate-800"
-      >
+      <!-- Hero Section -->
+      <section class="space-y-6 text-center max-w-3xl mx-auto">
         <div
-          class="flex items-center justify-between border-b border-slate-800/80 pb-2 mb-2 px-2"
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs font-mono text-[var(--text-secondary)]"
         >
-          <div class="flex gap-1.5">
+          <span
+            class="w-2 h-2 rounded-full bg-[var(--accent-emerald)] inline-block"
+          ></span>
+          <span>Zero Dependencies • Tree-Shakeable • Pure TypeScript</span>
+        </div>
+
+        <h1
+          class="text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)] leading-tight"
+        >
+          Universal date, time, and multi-calendar engine.
+        </h1>
+
+        <p
+          class="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed"
+        >
+          Mission-critical datetime arithmetic, international non-Gregorian
+          calendar conversion (พ.ศ., 令和, 民國, Hijri, Solar Hijri, Saka),
+          deterministic business SLA calculations, and global timezone
+          manipulation natively in modern JavaScript and TypeScript.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <a href="#workbench" class="btn-primary">
+            <i data-lucide="terminal" class="w-4 h-4"></i>
+            <span>Open Workbench</span>
+          </a>
+          <a href="#api" class="btn-secondary">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            <span>API Specs</span>
+          </a>
+        </div>
+
+        <!-- Terminal Install Box -->
+        <div class="pt-6 max-w-xl mx-auto text-left">
+          <!-- Package Manager Tabs -->
+          <div class="flex items-center gap-1.5 mb-2">
             <button
-              class="pm-tab-btn active px-2.5 py-1 text-xs rounded font-mono"
+              class="pm-tab tab-pill active text-xs py-1 px-3"
               data-pm="pnpm"
             >
               pnpm
             </button>
-            <button
-              class="pm-tab-btn px-2.5 py-1 text-xs rounded font-mono text-slate-400"
-              data-pm="npm"
-            >
+            <button class="pm-tab tab-pill text-xs py-1 px-3" data-pm="npm">
               npm
             </button>
-            <button
-              class="pm-tab-btn px-2.5 py-1 text-xs rounded font-mono text-slate-400"
-              data-pm="yarn"
-            >
+            <button class="pm-tab tab-pill text-xs py-1 px-3" data-pm="yarn">
               yarn
             </button>
-            <button
-              class="pm-tab-btn px-2.5 py-1 text-xs rounded font-mono text-slate-400"
-              data-pm="bun"
-            >
+            <button class="pm-tab tab-pill text-xs py-1 px-3" data-pm="bun">
               bun
             </button>
           </div>
-          <span class="text-[11px] font-mono text-slate-500">v0.1.4 Ready</span>
-        </div>
-        <div
-          class="flex items-center justify-between px-3 py-2 bg-black/40 rounded-xl"
-        >
-          <code
-            id="install-command"
-            class="text-sm sm:text-base text-sky-400 font-mono select-all"
-            >pnpm add @intech-software/chronera</code
-          >
-          <button
-            id="copy-install-btn"
-            class="ml-3 px-3 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 text-xs font-semibold transition-all"
-          >
-            Copy
-          </button>
-        </div>
-      </div>
 
-      <!-- Quick Action Links -->
-      <div class="flex flex-wrap items-center justify-center gap-4">
-        <a
-          href="#playground"
-          class="px-6 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold shadow-lg shadow-sky-500/25 transition-all"
-        >
-          ⚡ Explore Live Playground
-        </a>
-        <a
-          href="#docs"
-          class="px-6 py-3 rounded-xl glass-interactive text-slate-300 hover:text-white font-semibold border border-slate-700"
-        >
-          📖 Read Documentation
-        </a>
-      </div>
-    </section>
-
-    <!-- Key Pillars Grid -->
-    <section class="relative z-10 py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="glass glass-interactive rounded-2xl p-6">
-          <div
-            class="w-10 h-10 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center mb-4"
-          >
-            <i data-lucide="globe" class="w-5 h-5"></i>
-          </div>
-          <h3 class="text-lg font-bold mb-2">7 Native Calendar Systems</h3>
-          <p class="text-sm text-slate-400">
-            พุทธศักราช (ไทย), 令和 (ญี่ปุ่น), 民國 (ไต้หวัน), Hijri Umm al-Qura
-            (ซาอุดีฯ), Persian Jalali (อิหร่าน), Indian Saka (อินเดีย) และ
-            ISO-8601 สากล
-          </p>
-        </div>
-
-        <div class="glass glass-interactive rounded-2xl p-6">
-          <div
-            class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center mb-4"
-          >
-            <i data-lucide="clock" class="w-5 h-5"></i>
-          </div>
-          <h3 class="text-lg font-bold mb-2">Global TimeZone Studio</h3>
-          <p class="text-sm text-slate-400">
-            จัดรูปแบบเวลาใน TimeZone ปลายทางทันทีด้วย
-            <code>formatInTimeZone</code> พร้อมคำนวณ Daylight Saving Time (DST)
-            และ Canonical equivalence
-          </p>
-        </div>
-
-        <div class="glass glass-interactive rounded-2xl p-6">
-          <div
-            class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4"
-          >
-            <i data-lucide="briefcase" class="w-5 h-5"></i>
-          </div>
-          <h3 class="text-lg font-bold mb-2">Business & Working Days</h3>
-          <p class="text-sm text-slate-400">
-            คำนวณวันทำการ <code>addBusinessDays</code> และ
-            <code>diffInBusinessDays</code> ข้ามวันเสาร์-อาทิตย์ด้วย $O(1)$
-            Mathematical week acceleration
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- LIVE PLAYGROUND SECTION 1: Multi-Calendar Matrix -->
-    <section
-      id="playground"
-      class="relative z-10 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
-    >
-      <div class="text-center mb-10">
-        <span class="badge badge-purple mb-3">Live Interactive Matrix</span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
-          Real-Time Multi-Calendar Conversion
-        </h2>
-        <p class="text-slate-400 mt-2 max-w-2xl mx-auto">
-          เปลี่ยนวันที่ด้านล่าง และดู Chronera คำนวณและประสานวันที่ข้ามปฏิทิน 7
-          ประเทศในเสี้ยววินาทีด้วย Zero-Dependency Engine
-        </p>
-      </div>
-
-      <!-- Date Control Toolbar -->
-      <div
-        class="glass rounded-2xl p-4 sm:p-6 mb-8 border border-slate-800 max-w-3xl mx-auto"
-      >
-        <div
-          class="flex flex-col sm:flex-row items-center justify-between gap-4"
-        >
-          <div class="w-full sm:w-auto flex items-center gap-3">
-            <label
-              for="matrix-date-input"
-              class="text-sm font-semibold text-slate-300"
-              >Select Date:</label
-            >
-            <input
-              type="date"
-              id="matrix-date-input"
-              class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-sky-400 font-mono focus:outline-none focus:border-sky-500 transition-colors"
-            />
-          </div>
-
-          <div class="flex flex-wrap items-center gap-2">
-            <button
-              class="quick-jump-btn px-2.5 py-1 text-xs rounded-lg glass-interactive text-slate-300"
-              data-date="today"
-            >
-              Today
-            </button>
-            <button
-              class="quick-jump-btn px-2.5 py-1 text-xs rounded-lg glass-interactive text-slate-300"
-              data-date="2026-04-13"
-            >
-              Songkran 2026
-            </button>
-            <button
-              class="quick-jump-btn px-2.5 py-1 text-xs rounded-lg glass-interactive text-slate-300"
-              data-date="2019-05-01"
-            >
-              Reiwa 1 Rollover
-            </button>
-            <button
-              class="quick-jump-btn px-2.5 py-1 text-xs rounded-lg glass-interactive text-slate-300"
-              data-date="2026-06-16"
-            >
-              Hijri 1448
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 7 Calendar Result Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <!-- 1. ISO 8601 -->
-        <div
-          id="card-iso"
-          class="glass glass-interactive rounded-2xl p-5 border border-slate-800"
-        >
-          <div class="flex items-center justify-between mb-3">
-            <span
-              class="text-xs font-bold uppercase tracking-wider text-slate-400"
-              >🌐 ISO 8601 / Gregorian</span
-            >
-            <span class="badge badge-cyan">Standard</span>
-          </div>
-          <div
-            class="card-value text-2xl font-bold font-mono text-sky-400 mb-1"
-          >
-            Loading...
-          </div>
-          <div class="card-detail text-xs text-slate-400">Loading...</div>
-        </div>
-
-        <!-- 2. Thai Buddhist -->
-        <div
-          id="card-thai"
-          class="glass glass-interactive rounded-2xl p-5 border border-amber-500/20 bg-amber-950/10"
-        >
-          <div class="flex items-center justify-between mb-3">
-            <span
-              class="text-xs font-bold uppercase tracking-wider text-amber-300"
-              >🇹🇭 ไทย (พุทธศักราช)</span
-            >
-            <span class="badge badge-amber">Official</span>
-          </div>
-          <div
-            class="card-value text-lg sm:text-xl font-bold text-amber-300 mb-1"
-          >
-            Loading...
-          </div>
-          <div class="card-detail text-xs text-amber-400/80">Loading...</div>
-        </div>
-
-        <!-- 3. Japanese Era -->
-        <div
-          id="card-japanese"
-          class="glass glass-interactive rounded-2xl p-5 border border-rose-500/20 bg-rose-950/10"
-        >
-          <div class="flex items-center justify-between mb-3">
-            <span
-              class="text-xs font-bold uppercase tracking-wider text-rose-300"
-              >🇯🇵 日本 (元号 - Reiwa)</span
-            >
-            <span class="badge badge-purple">Imperial</span>
-          </div>
-          <div class="card-value text-xl font-bold text-rose-300 mb-1">
-            Loading...
-          </div>
-          <div class="card-detail text-xs text-rose-400/80">Loading...</div>
-        </div>
-
-        <!-- 4. Taiwan Minguo -->
-        <div
-          id="card-roc"
-          class="glass glass-interactive rounded-2xl p-5 border border-blue-500/20 bg-blue-950/10"
-        >
-          <div class="flex items-center justify-between mb-3">
-            <span
-              class="text-xs font-bold uppercase tracking-wider text-blue-300"
-              >🇹🇼 台灣 (民國紀年)</span
-            >
-            <span class="badge badge-cyan">Official</span>
-          </div>
-          <div class="card-value text-xl font-bold text-blue-300 mb-1">
-            Loading...
-          </div>
-          <div class="card-detail text-xs text-blue-400/80">Loading...</div>
-        </div>
-
-        <!-- 5. Islamic Hijri -->
-        <div
-          id="card-hijri"
-          class="glass glass-interactive rounded-2xl p-5 border border-emerald-500/20 bg-emerald-950/10"
-        >
-          <div class="flex items-center justify-between mb-3">
-            <span
-              class="text-xs font-bold uppercase tracking-wider text-emerald-300"
-              >🇸🇦 العالم الإسلامي (Hijri)</span
-            >
-            <span class="badge badge-emerald">Umm al-Qura</span>
-          </div>
-          <div
-            class="card-value text-xl font-bold text-emerald-300 mb-1"
-            dir="rtl"
-          >
-            Loading...
-          </div>
-          <div class="card-detail text-xs text-emerald-400/80">Loading...</div>
-        </div>
-
-        <!-- 6. Persian Jalali -->
-        <div
-          id="card-persian"
-          class="glass glass-interactive rounded-2xl p-5 border border-slate-800"
-        >
-          <div class="flex items-center justify-between mb-3">
-            <span
-              class="text-xs font-bold uppercase tracking-wider text-slate-400"
-              >🇮🇷 ایران (Solar Hijri)</span
-            >
-            <span class="badge badge-purple">Khayyami</span>
-          </div>
-          <div class="card-value text-xl font-bold text-slate-200 mb-1">
-            Loading...
-          </div>
-          <div class="card-detail text-xs text-slate-400">Loading...</div>
-        </div>
-
-        <!-- 7. Indian National Saka -->
-        <div
-          id="card-indian"
-          class="glass glass-interactive rounded-2xl p-5 border border-slate-800"
-        >
-          <div class="flex items-center justify-between mb-3">
-            <span
-              class="text-xs font-bold uppercase tracking-wider text-slate-400"
-              >🇮🇳 भारत (National Saka)</span
-            >
-            <span class="badge badge-cyan">Saka Era</span>
-          </div>
-          <div class="card-value text-xl font-bold text-slate-200 mb-1">
-            Loading...
-          </div>
-          <div class="card-detail text-xs text-slate-400">Loading...</div>
-        </div>
-      </div>
-
-      <!-- Live Code Preview -->
-      <div class="code-block max-w-3xl mx-auto">
-        <div class="text-xs text-slate-400 mb-2 font-mono">
-          // Generated Code from live state
-        </div>
-        <pre id="live-matrix-code"><code>Loading code...</code></pre>
-      </div>
-    </section>
-
-    <!-- LIVE PLAYGROUND SECTION 2: Global TimeZone Studio -->
-    <section
-      id="timezone"
-      class="relative z-10 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-800/60"
-    >
-      <div class="text-center mb-10">
-        <span class="badge badge-cyan mb-3">v0.1.4 Feature Studio</span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
-          Global TimeZone Studio
-        </h2>
-        <p class="text-slate-400 mt-2 max-w-2xl mx-auto">
-          ทดสอบฟังก์ชัน <code>formatInTimeZone</code> และ
-          <code>getTimeZoneOffset</code> แบบเรียลไทม์กับเมืองสำคัญทั่วโลก
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-5xl mx-auto">
-        <!-- Controls -->
-        <div
-          class="lg:col-span-5 glass rounded-2xl p-6 border border-slate-800 flex flex-col gap-4"
-        >
-          <div>
-            <label
-              class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2"
-              >Target IANA TimeZone</label
-            >
-            <select
-              id="tz-select"
-              class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-sky-400 font-mono"
-            >
-              <option value="Asia/Bangkok" selected>
-                Asia/Bangkok (UTC+07:00)
-              </option>
-              <option value="Asia/Tokyo">Asia/Tokyo (UTC+09:00)</option>
-              <option value="America/New_York">
-                America/New_York (EDT / EST)
-              </option>
-              <option value="Europe/London">Europe/London (BST / GMT)</option>
-              <option value="Asia/Dubai">Asia/Dubai (UTC+04:00)</option>
-              <option value="Australia/Sydney">
-                Australia/Sydney (AEST / AEDT)
-              </option>
-              <option value="Asia/Kolkata">Asia/Kolkata (UTC+05:30)</option>
-              <option value="America/Los_Angeles">
-                America/Los_Angeles (PDT / PST)
-              </option>
-              <option value="Etc/UTC">Etc/UTC (UTC+00:00)</option>
-            </select>
-          </div>
-
-          <div>
-            <label
-              class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2"
-              >LDML Pattern Format</label
-            >
-            <select
-              id="tz-pattern-select"
-              class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-sky-400 font-mono"
-            >
-              <option value="yyyy-MM-dd HH:mm:ss XXX" selected>
-                yyyy-MM-dd HH:mm:ss XXX
-              </option>
-              <option value="d MMMM yyyy, HH:mm:ss (zzzz)">
-                d MMMM yyyy, HH:mm:ss (zzzz)
-              </option>
-              <option value="hh:mm:ss a zzz">hh:mm:ss a zzz (12-Hour)</option>
-              <option value="EEEE, d MMMM yyyy">
-                EEEE, d MMMM yyyy (Long Weekday)
-              </option>
-            </select>
-          </div>
-
-          <div class="pt-2 flex flex-wrap gap-2">
-            <span id="tz-offset-badge" class="badge badge-cyan"
-              >UTC Offset: ...</span
-            >
-            <span id="tz-dst-badge" class="badge badge-emerald"
-              >Standard Time</span
-            >
-          </div>
-        </div>
-
-        <!-- Output Screen & Code -->
-        <div class="lg:col-span-7 flex flex-col gap-4">
-          <div
-            class="glass rounded-2xl p-6 border border-sky-500/20 bg-sky-950/10"
-          >
-            <div
-              class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2"
-            >
-              Live Target Clock
+          <!-- Terminal Window -->
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+              </div>
+              <span class="font-mono text-xs text-[var(--text-muted)]"
+                >bash</span
+              >
+              <button
+                id="copy-install-btn"
+                class="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
+              >
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy</span>
+              </button>
             </div>
             <div
-              id="tz-output"
-              class="text-2xl sm:text-3xl font-mono font-extrabold text-white"
+              class="p-3.5 flex items-center justify-between font-mono text-xs sm:text-sm"
             >
-              Loading...
+              <div class="flex items-center gap-2 overflow-x-auto">
+                <span class="text-[var(--accent-emerald)] select-none">$</span>
+                <code id="install-code" class="text-[var(--text-primary)]"
+                  >pnpm add @intech-software/chronera</code
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Developer Workbench Section -->
+      <section id="workbench" class="space-y-6 pt-6">
+        <div
+          class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[var(--border-subtle)] pb-4"
+        >
+          <div>
+            <div class="badge badge-blue mb-1">Developer Studio</div>
+            <h2
+              class="text-2xl font-bold tracking-tight text-[var(--text-primary)]"
+            >
+              Live Interactive Workbench
+            </h2>
+            <p class="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
+              Explore calendar conversions, SLA arithmetic, world clocks, and
+              national holidays dynamically.
+            </p>
+          </div>
+
+          <!-- Workbench Segmented Tabs -->
+          <div
+            class="flex items-center gap-1 bg-[var(--bg-surface)] p-1 rounded-lg border border-[var(--border-subtle)] overflow-x-auto"
+          >
+            <button class="tab-pill workbench-tab active" data-tab="matrix">
+              <i data-lucide="calendar" class="w-4 h-4"></i>
+              <span>Calendar Matrix</span>
+            </button>
+            <button class="tab-pill workbench-tab" data-tab="biz">
+              <i data-lucide="briefcase" class="w-4 h-4"></i>
+              <span>Business Days</span>
+            </button>
+            <button class="tab-pill workbench-tab" data-tab="timezone">
+              <i data-lucide="clock" class="w-4 h-4"></i>
+              <span>TimeZones</span>
+            </button>
+            <button class="tab-pill workbench-tab" data-tab="holidays">
+              <i data-lucide="flag" class="w-4 h-4"></i>
+              <span>Holidays</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. Panel: Multi-Calendar Matrix -->
+        <div class="workbench-panel panel p-6 space-y-6" data-panel="matrix">
+          <div
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+          >
+            <div class="flex items-center gap-3">
+              <label
+                for="matrix-date-input"
+                class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]"
+                >Input Date:</label
+              >
+              <input
+                type="date"
+                id="matrix-date-input"
+                class="input-control text-sm"
+              />
+            </div>
+            <!-- Quick Jumps -->
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="text-xs text-[var(--text-muted)] mr-1"
+                >Presets:</span
+              >
+              <button class="btn-chip quick-date-chip" data-date="today">
+                Today
+              </button>
+              <button class="btn-chip quick-date-chip" data-date="2026-04-13">
+                Songkran 2026
+              </button>
+              <button class="btn-chip quick-date-chip" data-date="2019-05-01">
+                Reiwa Rollover
+              </button>
+              <button class="btn-chip quick-date-chip" data-date="2026-06-16">
+                Hijri 1448
+              </button>
             </div>
           </div>
 
-          <div class="code-block flex-1">
-            <pre id="live-tz-code"><code>Loading...</code></pre>
+          <!-- Calendar Cards Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- ISO 8601 -->
+            <div id="card-iso" class="panel-elevated p-4 space-y-1">
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >ISO 8601 (Gregorian)</span
+                >
+                <span class="badge badge-blue">International</span>
+              </div>
+              <div
+                class="cal-value text-xl font-bold font-mono text-[var(--accent-primary)]"
+              >
+                2026-04-13
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                International Standard
+              </div>
+            </div>
+
+            <!-- Thai Buddhist -->
+            <div id="card-thai" class="panel-elevated p-4 space-y-1">
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >Thai Buddhist (พ.ศ.)</span
+                >
+                <span class="badge badge-emerald">TH 🇹🇭</span>
+              </div>
+              <div
+                class="cal-value text-xl font-bold font-mono text-[var(--accent-emerald)]"
+              >
+                พ.ศ. 2569
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                13 เมษายน พ.ศ. 2569
+              </div>
+            </div>
+
+            <!-- Japanese Era -->
+            <div id="card-japanese" class="panel-elevated p-4 space-y-1">
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >Japanese Era (元号)</span
+                >
+                <span class="badge badge-amber">JP 🇯🇵</span>
+              </div>
+              <div
+                class="cal-value text-xl font-bold font-mono text-[var(--accent-amber)]"
+              >
+                令和 8年
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                令和 8年 4月 13日
+              </div>
+            </div>
+
+            <!-- Taiwan Minguo -->
+            <div id="card-roc" class="panel-elevated p-4 space-y-1">
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >Minguo (民國)</span
+                >
+                <span class="badge badge-blue">TW 🇹🇼</span>
+              </div>
+              <div
+                class="cal-value text-xl font-bold font-mono text-[var(--text-primary)]"
+              >
+                民國 115 年
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                民國 115 年 4 月 13 日
+              </div>
+            </div>
+
+            <!-- Islamic Hijri -->
+            <div id="card-hijri" class="panel-elevated p-4 space-y-1">
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >Islamic Hijri (الهجري)</span
+                >
+                <span class="badge badge-emerald">SA 🇸🇦</span>
+              </div>
+              <div
+                class="cal-value text-xl font-bold font-mono text-[var(--text-primary)]"
+              >
+                1447 AH
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                Islamic Civil Calendar
+              </div>
+            </div>
+
+            <!-- Persian Solar Hijri -->
+            <div id="card-persian" class="panel-elevated p-4 space-y-1">
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >Solar Hijri (هجری خورشیدی)</span
+                >
+                <span class="badge badge-amber">IR 🇮🇷</span>
+              </div>
+              <div
+                class="cal-value text-xl font-bold font-mono text-[var(--text-primary)]"
+              >
+                1405 AP
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                Solar Hijri Calendar
+              </div>
+            </div>
+
+            <!-- Indian Saka -->
+            <div
+              id="card-indian"
+              class="panel-elevated p-4 space-y-1 sm:col-span-2 lg:col-span-3"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >Indian National (शालिवाहन शक)</span
+                >
+                <span class="badge badge-rose">IN 🇮🇳</span>
+              </div>
+              <div
+                class="cal-value text-xl font-bold font-mono text-[var(--text-primary)]"
+              >
+                1948 Saka
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                Indian National Calendar
+              </div>
+            </div>
+          </div>
+
+          <!-- Code Inspector -->
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+              </div>
+              <span class="font-mono text-xs">TypeScript Inspector</span>
+              <button
+                class="copy-code-btn text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
+                data-target="matrix-code-snippet"
+              >
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy Snippet</span>
+              </button>
+            </div>
+            <pre class="code-pre"><code id="matrix-code-snippet"></code></pre>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- LIVE PLAYGROUND SECTION 3: Business Days Simulator -->
-    <section
-      id="business-days"
-      class="relative z-10 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-800/60"
-    >
-      <div class="text-center mb-10">
-        <span class="badge badge-emerald mb-3">v0.1.3 Feature Studio</span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
-          Business Days Simulator
-        </h2>
-        <p class="text-slate-400 mt-2 max-w-2xl mx-auto">
-          คำนวณวันจัดส่งสินค้า, SLA, และวันทำการ
-          โดยข้ามวันเสาร์-อาทิตย์ให้อัตโนมัติด้วย <code>addBusinessDays</code>
-        </p>
-      </div>
-
-      <div
-        class="max-w-4xl mx-auto glass rounded-2xl p-6 sm:p-8 border border-slate-800"
-      >
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-          <div>
-            <label
-              class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2"
-              >Start Date</label
-            >
-            <input
-              type="date"
-              id="biz-start-date"
-              class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-emerald-400 font-mono"
-            />
-          </div>
-
-          <div>
-            <label
-              class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2"
-              >Business Days to Add</label
-            >
-            <input
-              type="number"
-              id="biz-amount"
-              value="5"
-              min="-30"
-              max="60"
-              class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-emerald-400 font-mono"
-            />
-          </div>
-        </div>
-
-        <!-- Result Banner -->
+        <!-- 2. Panel: Business Days & SLA -->
         <div
-          id="biz-output"
-          class="glass rounded-xl p-4 mb-6 border border-emerald-500/20 bg-emerald-950/10"
+          class="workbench-panel panel p-6 space-y-6 hidden"
+          data-panel="biz"
         >
-          Loading...
-        </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label
+                for="biz-start-input"
+                class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
+                >Start Date</label
+              >
+              <input
+                type="date"
+                id="biz-start-input"
+                class="input-control w-full text-sm"
+              />
+            </div>
+            <div>
+              <label
+                for="biz-amount-input"
+                class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
+                >Add / Subtract Business Days</label
+              >
+              <input
+                type="number"
+                id="biz-amount-input"
+                value="5"
+                min="-60"
+                max="60"
+                class="input-control w-full text-sm"
+              />
+            </div>
+            <div>
+              <label
+                for="biz-country-select"
+                class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
+                >Statutory Calendar Context</label
+              >
+              <select
+                id="biz-country-select"
+                class="input-control w-full text-sm"
+              >
+                <option value="TH" selected>
+                  Thailand (🇹🇭 Songkran / Royal holidays)
+                </option>
+                <option value="JP">Japan (🇯🇵 Golden Week / Equinoxes)</option>
+                <option value="US">United States (🇺🇸 Federal Holidays)</option>
+                <option value="GB">United Kingdom (🇬🇧 Bank Holidays)</option>
+                <option value="SG">Singapore (🇸🇬 Public Holidays)</option>
+                <option value="SA">
+                  Saudi Arabia (🇸🇦 Eid & National Days)
+                </option>
+              </select>
+            </div>
+          </div>
 
-        <!-- Timeline visual -->
-        <div class="mb-6">
+          <!-- Calculated Result Banner -->
           <div
-            class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3"
+            class="panel-elevated p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-l-4 border-l-[var(--accent-primary)]"
           >
-            Day-by-Day Timeline Preview
+            <div>
+              <div
+                class="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]"
+              >
+                Calculated Target Business Date
+              </div>
+              <div
+                id="biz-result-date"
+                class="text-3xl font-extrabold font-mono text-[var(--accent-primary)] mt-1"
+              >
+                ...
+              </div>
+            </div>
+            <div
+              id="biz-result-detail"
+              class="text-xs sm:text-sm font-mono text-[var(--text-secondary)]"
+            >
+              ...
+            </div>
           </div>
+
+          <!-- Timeline Strip -->
+          <div>
+            <div
+              class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2"
+            >
+              Step-by-Step Trajectory Preview
+            </div>
+            <div
+              id="biz-timeline-strip"
+              class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 lg:grid-cols-10 gap-2"
+            ></div>
+          </div>
+
+          <!-- Code Inspector -->
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+              </div>
+              <span class="font-mono text-xs">TypeScript Inspector</span>
+              <button
+                class="copy-code-btn text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
+                data-target="biz-code-snippet"
+              >
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy Snippet</span>
+              </button>
+            </div>
+            <pre class="code-pre"><code id="biz-code-snippet"></code></pre>
+          </div>
+        </div>
+
+        <!-- 3. Panel: TimeZones -->
+        <div
+          class="workbench-panel panel p-6 space-y-6 hidden"
+          data-panel="timezone"
+        >
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label
+                for="tz-zone-select"
+                class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
+                >Target TimeZone (IANA Identifier)</label
+              >
+              <select id="tz-zone-select" class="input-control w-full text-sm">
+                <option value="Asia/Bangkok" selected>
+                  Asia/Bangkok (UTC+07:00)
+                </option>
+                <option value="Asia/Tokyo">Asia/Tokyo (UTC+09:00)</option>
+                <option value="Europe/London">
+                  Europe/London (UTC+00:00 / GMT)
+                </option>
+                <option value="America/New_York">
+                  America/New_York (UTC-05:00 / EST)
+                </option>
+                <option value="America/Los_Angeles">
+                  America/Los_Angeles (UTC-08:00 / PST)
+                </option>
+                <option value="Asia/Dubai">Asia/Dubai (UTC+04:00)</option>
+                <option value="Europe/Paris">
+                  Europe/Paris (UTC+01:00 / CET)
+                </option>
+                <option value="Australia/Sydney">
+                  Australia/Sydney (UTC+10:00 / AEST)
+                </option>
+                <option value="Asia/Singapore">
+                  Asia/Singapore (UTC+08:00)
+                </option>
+                <option value="UTC">UTC (Coordinated Universal Time)</option>
+              </select>
+            </div>
+            <div>
+              <label
+                for="tz-pattern-select"
+                class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
+                >Formatting Pattern</label
+              >
+              <select
+                id="tz-pattern-select"
+                class="input-control w-full text-sm"
+              >
+                <option value="YYYY-MM-DD HH:mm:ss" selected>
+                  YYYY-MM-DD HH:mm:ss
+                </option>
+                <option value="YYYY-MM-DD">YYYY-MM-DD (ISO Date)</option>
+                <option value="HH:mm:ss">HH:mm:ss (24-Hour Time)</option>
+                <option value="dddd, MMMM D, YYYY">
+                  dddd, MMMM D, YYYY (Verbose Legal)
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Digital Clock Display Card -->
+          <div class="panel-elevated p-8 text-center space-y-3">
+            <div
+              id="tz-clock-display"
+              class="font-mono text-5xl sm:text-6xl font-extrabold tracking-tight text-[var(--accent-primary)]"
+            >
+              00:00:00
+            </div>
+            <div
+              id="tz-full-display"
+              class="font-mono text-xs sm:text-sm text-[var(--text-secondary)]"
+            >
+              Loading instant...
+            </div>
+            <div>
+              <span
+                id="tz-offset-pill"
+                class="badge badge-blue text-xs py-1 px-3"
+                >UTC Offset</span
+              >
+            </div>
+          </div>
+
+          <!-- Code Inspector -->
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+              </div>
+              <span class="font-mono text-xs">TypeScript Inspector</span>
+              <button
+                class="copy-code-btn text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
+                data-target="tz-code-snippet"
+              >
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy Snippet</span>
+              </button>
+            </div>
+            <pre class="code-pre"><code id="tz-code-snippet"></code></pre>
+          </div>
+        </div>
+
+        <!-- 4. Panel: Public Holidays -->
+        <div
+          class="workbench-panel panel p-6 space-y-6 hidden"
+          data-panel="holidays"
+        >
           <div
-            id="biz-timeline"
-            class="grid grid-cols-4 sm:grid-cols-7 gap-2"
-          ></div>
-        </div>
-
-        <!-- Code block -->
-        <div class="code-block">
-          <pre id="live-biz-code"><code>Loading...</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <!-- DOCUMENTATION & CODE SAMPLES TABS -->
-    <section
-      id="docs"
-      class="relative z-10 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-800/60"
-    >
-      <div class="text-center mb-10">
-        <span class="badge badge-purple mb-3">Developer Documentation</span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
-          API Reference & Code Guides
-        </h2>
-        <p class="text-slate-400 mt-2 max-w-2xl mx-auto">
-          ตัวอย่างการเรียกใช้งานฟังก์ชันหลักของ Chronera ในโปรเจกต์ของคุณ
-        </p>
-      </div>
-
-      <div class="max-w-4xl mx-auto">
-        <!-- Tabs Nav -->
-        <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3 mb-6">
-          <button
-            class="doc-tab-btn tab-btn active"
-            data-target="doc-quickstart"
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
           >
-            Quick Start
-          </button>
-          <button class="doc-tab-btn tab-btn" data-target="doc-convenience">
-            Convenience (v0.1.1)
-          </button>
-          <button class="doc-tab-btn tab-btn" data-target="doc-time">
-            Time & Status (v0.1.2)
-          </button>
-          <button class="doc-tab-btn tab-btn" data-target="doc-business">
-            Business Days (v0.1.3)
-          </button>
-          <button class="doc-tab-btn tab-btn" data-target="doc-timezone">
-            TimeZones (v0.1.4)
-          </button>
-        </div>
+            <div class="flex items-center gap-3">
+              <label
+                for="hol-country-select"
+                class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]"
+                >Select Country:</label
+              >
+              <select id="hol-country-select" class="input-control text-sm">
+                <option value="TH" selected>Thailand (🇹🇭)</option>
+                <option value="JP">Japan (🇯🇵)</option>
+                <option value="US">United States (🇺🇸)</option>
+                <option value="GB">United Kingdom (🇬🇧)</option>
+                <option value="SG">Singapore (🇸🇬)</option>
+                <option value="SA">Saudi Arabia (🇸🇦)</option>
+              </select>
+            </div>
+            <div
+              id="holidays-country-title"
+              class="text-sm font-semibold text-[var(--text-primary)]"
+            >
+              Statutory Holidays 2026
+            </div>
+          </div>
 
-        <!-- Pane 1: Quick Start -->
-        <div id="doc-quickstart" class="doc-content-pane space-y-4">
-          <div class="code-block">
-            <pre><code>import { localDate, formatDate, convertCalendarDate } from "@intech-software/chronera";
+          <!-- Table Container -->
+          <div
+            class="overflow-x-auto rounded-lg border border-[var(--border-subtle)]"
+          >
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr
+                  class="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-elevated)] text-[var(--text-muted)] font-mono text-xs uppercase tracking-wider"
+                >
+                  <th class="py-2.5 px-3">Date (ISO 8601)</th>
+                  <th class="py-2.5 px-3">Official Holiday Name</th>
+                  <th class="py-2.5 px-3">English Translation</th>
+                </tr>
+              </thead>
+              <tbody id="holidays-table-body" class="font-sans"></tbody>
+            </table>
+          </div>
 
-// 1. Create a clean date primitive
-const date = localDate(2026, 9, 4);
-
-// 2. Format with standard presets
-console.log(formatDate(date, { dateStyle: "long" })); 
-// -> "September 4, 2026"
-
-// 3. Convert to Thai Buddhist calendar
-const thai = convertCalendarDate(date, "buddhist");
-console.log(thai.value.year); 
-// -> 2569 (พ.ศ.)</code></pre>
+          <!-- Code Inspector -->
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+              </div>
+              <span class="font-mono text-xs">TypeScript Inspector</span>
+              <button
+                class="copy-code-btn text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
+                data-target="holidays-code-snippet"
+              >
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy Snippet</span>
+              </button>
+            </div>
+            <pre class="code-pre"><code id="holidays-code-snippet"></code></pre>
           </div>
         </div>
+      </section>
 
-        <!-- Pane 2: Convenience -->
-        <div id="doc-convenience" class="doc-content-pane hidden space-y-4">
-          <div class="code-block">
-            <pre><code>import { isBefore, isEqual, isBetween, addDays, endOfMonth } from "@intech-software/chronera";
-
-const d1 = localDate(2026, 9, 4);
-const d2 = localDate(2026, 9, 10);
-
-// Comparisons
-isBefore(d1, d2); // true
-isEqual(d1, d2);  // false
-
-// Range checking
-isBetween(d1, localDate(2026, 9, 1), localDate(2026, 9, 30)); // true
-
-// Arithmetic shortcuts
-const nextWeek = addDays(d1, 7); // 2026-09-11
-const monthEnd = endOfMonth(d1);  // 2026-09-30</code></pre>
-          </div>
+      <!-- Architecture & Features Section -->
+      <section id="features" class="space-y-8 pt-6">
+        <div class="text-center max-w-2xl mx-auto space-y-2">
+          <div class="badge badge-emerald">Engine Architecture</div>
+          <h2
+            class="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]"
+          >
+            Built for Precision, Ergonomics, and Global Compliance
+          </h2>
+          <p class="text-sm text-[var(--text-secondary)]">
+            Designed to solve the real-world complexity of multi-cultural
+            calendars, timezones, and SLA calculations without third-party
+            baggage.
+          </p>
         </div>
 
-        <!-- Pane 3: Time -->
-        <div id="doc-time" class="doc-content-pane hidden space-y-4">
-          <div class="code-block">
-            <pre><code>import { startOfDay, endOfDay, isPast, isFuture, addHours } from "@intech-software/chronera";
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Card 1 -->
+          <div class="panel p-6 space-y-3">
+            <div
+              class="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-500/20 text-[var(--accent-primary)] flex items-center justify-center"
+            >
+              <i data-lucide="globe" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-base font-bold text-[var(--text-primary)]">
+              7 Non-Gregorian Calendars
+            </h3>
+            <p
+              class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed"
+            >
+              Convert bi-directionally between ISO 8601 Gregorian, Thai Buddhist
+              (พ.ศ.), Japanese Era (令和/平成), Taiwan Minguo (民國), Islamic
+              Hijri, Persian Solar Hijri, and Indian Saka.
+            </p>
+          </div>
 
-const today = localDate(2026, 9, 4);
+          <!-- Card 2 -->
+          <div class="panel p-6 space-y-3">
+            <div
+              class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[var(--accent-emerald)] flex items-center justify-center"
+            >
+              <i data-lucide="calendar-check" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-base font-bold text-[var(--text-primary)]">
+              Enterprise SLA Engine
+            </h3>
+            <p
+              class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed"
+            >
+              Calculate legal due dates, shipping deadlines, and banking
+              settlement days with deterministic weekend skipping and automatic
+              public holiday roll-over observation.
+            </p>
+          </div>
 
-// Time boundaries
-startOfDay(today); // 2026-09-04 00:00:00.000
-endOfDay(today);   // 2026-09-04 23:59:59.999
-
-// Expiration checking (e.g. Tokens, Coupons)
-const expireAt = new Date("2026-09-01T00:00:00Z");
-isPast(expireAt); // true (Coupon expired!)</code></pre>
+          <!-- Card 3 -->
+          <div class="panel p-6 space-y-3">
+            <div
+              class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 text-[var(--accent-amber)] flex items-center justify-center"
+            >
+              <i data-lucide="zap" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-base font-bold text-[var(--text-primary)]">
+              100% Zero Dependencies
+            </h3>
+            <p
+              class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed"
+            >
+              Built natively on standard ECMAScript and
+              <code class="font-mono text-xs">Intl</code> specifications. Zero
+              external npm packages, zero security supply-chain vulnerabilities,
+              and minimal bundle footprint.
+            </p>
           </div>
         </div>
+      </section>
 
-        <!-- Pane 4: Business -->
-        <div id="doc-business" class="doc-content-pane hidden space-y-4">
-          <div class="code-block">
-            <pre><code>import { isWeekend, isWeekday, addBusinessDays, diffInBusinessDays } from "@intech-software/chronera";
-
-const friday = localDate(2026, 9, 4); // Friday
-
-// Adding 2 business days skips Saturday and Sunday!
-const delivery = addBusinessDays(friday, 2); 
-// -> 2026-09-08 (Tuesday)
-
-// Signed business days difference
-const diff = diffInBusinessDays(delivery, friday);
-// -> 2 business days</code></pre>
-          </div>
+      <!-- API Reference Section -->
+      <section id="api" class="space-y-8 pt-6">
+        <div class="border-b border-[var(--border-subtle)] pb-4">
+          <div class="badge badge-purple mb-1">Developer Reference</div>
+          <h2
+            class="text-2xl font-bold tracking-tight text-[var(--text-primary)]"
+          >
+            API Specifications
+          </h2>
+          <p class="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
+            Standard functions exported directly from the primary root package
+            <code class="font-mono">@intech-software/chronera</code>.
+          </p>
         </div>
 
-        <!-- Pane 5: TimeZone -->
-        <div id="doc-timezone" class="doc-content-pane hidden space-y-4">
-          <div class="code-block">
-            <pre><code>import { formatInTimeZone, getTimeZoneOffset, isSameTimeZone } from "@intech-software/chronera";
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Group 1: Core Instants & Dates -->
+          <div class="panel p-5 space-y-3">
+            <h3
+              class="text-sm font-bold font-mono text-[var(--accent-primary)] flex items-center gap-2"
+            >
+              <i data-lucide="code" class="w-4 h-4"></i>
+              Core Dates & Instants
+            </h3>
+            <div class="space-y-2 text-xs font-mono">
+              <div class="panel-elevated p-3">
+                <span class="text-[var(--accent-emerald)] font-bold"
+                  >localDate(year, month, day)</span
+                >
+                <p class="font-sans text-[var(--text-secondary)] mt-1">
+                  Creates an immutable calendar date object without timezone
+                  distortion.
+                </p>
+              </div>
+              <div class="panel-elevated p-3">
+                <span class="text-[var(--accent-emerald)] font-bold"
+                  >instant(epochMilliseconds?)</span
+                >
+                <p class="font-sans text-[var(--text-secondary)] mt-1">
+                  Creates an exact point in universal timeline (UTC).
+                </p>
+              </div>
+              <div class="panel-elevated p-3">
+                <span class="text-[var(--accent-emerald)] font-bold"
+                  >startOfDay(date) / endOfDay(date)</span
+                >
+                <p class="font-sans text-[var(--text-secondary)] mt-1">
+                  Calculates boundaries of a calendar day at 00:00:00.000 or
+                  23:59:59.999.
+                </p>
+              </div>
+            </div>
+          </div>
 
-const instant = new Date("2026-09-04T12:00:00Z");
+          <!-- Group 2: Business & Working Days -->
+          <div class="panel p-5 space-y-3">
+            <h3
+              class="text-sm font-bold font-mono text-[var(--accent-emerald)] flex items-center gap-2"
+            >
+              <i data-lucide="briefcase" class="w-4 h-4"></i>
+              Business Days & SLA
+            </h3>
+            <div class="space-y-2 text-xs font-mono">
+              <div class="panel-elevated p-3">
+                <span class="text-[var(--accent-primary)] font-bold"
+                  >addBusinessDays(date, days, options?)</span
+                >
+                <p class="font-sans text-[var(--text-secondary)] mt-1">
+                  Adds working days skipping weekends and country statutory
+                  holidays.
+                </p>
+              </div>
+              <div class="panel-elevated p-3">
+                <span class="text-[var(--accent-primary)] font-bold"
+                  >subBusinessDays(date, days, options?)</span
+                >
+                <p class="font-sans text-[var(--text-secondary)] mt-1">
+                  Subtracts working days backwards across statutory calendars.
+                </p>
+              </div>
+              <div class="panel-elevated p-3">
+                <span class="text-[var(--accent-primary)] font-bold"
+                  >isBusinessDay(date, options?)</span
+                >
+                <p class="font-sans text-[var(--text-secondary)] mt-1">
+                  Returns boolean indicating whether date is an active working
+                  day.
+                </p>
+              </div>
+            </div>
+          </div>
 
-// Format instant directly into target time zone
-formatInTimeZone(instant, "Asia/Bangkok", "yyyy-MM-dd HH:mm:ss XXX");
-// -> "2026-09-04 19:00:00 +07:00"
+          <!-- Group 3: Multi-Calendar Conversion -->
+          <div class="panel p-5 space-y-3">
+            <h3
+              class="text-sm font-bold font-mono text-[var(--accent-amber)] flex items-center gap-2"
+            >
+              <i data-lucide="repeat" class="w-4 h-4"></i>
+              Calendar Conversions
+            </h3>
+            <div class="space-y-2 text-xs font-mono">
+              <div class="panel-elevated p-3">
+                <span class="text-[var(--accent-amber)] font-bold"
+                  >convertCalendarDate(date, targetCalendar)</span
+                >
+                <p class="font-sans text-[var(--text-secondary)] mt-1">
+                  Converts date to "buddhist", "japanese", "roc",
+                  "islamic-civil", "persian", or "indian".
+                </p>
+              </div>
+              <div class="panel-elevated p-3">
+                <span class="text-[var(--accent-amber)] font-bold"
+                  >formatDate(date, options)</span
+                >
+                <p class="font-sans text-[var(--text-secondary)] mt-1">
+                  Formats date using standard legal locale patterns (dateStyle,
+                  timeStyle).
+                </p>
+              </div>
+            </div>
+          </div>
 
-formatInTimeZone(instant, "America/New_York", "yyyy-MM-dd HH:mm:ss (zzzz)");
-// -> "2026-09-04 08:00:00 (Eastern Daylight Time)"
-
-// Retrieve offset details (including DST)
-getTimeZoneOffset("America/New_York", instant, "object");
-// -> { formatted: "-04:00", minutes: -240, totalSeconds: -14400, isDst: true }
-
-// Compare zones
-isSameTimeZone("UTC", "Etc/UTC"); // true (Canonical match)
-isSameTimeZone("Asia/Bangkok", "Asia/Jakarta", "offset"); // true (Both UTC+7)</code></pre>
+          <!-- Group 4: TimeZone & Formatter -->
+          <div class="panel p-5 space-y-3">
+            <h3
+              class="text-sm font-bold font-mono text-[var(--accent-rose)] flex items-center gap-2"
+            >
+              <i data-lucide="clock" class="w-4 h-4"></i>
+              TimeZone Operations
+            </h3>
+            <div class="space-y-2 text-xs font-mono">
+              <div class="panel-elevated p-3">
+                <span class="text-[var(--accent-rose)] font-bold"
+                  >formatInTimeZone(date, timeZone, pattern)</span
+                >
+                <p class="font-sans text-[var(--text-secondary)] mt-1">
+                  Formats instant or date string in any valid IANA timezone.
+                </p>
+              </div>
+              <div class="panel-elevated p-3">
+                <span class="text-[var(--accent-rose)] font-bold"
+                  >getTimeZoneOffset(timeZone, date, format)</span
+                >
+                <p class="font-sans text-[var(--text-secondary)] mt-1">
+                  Extracts exact UTC offset string ("+07:00") or structured
+                  object.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <!-- Benchmarks Table Section -->
+      <section id="benchmarks" class="space-y-6 pt-6">
+        <div class="border-b border-[var(--border-subtle)] pb-4">
+          <div class="badge badge-emerald mb-1">Bundle Economics</div>
+          <h2
+            class="text-2xl font-bold tracking-tight text-[var(--text-primary)]"
+          >
+            Ecosystem Comparison
+          </h2>
+          <p class="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
+            Benchmark comparisons on modern Node.js and Chromium runtimes.
+          </p>
+        </div>
+
+        <div
+          class="overflow-x-auto rounded-lg border border-[var(--border-subtle)]"
+        >
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr
+                class="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-elevated)] text-[var(--text-muted)] font-mono text-xs uppercase tracking-wider"
+              >
+                <th class="py-3 px-4">Library</th>
+                <th class="py-3 px-4">Minified + Gzip</th>
+                <th class="py-3 px-4">Dependencies</th>
+                <th class="py-3 px-4">7 Cultural Calendars</th>
+                <th class="py-3 px-4">Business Days Engine</th>
+              </tr>
+            </thead>
+            <tbody
+              class="font-mono text-xs divide-y divide-[var(--border-subtle)]"
+            >
+              <tr class="bg-[var(--accent-primary)]/5">
+                <td class="py-3 px-4 font-bold text-[var(--accent-primary)]">
+                  @intech-software/chronera
+                </td>
+                <td class="py-3 px-4 text-[var(--accent-emerald)] font-bold">
+                  &lt; 3.0 KB
+                </td>
+                <td class="py-3 px-4 text-[var(--accent-emerald)] font-bold">
+                  0 (Zero)
+                </td>
+                <td class="py-3 px-4 text-[var(--accent-emerald)] font-bold">
+                  Yes (Native)
+                </td>
+                <td class="py-3 px-4 text-[var(--accent-emerald)] font-bold">
+                  Yes (Built-in)
+                </td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 text-[var(--text-primary)]">date-fns</td>
+                <td class="py-3 px-4 text-[var(--text-secondary)]">~14.2 KB</td>
+                <td class="py-3 px-4 text-[var(--text-secondary)]">0</td>
+                <td class="py-3 px-4 text-[var(--text-muted)]">No</td>
+                <td class="py-3 px-4 text-[var(--text-secondary)]">Partial</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 text-[var(--text-primary)]">Luxon</td>
+                <td class="py-3 px-4 text-[var(--text-secondary)]">~71.5 KB</td>
+                <td class="py-3 px-4 text-[var(--text-secondary)]">0</td>
+                <td class="py-3 px-4 text-[var(--text-muted)]">No</td>
+                <td class="py-3 px-4 text-[var(--text-muted)]">No</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 text-[var(--text-primary)]">
+                  Day.js (with plugins)
+                </td>
+                <td class="py-3 px-4 text-[var(--text-secondary)]">~16.8 KB</td>
+                <td class="py-3 px-4 text-[var(--text-secondary)]">0</td>
+                <td class="py-3 px-4 text-[var(--text-muted)]">No</td>
+                <td class="py-3 px-4 text-[var(--text-muted)]">No</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 text-[var(--text-primary)]">
+                  Moment.js (Legacy)
+                </td>
+                <td class="py-3 px-4 text-[var(--accent-rose)] font-bold">
+                  &gt; 288 KB
+                </td>
+                <td class="py-3 px-4 text-[var(--text-secondary)]">0</td>
+                <td class="py-3 px-4 text-[var(--text-muted)]">No</td>
+                <td class="py-3 px-4 text-[var(--text-muted)]">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
 
     <!-- Footer -->
     <footer
-      class="relative z-10 py-12 px-4 sm:px-6 lg:px-8 border-t border-slate-800/80 text-center text-xs text-slate-500"
+      class="border-t border-[var(--border-subtle)] bg-[var(--bg-surface)] py-8 mt-16"
     >
       <div
-        class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4"
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-secondary)]"
       >
         <div class="flex items-center gap-2">
-          <span class="font-bold text-slate-300">Chronera</span>
-          <span>• Released under Apache-2.0 License</span>
-        </div>
-        <div>
-          Maintained by
-          <a
-            href="https://github.com/INTECH-Software-House"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-sky-400 hover:underline"
-            >INTECH Software House</a
-          >
+          <span>&copy; 2026 INTECH Software House.</span>
+          <span>Released under the Apache-2.0 License.</span>
         </div>
         <div class="flex items-center gap-4">
           <a
             href="https://github.com/INTECH-Software-House/chronera-js"
-            class="hover:text-slate-300"
-            >GitHub</a
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-[var(--text-primary)] transition-colors"
           >
+            GitHub
+          </a>
           <a
             href="https://www.npmjs.com/package/@intech-software/chronera"
-            class="hover:text-slate-300"
-            >npm</a
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-[var(--text-primary)] transition-colors"
           >
+            npm
+          </a>
+          <a
+            href="https://github.com/INTECH-Software-House/chronera-js/blob/main/CHANGELOG.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-[var(--text-primary)] transition-colors"
+          >
+            Changelog
+          </a>
         </div>
       </div>
     </footer>
 
-    <!-- Lucide Icon Renderer -->
-    <script>
-      lucide.createIcons();
-    </script>
-
-    <!-- Main Application Script -->
+    <!-- Workbench Application Script -->
     <script type="module" src="./app.js"></script>
   </body>
 </html>
