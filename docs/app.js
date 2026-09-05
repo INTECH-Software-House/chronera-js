@@ -688,9 +688,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Tab Switching
+  // Tab Switching (Inblox fluid motion)
   const tabButtons = document.querySelectorAll(".workbench-tab");
   const tabPanels = document.querySelectorAll(".workbench-panel");
+  const modeTitleEl = document.getElementById("demo-mode-name");
+  const tabCounterEl = document.getElementById("tab-counter");
+
+  const tabMeta = {
+    matrix: { name: "7-Calendar Matrix", count: "1 / 4" },
+    biz: { name: "Business Days & SLA", count: "2 / 4" },
+    timezone: { name: "World TimeZones", count: "3 / 4" },
+    holidays: { name: "Statutory Holidays", count: "4 / 4" },
+  };
 
   tabButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -698,11 +707,21 @@ document.addEventListener("DOMContentLoaded", () => {
       tabButtons.forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
 
+      if (modeTitleEl && tabMeta[targetTab]) {
+        modeTitleEl.textContent = tabMeta[targetTab].name;
+      }
+      if (tabCounterEl && tabMeta[targetTab]) {
+        tabCounterEl.textContent = tabMeta[targetTab].count;
+      }
+
       tabPanels.forEach((p) => {
-        p.classList.toggle(
-          "hidden",
-          p.getAttribute("data-panel") !== targetTab,
-        );
+        const isTarget = p.getAttribute("data-panel") === targetTab;
+        p.classList.toggle("hidden", !isTarget);
+        if (isTarget) {
+          p.classList.remove("tab-content-enter");
+          void p.offsetWidth; // trigger reflow for smooth animation
+          p.classList.add("tab-content-enter");
+        }
       });
     });
   });
