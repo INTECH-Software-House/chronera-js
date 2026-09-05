@@ -44,10 +44,55 @@ export {
 export {
   isWeekend,
   isWeekday,
+  isBusinessDay,
   addBusinessDays,
   subtractBusinessDays,
   diffInBusinessDays,
 } from "./operations/business-days.js";
+
+export {
+  isPublicHoliday,
+  getPublicHolidays,
+  getHolidayDetails,
+} from "./operations/holidays.js";
+
+export {
+  registerHolidayCalendar,
+  getHolidayCalendar,
+  resolveAnnualHolidays,
+  calculateEasterSunday,
+  calculateGoodFriday,
+  calculateEasterMonday,
+  calculateAscensionDay,
+  calculateWhitMonday,
+  BUILT_IN_HOLIDAYS,
+  thailandHolidays,
+  japanHolidays,
+  saudiArabiaHolidays,
+  uaeHolidays,
+  iranHolidays,
+  taiwanHolidays,
+  indiaHolidays,
+  singaporeHolidays,
+  unitedStatesHolidays,
+  unitedKingdomHolidays,
+  germanyHolidays,
+  franceHolidays,
+  australiaHolidays,
+  chinaHolidays,
+  hongKongHolidays,
+} from "./holidays/index.js";
+
+export type {
+  CountryCode,
+  PublicHoliday,
+  HolidayCalendar,
+  HolidayRule,
+  HolidayOptions,
+  ObservedRollRule,
+} from "./holidays/types.js";
+
+export type { BusinessDaysOptions } from "./operations/business-days.js";
 
 export {
   formatInTimeZone,
@@ -136,7 +181,7 @@ export { getRuntimeCapabilities } from "./runtime/capabilities.js";
 
 export { calendarDate } from "./core/calendar-date.js";
 
-export { localDate } from "./core/local-date.js";
+export { localDate, createLocalDate } from "./core/local-date.js";
 
 export { localTime } from "./core/local-time.js";
 
