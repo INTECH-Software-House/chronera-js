@@ -28,6 +28,19 @@ export {
   endOfYear,
 } from "./operations/convenience.js";
 
+export {
+  startOfDay,
+  endOfDay,
+  isPast,
+  isFuture,
+  addHours,
+  subtractHours,
+  addMinutes,
+  subtractMinutes,
+  addSeconds,
+  subtractSeconds,
+} from "./operations/time-convenience.js";
+
 export { convertCalendarDate } from "./operations/convert-calendar-date.js";
 
 export {
@@ -171,5 +184,6 @@ export type {
   RuntimeCapabilities,
   SafeParseResult,
   TimeZoneId,
+  TimeOrDateTimeOrInstant,
   ZonedDateTime,
 } from "./public-types.js";

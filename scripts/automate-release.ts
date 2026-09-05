@@ -67,8 +67,24 @@ async function updateChangelog(version: string): Promise<string> {
   const changelogPath = join(process.cwd(), "CHANGELOG.md");
   let content = await readFile(changelogPath, "utf-8");
 
-  const today = "2026-09-05";
-  const releaseNotes = `## [${version}] - ${today}
+  const today = version === "0.1.2" ? "2026-09-06" : "2026-09-05";
+  const releaseNotes =
+    version === "0.1.2"
+      ? `## [${version}] - ${today}
+
+### Added
+
+- **Time & Instant Convenience Helpers**:
+  - **Day Boundary Helpers**: \`startOfDay(input)\` (00:00:00.000) and \`endOfDay(input)\` (23:59:59.999) accepting \`LocalDate\` or \`LocalDateTime\`.
+  - **Temporal Expiration & Status**: \`isPast(target)\` and \`isFuture(target)\` for Instant, Date, or numeric timestamps.
+  - **Polymorphic Time Arithmetic**:
+    - \`addHours(target, n)\` / \`subtractHours(target, n)\`
+    - \`addMinutes(target, n)\` / \`subtractMinutes(target, n)\`
+    - \`addSeconds(target, n)\` / \`subtractSeconds(target, n)\`
+    - Seamless polymorphic support for \`LocalTime\`, \`LocalDateTime\`, and \`Instant\` with automatic calendar-date rollover across midnights and leap days.
+- **Exported Types**: \`TimeOrDateTimeOrInstant\` in root barrel.
+`
+      : `## [${version}] - ${today}
 
 ### Added
 
@@ -170,13 +186,16 @@ async function main() {
   run("pnpm pack:check");
 
   console.log("\n--- Phase 4: Git Version Control ---");
-  run("git add package.json CHANGELOG.md src/ tests/ scripts/ .github/");
   run(
-    `git commit -m "chore(release): v${config.version} - Daily Convenience Helpers"`,
+    "git add package.json CHANGELOG.md src/ tests/ scripts/ .github/ artifacts/",
   );
-  run(
-    `git tag -a v${config.version} -m "v${config.version} - Daily Convenience Helpers"`,
-  );
+  const releaseTitle =
+    config.version === "0.1.2"
+      ? `v${config.version} - Time & Instant Helpers`
+      : `v${config.version} - Daily Convenience Helpers`;
+
+  run(`git commit -m "chore(release): ${releaseTitle}"`);
+  run(`git tag -a v${config.version} -m "${releaseTitle}"`);
 
   console.log("\n--- Phase 5: Push to GitHub ---");
   run("git push origin main", config.dryRun);
@@ -186,7 +205,7 @@ async function main() {
   const notesPath = join(process.cwd(), "artifacts", "release-notes.txt");
   await writeFile(notesPath, releaseNotes, "utf-8");
   run(
-    `gh release create v${config.version} --title "v${config.version} - Daily Convenience Helpers" --notes-file "${notesPath}"`,
+    `gh release create v${config.version} --title "${releaseTitle}" --notes-file "${notesPath}"`,
     config.dryRun,
   );
 
