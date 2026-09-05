@@ -6,7 +6,7 @@
     sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 
-  /* INTECH Brand Core Palette */
+  /* Official INTECH Core Brand Palette */
   --intech-tech-blue: #2b40f5;
   --intech-tech-blue-hover: #1f33e0;
   --intech-ultramarine: #27308b;
@@ -15,19 +15,19 @@
   --intech-dark-blue: #0b0d26;
   --intech-true-black: #0a0a0a;
 
-  /* Semantic Mappings (Dark Mode Default) */
-  --bg-page: #0a0a0a;
-  --bg-surface: #0e1020;
-  --bg-surface-elevated: #13172e;
-  --bg-surface-subtle: #191e3b;
+  /* Semantic Theme Mappings (Dark Mode - Default) */
+  --bg-page: #0b0d26;
+  --bg-surface: #0f1338;
+  --bg-surface-elevated: #161b4e;
+  --bg-surface-subtle: #1f266a;
 
-  --border-subtle: rgba(176, 200, 244, 0.12);
-  --border-strong: rgba(176, 200, 244, 0.25);
+  --border-subtle: rgba(176, 200, 244, 0.14);
+  --border-strong: rgba(43, 64, 245, 0.35);
   --border-focus: #2b40f5;
 
   --text-primary: #ffffff;
   --text-secondary: #b0c8f4;
-  --text-muted: #8292ba;
+  --text-muted: #7e8daf;
 
   --accent-primary: #2b40f5;
   --accent-primary-hover: #4055f7;
@@ -36,18 +36,23 @@
   --accent-emerald: #10b981;
   --accent-amber: #f59e0b;
   --accent-rose: #f43f5e;
-  --accent-purple: #9333ea;
+  --accent-purple: #a855f7;
 
-  --code-bg: #070814;
+  --code-bg: #07091c;
 
-  /* Brand Gradients */
+  /* Official INTECH Brand Gradients */
   --gradient-brand-subtle: linear-gradient(
     135deg,
     #0b0d26 0%,
     #27308b 50%,
     #2b40f5 100%
   );
-  --gradient-brand-tech: linear-gradient(135deg, #27308b 0%, #2b40f5 100%);
+  --gradient-brand-tech: linear-gradient(
+    135deg,
+    #27308b 0%,
+    #2b40f5 55%,
+    #b0c8f4 100%
+  );
   --gradient-brand-light: linear-gradient(135deg, #b0c8f4 0%, #ffffff 100%);
   --gradient-brand-glow: linear-gradient(135deg, #b0c8f4 0%, #2b40f5 100%);
   --gradient-superdark: linear-gradient(135deg, #0b0d26 0%, #2b40f5 100%);
@@ -63,13 +68,13 @@
   --bg-surface-elevated: #f0f4fc;
   --bg-surface-subtle: #e2eaf8;
 
-  --border-subtle: rgba(39, 48, 139, 0.1);
+  --border-subtle: rgba(39, 48, 139, 0.12);
   --border-strong: rgba(43, 64, 245, 0.25);
   --border-focus: #2b40f5;
 
   --text-primary: #0a0a0a;
-  --text-secondary: #3d486b;
-  --text-muted: #717a94;
+  --text-secondary: #27308b;
+  --text-muted: #5d6a8e;
 
   --accent-primary: #2b40f5;
   --accent-primary-hover: #1f33e0;
@@ -89,25 +94,38 @@
   padding: 0;
 }
 
+/* Custom Scrollbar Handling - Never show ugly browser scrollbars */
+.hide-scrollbar,
+.overflow-x-auto {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-page);
   color: var(--text-primary);
-  line-height: 1.5;
+  line-height: 1.6;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition:
     background-color 0.25s var(--ease-inblox),
     color 0.25s var(--ease-inblox);
+  position: relative;
+  overflow-x: hidden;
 }
 
 /* Subtle Technical Grid with INTECH Blue tint */
 .tech-grid {
-  background-size: 32px 32px;
+  background-size: 36px 36px;
   background-image:
-    linear-gradient(to right, rgba(43, 64, 245, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(43, 64, 245, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(43, 64, 245, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(43, 64, 245, 0.04) 1px, transparent 1px);
 }
 
 [data-theme="light"] .tech-grid {
@@ -116,24 +134,57 @@ body {
     linear-gradient(to bottom, rgba(39, 48, 139, 0.04) 1px, transparent 1px);
 }
 
-/* Top Announcement Banner (Inblox style) */
+/* Top Ambient Illumination */
+.ambient-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1200px;
+  height: 480px;
+  background: radial-gradient(
+    ellipse 80% 50% at 50% -10%,
+    rgba(43, 64, 245, 0.18),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="light"] .ambient-glow {
+  background: radial-gradient(
+    ellipse 80% 50% at 50% -10%,
+    rgba(43, 64, 245, 0.08),
+    transparent 70%
+  );
+}
+
+/* Top Announcement Banner */
 .announcement-bar {
-  background-color: var(--bg-surface);
+  background-color: rgba(15, 19, 56, 0.7);
   border-bottom: 1px solid var(--border-subtle);
-  height: 36px;
+  height: 38px;
   display: flex;
   align-items: center;
   font-size: 0.75rem;
   color: var(--text-secondary);
+  backdrop-filter: blur(8px);
+  position: relative;
+  z-index: 50;
+}
+
+[data-theme="light"] .announcement-bar {
+  background-color: rgba(240, 244, 252, 0.9);
 }
 
 /* Header & Nav */
 .header-nav {
-  background-color: rgba(14, 16, 32, 0.85);
+  background-color: rgba(11, 13, 38, 0.85);
   border-bottom: 1px solid var(--border-subtle);
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 40;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   transition:
@@ -145,9 +196,9 @@ body {
   background-color: rgba(255, 255, 255, 0.9);
 }
 
-/* Inblox Typography Gradient */
+/* INTECH Typography Gradient */
 .gradient-tech-text {
-  background: linear-gradient(135deg, #2b40f5 0%, #b0c8f4 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #b0c8f4 60%, #2b40f5 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -162,7 +213,7 @@ body {
 .panel {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border-radius: 14px;
   transition: var(--transition-smooth);
 }
 
@@ -177,7 +228,7 @@ body {
   transition: var(--transition-smooth);
 }
 
-/* Inblox-inspired Interactive Cards */
+/* Inblox Interactive Cards */
 .card-interactive {
   transition:
     transform 0.25s var(--ease-inblox),
@@ -187,16 +238,17 @@ body {
 
 .card-interactive:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px -10px rgba(43, 64, 245, 0.2);
-  border-color: var(--border-strong);
+  box-shadow: 0 12px 30px -10px rgba(43, 64, 245, 0.25);
+  border-color: var(--intech-tech-blue);
 }
 
-/* Segmented Controls / Tabs */
+/* Segmented Controls / Tab Pills */
 .tab-pill {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 0.5rem 0.875rem;
+  padding: 0.5rem 1rem;
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--text-secondary);
@@ -218,82 +270,10 @@ body {
   background-color: var(--intech-tech-blue);
   border-color: var(--intech-tech-blue);
   font-weight: 600;
-  box-shadow: 0 4px 12px rgba(43, 64, 245, 0.3);
+  box-shadow: 0 4px 14px rgba(43, 64, 245, 0.4);
 }
 
-/* Category Filter Chips (Inblox style) */
-.category-chip {
-  padding: 0.35rem 0.875rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  border-radius: 9999px;
-  color: var(--text-secondary);
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  cursor: pointer;
-  transition: var(--transition-smooth);
-}
-
-.category-chip:hover {
-  color: var(--text-primary);
-  border-color: var(--intech-tech-blue);
-  background-color: var(--bg-surface-elevated);
-}
-
-.category-chip.active {
-  color: #ffffff;
-  background-color: var(--intech-tech-blue);
-  border-color: var(--intech-tech-blue);
-}
-
-/* Buttons */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #ffffff;
-  background-color: var(--intech-tech-blue);
-  border-radius: 8px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  text-decoration: none;
-  box-shadow: 0 4px 14px rgba(43, 64, 245, 0.35);
-}
-
-.btn-primary:hover {
-  background-color: var(--intech-tech-blue-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(43, 64, 245, 0.45);
-}
-
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  background-color: var(--bg-surface-elevated);
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  text-decoration: none;
-}
-
-.btn-secondary:hover {
-  background-color: var(--bg-surface-subtle);
-  border-color: var(--border-strong);
-  transform: translateY(-1px);
-}
-
+/* Category Filter Chips */
 .btn-chip {
   padding: 0.35rem 0.75rem;
   font-size: 0.75rem;
@@ -312,6 +292,54 @@ body {
   background-color: var(--bg-surface-subtle);
 }
 
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--intech-tech-blue);
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(43, 64, 245, 0.4);
+}
+
+.btn-primary:hover {
+  background-color: var(--intech-tech-blue-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(43, 64, 245, 0.5);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.35rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-surface-subtle);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
 /* Badges */
 .badge {
   display: inline-flex;
@@ -327,9 +355,9 @@ body {
 }
 
 .badge-blue {
-  background-color: rgba(43, 64, 245, 0.15);
+  background-color: rgba(43, 64, 245, 0.18);
   color: #b0c8f4;
-  border: 1px solid rgba(43, 64, 245, 0.35);
+  border: 1px solid rgba(43, 64, 245, 0.4);
 }
 
 [data-theme="light"] .badge-blue {
@@ -339,34 +367,35 @@ body {
 }
 
 .badge-emerald {
-  background-color: rgba(16, 185, 129, 0.12);
+  background-color: rgba(16, 185, 129, 0.14);
   color: var(--accent-emerald);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .badge-amber {
-  background-color: rgba(245, 158, 11, 0.12);
+  background-color: rgba(245, 158, 11, 0.14);
   color: var(--accent-amber);
-  border: 1px solid rgba(245, 158, 11, 0.25);
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .badge-rose {
-  background-color: rgba(244, 63, 94, 0.12);
+  background-color: rgba(244, 63, 94, 0.14);
   color: var(--accent-rose);
-  border: 1px solid rgba(244, 63, 94, 0.25);
+  border: 1px solid rgba(244, 63, 94, 0.3);
 }
 
 .pill-live {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.25rem 0.65rem;
+  gap: 0.45rem;
+  padding: 0.3rem 0.75rem;
   font-size: 0.75rem;
   font-weight: 600;
   border-radius: 9999px;
   background-color: rgba(43, 64, 245, 0.15);
   color: #b0c8f4;
-  border: 1px solid rgba(43, 64, 245, 0.3);
+  border: 1px solid rgba(43, 64, 245, 0.35);
+  box-shadow: 0 0 16px rgba(43, 64, 245, 0.2);
 }
 
 [data-theme="light"] .pill-live {
@@ -374,7 +403,7 @@ body {
   background-color: rgba(43, 64, 245, 0.08);
 }
 
-/* Code Snippets & Terminal */
+/* Terminal & Code Inspector */
 .terminal-window {
   background-color: var(--code-bg);
   border: 1px solid var(--border-subtle);
@@ -387,7 +416,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 0.875rem;
+  padding: 0.55rem 0.875rem;
   background-color: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
   font-size: 0.75rem;
@@ -407,10 +436,10 @@ body {
 }
 
 .code-pre {
-  padding: 1rem;
+  padding: 1.1rem;
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--text-primary);
   overflow-x: auto;
   white-space: pre;
@@ -423,7 +452,7 @@ body {
   color: var(--text-primary);
   font-family: var(--font-mono);
   font-size: 0.875rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.55rem 0.85rem;
   border-radius: 6px;
   outline: none;
   transition:
@@ -433,12 +462,12 @@ body {
 
 .input-control:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 2px rgba(43, 64, 245, 0.2);
+  box-shadow: 0 0 0 2px rgba(43, 64, 245, 0.25);
 }
 
-/* Timeline strip */
+/* Timeline Strip */
 .timeline-item {
-  padding: 0.5rem;
+  padding: 0.55rem 0.4rem;
   border-radius: 6px;
   font-size: 0.75rem;
   text-align: center;
@@ -453,24 +482,24 @@ body {
 }
 
 .timeline-work {
-  border-color: rgba(16, 185, 129, 0.4);
-  background-color: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.45);
+  background-color: rgba(16, 185, 129, 0.1);
   color: var(--accent-emerald);
 }
 
 .timeline-weekend {
-  border-color: rgba(244, 63, 94, 0.4);
-  background-color: rgba(244, 63, 94, 0.08);
+  border-color: rgba(244, 63, 94, 0.45);
+  background-color: rgba(244, 63, 94, 0.1);
   color: var(--accent-rose);
 }
 
 .timeline-holiday {
-  border-color: rgba(245, 158, 11, 0.4);
-  background-color: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.45);
+  background-color: rgba(245, 158, 11, 0.1);
   color: var(--accent-amber);
 }
 
-/* Smooth Tab Panel Transitions */
+/* Smooth Tab Transitions */
 .tab-content-enter {
   animation: tabFadeIn 0.25s var(--ease-inblox) forwards;
 }
@@ -478,7 +507,7 @@ body {
 @keyframes tabFadeIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;

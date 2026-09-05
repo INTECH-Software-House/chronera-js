@@ -64,10 +64,13 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body class="tech-grid min-h-screen">
-    <!-- Top Announcement Banner (Inblox Style) -->
+    <!-- Top Ambient Illumination -->
+    <div class="ambient-glow"></div>
+
+    <!-- Top Announcement Banner -->
     <aside class="announcement-bar">
       <div
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between"
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between"
       >
         <div class="flex items-center gap-2 overflow-hidden">
           <span
@@ -97,7 +100,7 @@
     <!-- Sticky Navigation Bar -->
     <header class="header-nav">
       <div
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between"
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between"
       >
         <!-- Brand & Version -->
         <div class="flex items-center gap-3">
@@ -125,9 +128,9 @@
           class="hidden md:flex items-center gap-6 text-sm font-medium text-[var(--text-secondary)]"
         >
           <a
-            href="#demo"
+            href="#workbench"
             class="hover:text-[var(--text-primary)] transition-colors"
-            >Live Studio</a
+            >Workbench</a
           >
           <a
             href="#features"
@@ -137,7 +140,7 @@
           <a
             href="#api"
             class="hover:text-[var(--text-primary)] transition-colors"
-            >API Reference</a
+            >API Specs</a
           >
           <a
             href="#benchmarks"
@@ -176,739 +179,676 @@
       </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Main Content Container -->
     <main
-      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16"
+      class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-20 relative z-10"
     >
-      <!-- Inblox-Style Dual Column Showcase Section -->
-      <section
-        id="demo"
-        class="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] lg:gap-12"
-      >
-        <!-- Left Column: Value Prop & Controls (Inblox Pattern) -->
-        <div class="space-y-6 lg:sticky lg:top-24">
+      <!-- Executive Hero Section -->
+      <section class="space-y-6 text-center max-w-3xl mx-auto">
+        <div>
           <span class="pill-live">
             <i
               data-lucide="sparkles"
               class="w-3.5 h-3.5 text-[var(--intech-tech-blue)]"
             ></i>
-            <span>Live Interactive Demo</span>
+            <span>Enterprise Production Ready</span>
           </span>
-
-          <h1
-            class="text-2xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)] leading-tight"
-          >
-            ระบบจัดการวันเวลาและปฏิทินระดับ <br />
-            <span class="gradient-tech-text">Enterprise Production</span>
-          </h1>
-
-          <p
-            class="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed"
-          >
-            ทดสอบการแปลงวันที่ข้าม 7 ระบบปฏิทินวัฒนธรรม (พ.ศ. ไทย, เรวะ ญี่ปุ่น,
-            หมินกั๋ว ไต้หวัน, ฮิจญ์เราะฮ์ ซาอุดีฯ, เปอร์เซีย อิหร่าน
-            และศักราชแห่งชาติอินเดีย), คำนวณวันทำการ SLA และเวลาข้าม TimeZone
-            ทั่วโลกแบบเรียลไทม์
-          </p>
-
-          <!-- Inblox Feature Highlights Cards -->
-          <div class="space-y-3 pt-2">
-            <div
-              class="flex items-start gap-3 p-2.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-subtle)] card-interactive"
-            >
-              <div
-                class="w-8 h-8 rounded-lg bg-[var(--intech-tech-blue)]/15 border border-[var(--intech-tech-blue)]/30 text-[var(--intech-tech-blue)] flex items-center justify-center shrink-0"
-              >
-                <i data-lucide="calendar" class="w-4 h-4"></i>
-              </div>
-              <div class="text-xs">
-                <div class="font-bold text-[var(--text-primary)]">
-                  7 ระบบปฏิทินสากลและวัฒนธรรม
-                </div>
-                <div class="text-[var(--text-secondary)] mt-0.5">
-                  แปลงไป-กลับแม่นยำ
-                  พร้อมตรวจจับยุคจักรพรรดิและพุทธศักราชอัตโนมัติ
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="flex items-start gap-3 p-2.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-subtle)] card-interactive"
-            >
-              <div
-                class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-[var(--accent-emerald)] flex items-center justify-center shrink-0"
-              >
-                <i data-lucide="briefcase" class="w-4 h-4"></i>
-              </div>
-              <div class="text-xs">
-                <div class="font-bold text-[var(--text-primary)]">
-                  Enterprise Working Days & SLA
-                </div>
-                <div class="text-[var(--text-secondary)] mt-0.5">
-                  คำนวณวันครบกำหนดสัญญาส่งมอบ ข้ามวันหยุดเสาร์-อาทิตย์
-                  และวันหยุดนักขัตฤกษ์
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="flex items-start gap-3 p-2.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-subtle)] card-interactive"
-            >
-              <div
-                class="w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/30 text-[var(--accent-amber)] flex items-center justify-center shrink-0"
-              >
-                <i data-lucide="shield-check" class="w-4 h-4"></i>
-              </div>
-              <div class="text-xs">
-                <div class="font-bold text-[var(--text-primary)]">
-                  100% Zero Dependencies
-                </div>
-                <div class="text-[var(--text-secondary)] mt-0.5">
-                  ขนาด &lt; 3 KB ทำงานบน Native ECMAScript และ Intl
-                  ไร้ความเสี่ยง Supply-chain
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Terminal Install Box with PM Switcher -->
-          <div class="pt-2">
-            <div class="flex items-center gap-1 mb-2">
-              <button
-                class="pm-tab tab-pill active text-xs py-1 px-3"
-                data-pm="pnpm"
-              >
-                pnpm
-              </button>
-              <button class="pm-tab tab-pill text-xs py-1 px-3" data-pm="npm">
-                npm
-              </button>
-              <button class="pm-tab tab-pill text-xs py-1 px-3" data-pm="yarn">
-                yarn
-              </button>
-              <button class="pm-tab tab-pill text-xs py-1 px-3" data-pm="bun">
-                bun
-              </button>
-            </div>
-            <div class="terminal-window">
-              <div class="terminal-header">
-                <div class="terminal-dots">
-                  <span class="terminal-dot"></span>
-                  <span class="terminal-dot"></span>
-                  <span class="terminal-dot"></span>
-                </div>
-                <span class="font-mono text-xs text-[var(--text-muted)]"
-                  >terminal</span
-                >
-                <button
-                  id="copy-install-btn"
-                  class="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
-                >
-                  <i data-lucide="copy" class="w-3 h-3"></i>
-                  <span>Copy</span>
-                </button>
-              </div>
-              <div
-                class="p-3 font-mono text-xs sm:text-sm flex items-center justify-between"
-              >
-                <div class="flex items-center gap-2 overflow-x-auto">
-                  <span
-                    class="text-[var(--intech-tech-blue)] select-none font-bold"
-                    >$</span
-                  >
-                  <code id="install-code" class="text-[var(--text-primary)]"
-                    >pnpm add @intech-software/chronera</code
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <!-- Right Column: Interactive Studio & Workbench -->
-        <div class="space-y-4">
-          <!-- Workbench Studio Header (Inblox Tabbed Container Style) -->
-          <div
-            class="panel p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-          >
-            <div
-              class="flex items-center justify-between w-full sm:w-auto px-1"
+        <h1
+          class="text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)] leading-tight sm:leading-tight"
+        >
+          ระบบจัดการวันเวลาและปฏิทิน <br class="hidden sm:inline" />
+          ระดับ <span class="gradient-tech-text">Enterprise Production</span>
+        </h1>
+
+        <p
+          class="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-2xl mx-auto"
+        >
+          แม่นยำสูง ครอบคลุม 7 ปฏิทินวัฒนธรรม (พ.ศ., 令和, 民國, ฮิจญ์เราะฮ์,
+          เปอร์เซีย, ศกะ), คำนวณวันทำการ SLA และเวลาข้าม TimeZone
+          ทั่วโลกแบบเรียลไทม์ ไร้ Third-Party Dependencies 100%
+        </p>
+
+        <!-- CTA Action Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <a href="#workbench" class="btn-primary">
+            <i data-lucide="terminal" class="w-4 h-4"></i>
+            <span>เปิด Live Workbench</span>
+          </a>
+          <a href="#api" class="btn-secondary">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            <span>เอกสาร API Specifications</span>
+          </a>
+        </div>
+
+        <!-- 1-Click Package Manager Install Terminal -->
+        <div class="pt-4 max-w-xl mx-auto text-left">
+          <div class="flex items-center gap-1.5 mb-2">
+            <button
+              class="pm-tab tab-pill active text-xs py-1 px-3"
+              data-pm="pnpm"
             >
-              <div class="text-xs text-[var(--text-secondary)]">
-                โหมด:
+              pnpm
+            </button>
+            <button class="pm-tab tab-pill text-xs py-1 px-3" data-pm="npm">
+              npm
+            </button>
+            <button class="pm-tab tab-pill text-xs py-1 px-3" data-pm="yarn">
+              yarn
+            </button>
+            <button class="pm-tab tab-pill text-xs py-1 px-3" data-pm="bun">
+              bun
+            </button>
+          </div>
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+              </div>
+              <span class="font-mono text-xs text-[var(--text-muted)]"
+                >terminal</span
+              >
+              <button
+                id="copy-install-btn"
+                class="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
+              >
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+            <div
+              class="p-3.5 font-mono text-xs sm:text-sm flex items-center justify-between"
+            >
+              <div class="flex items-center gap-2 overflow-x-auto">
                 <span
-                  id="demo-mode-name"
-                  class="font-semibold text-[var(--text-primary)]"
-                  >Calendar Matrix</span
+                  class="text-[var(--intech-tech-blue)] select-none font-bold"
+                  >$</span
+                >
+                <code id="install-code" class="text-[var(--text-primary)]"
+                  >pnpm add @intech-software/chronera</code
                 >
               </div>
-              <span
-                id="tab-counter"
-                class="text-xs font-mono font-medium text-[var(--intech-light-blue)] sm:ml-3"
-                >1 / 4</span
-              >
-            </div>
-
-            <!-- Segmented Tab Controls -->
-            <div
-              class="flex items-center gap-1 bg-[var(--bg-surface-elevated)] p-1 rounded-lg border border-[var(--border-subtle)] overflow-x-auto"
-            >
-              <button
-                class="tab-pill workbench-tab active"
-                data-tab="matrix"
-                title="7-Calendar Matrix"
-              >
-                <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-                <span>7 Calendars</span>
-              </button>
-              <button
-                class="tab-pill workbench-tab"
-                data-tab="biz"
-                title="Business Days & SLA"
-              >
-                <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
-                <span>Business Days</span>
-              </button>
-              <button
-                class="tab-pill workbench-tab"
-                data-tab="timezone"
-                title="World TimeZones"
-              >
-                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                <span>TimeZones</span>
-              </button>
-              <button
-                class="tab-pill workbench-tab"
-                data-tab="holidays"
-                title="15-Country Holidays"
-              >
-                <i data-lucide="flag" class="w-3.5 h-3.5"></i>
-                <span>Holidays</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- 1. Panel: Multi-Calendar Matrix -->
-          <div
-            class="workbench-panel panel p-5 sm:p-6 space-y-6 tab-content-enter"
-            data-panel="matrix"
-          >
-            <div
-              class="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-            >
-              <div class="flex items-center gap-3">
-                <label
-                  for="matrix-date-input"
-                  class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]"
-                  >Input Date:</label
-                >
-                <input
-                  type="date"
-                  id="matrix-date-input"
-                  class="input-control text-sm"
-                />
-              </div>
-              <!-- Quick Jumps -->
-              <div class="flex flex-wrap items-center gap-1.5">
-                <span class="text-xs text-[var(--text-muted)] mr-1"
-                  >Presets:</span
-                >
-                <button class="btn-chip quick-date-chip" data-date="today">
-                  Today
-                </button>
-                <button class="btn-chip quick-date-chip" data-date="2026-04-13">
-                  Songkran 2026
-                </button>
-                <button class="btn-chip quick-date-chip" data-date="2019-05-01">
-                  Reiwa Rollover
-                </button>
-                <button class="btn-chip quick-date-chip" data-date="2026-06-16">
-                  Hijri 1448
-                </button>
-              </div>
-            </div>
-
-            <!-- Calendar Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-              <!-- ISO 8601 -->
-              <div
-                id="card-iso"
-                class="panel-elevated p-4 space-y-1 card-interactive"
-              >
-                <div class="flex items-center justify-between">
-                  <span
-                    class="text-xs font-mono font-medium text-[var(--text-muted)]"
-                    >ISO 8601 (Gregorian)</span
-                  >
-                  <span class="badge badge-blue">International</span>
-                </div>
-                <div
-                  class="cal-value text-xl font-bold font-mono text-[var(--intech-tech-blue)]"
-                >
-                  2026-04-13
-                </div>
-                <div class="cal-detail text-xs text-[var(--text-secondary)]">
-                  International Standard
-                </div>
-              </div>
-
-              <!-- Thai Buddhist -->
-              <div
-                id="card-thai"
-                class="panel-elevated p-4 space-y-1 card-interactive"
-              >
-                <div class="flex items-center justify-between">
-                  <span
-                    class="text-xs font-mono font-medium text-[var(--text-muted)]"
-                    >Thai Buddhist (พ.ศ.)</span
-                  >
-                  <span class="badge badge-emerald">TH 🇹🇭</span>
-                </div>
-                <div
-                  class="cal-value text-xl font-bold font-mono text-[var(--accent-emerald)]"
-                >
-                  พ.ศ. 2569
-                </div>
-                <div class="cal-detail text-xs text-[var(--text-secondary)]">
-                  13 เมษายน พ.ศ. 2569
-                </div>
-              </div>
-
-              <!-- Japanese Era -->
-              <div
-                id="card-japanese"
-                class="panel-elevated p-4 space-y-1 card-interactive"
-              >
-                <div class="flex items-center justify-between">
-                  <span
-                    class="text-xs font-mono font-medium text-[var(--text-muted)]"
-                    >Japanese Era (元号)</span
-                  >
-                  <span class="badge badge-amber">JP 🇯🇵</span>
-                </div>
-                <div
-                  class="cal-value text-xl font-bold font-mono text-[var(--accent-amber)]"
-                >
-                  令和 8年
-                </div>
-                <div class="cal-detail text-xs text-[var(--text-secondary)]">
-                  令和 8年 4月 13日
-                </div>
-              </div>
-
-              <!-- Taiwan Minguo -->
-              <div
-                id="card-roc"
-                class="panel-elevated p-4 space-y-1 card-interactive"
-              >
-                <div class="flex items-center justify-between">
-                  <span
-                    class="text-xs font-mono font-medium text-[var(--text-muted)]"
-                    >Minguo (民國)</span
-                  >
-                  <span class="badge badge-blue">TW 🇹🇼</span>
-                </div>
-                <div
-                  class="cal-value text-xl font-bold font-mono text-[var(--text-primary)]"
-                >
-                  民國 115 年
-                </div>
-                <div class="cal-detail text-xs text-[var(--text-secondary)]">
-                  民國 115 年 4 月 13 日
-                </div>
-              </div>
-
-              <!-- Islamic Hijri -->
-              <div
-                id="card-hijri"
-                class="panel-elevated p-4 space-y-1 card-interactive"
-              >
-                <div class="flex items-center justify-between">
-                  <span
-                    class="text-xs font-mono font-medium text-[var(--text-muted)]"
-                    >Islamic Hijri (الهجري)</span
-                  >
-                  <span class="badge badge-emerald">SA 🇸🇦</span>
-                </div>
-                <div
-                  class="cal-value text-xl font-bold font-mono text-[var(--text-primary)]"
-                >
-                  1447 AH
-                </div>
-                <div class="cal-detail text-xs text-[var(--text-secondary)]">
-                  Islamic Civil Calendar
-                </div>
-              </div>
-
-              <!-- Persian Solar Hijri -->
-              <div
-                id="card-persian"
-                class="panel-elevated p-4 space-y-1 card-interactive"
-              >
-                <div class="flex items-center justify-between">
-                  <span
-                    class="text-xs font-mono font-medium text-[var(--text-muted)]"
-                    >Solar Hijri (هجری خورشیدی)</span
-                  >
-                  <span class="badge badge-amber">IR 🇮🇷</span>
-                </div>
-                <div
-                  class="cal-value text-xl font-bold font-mono text-[var(--text-primary)]"
-                >
-                  1405 AP
-                </div>
-                <div class="cal-detail text-xs text-[var(--text-secondary)]">
-                  Solar Hijri Calendar
-                </div>
-              </div>
-
-              <!-- Indian Saka -->
-              <div
-                id="card-indian"
-                class="panel-elevated p-4 space-y-1 sm:col-span-2 lg:col-span-3 card-interactive"
-              >
-                <div class="flex items-center justify-between">
-                  <span
-                    class="text-xs font-mono font-medium text-[var(--text-muted)]"
-                    >Indian National (शालिवाहन शक)</span
-                  >
-                  <span class="badge badge-rose">IN 🇮🇳</span>
-                </div>
-                <div
-                  class="cal-value text-xl font-bold font-mono text-[var(--text-primary)]"
-                >
-                  1948 Saka
-                </div>
-                <div class="cal-detail text-xs text-[var(--text-secondary)]">
-                  Indian National Calendar
-                </div>
-              </div>
-            </div>
-
-            <!-- Code Inspector -->
-            <div class="terminal-window">
-              <div class="terminal-header">
-                <div class="terminal-dots">
-                  <span class="terminal-dot"></span>
-                  <span class="terminal-dot"></span>
-                  <span class="terminal-dot"></span>
-                </div>
-                <span class="font-mono text-xs">TypeScript Usage</span>
-                <button
-                  class="copy-code-btn text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
-                  data-target="matrix-code-snippet"
-                >
-                  <i data-lucide="copy" class="w-3 h-3"></i>
-                  <span>Copy Code</span>
-                </button>
-              </div>
-              <pre class="code-pre"><code id="matrix-code-snippet"></code></pre>
-            </div>
-          </div>
-
-          <!-- 2. Panel: Business Days & SLA -->
-          <div
-            class="workbench-panel panel p-5 sm:p-6 space-y-6 hidden"
-            data-panel="biz"
-          >
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label
-                  for="biz-start-input"
-                  class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
-                  >Start Date</label
-                >
-                <input
-                  type="date"
-                  id="biz-start-input"
-                  class="input-control w-full text-sm"
-                />
-              </div>
-              <div>
-                <label
-                  for="biz-amount-input"
-                  class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
-                  >Add / Subtract Business Days</label
-                >
-                <input
-                  type="number"
-                  id="biz-amount-input"
-                  value="5"
-                  min="-60"
-                  max="60"
-                  class="input-control w-full text-sm"
-                />
-              </div>
-              <div>
-                <label
-                  for="biz-country-select"
-                  class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
-                  >Statutory Calendar Context</label
-                >
-                <select
-                  id="biz-country-select"
-                  class="input-control w-full text-sm"
-                >
-                  <option value="TH" selected>
-                    Thailand (🇹🇭 Songkran / Royal holidays)
-                  </option>
-                  <option value="JP">Japan (🇯🇵 Golden Week / Equinoxes)</option>
-                  <option value="US">
-                    United States (🇺🇸 Federal Holidays)
-                  </option>
-                  <option value="GB">United Kingdom (🇬🇧 Bank Holidays)</option>
-                  <option value="SG">Singapore (🇸🇬 Public Holidays)</option>
-                  <option value="SA">
-                    Saudi Arabia (🇸🇦 Eid & National Days)
-                  </option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Calculated Result Banner -->
-            <div
-              class="panel-elevated p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-l-4 border-l-[var(--intech-tech-blue)]"
-            >
-              <div>
-                <div
-                  class="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]"
-                >
-                  Calculated Target Business Date
-                </div>
-                <div
-                  id="biz-result-date"
-                  class="text-3xl font-extrabold font-mono text-[var(--intech-tech-blue)] mt-1"
-                >
-                  ...
-                </div>
-              </div>
-              <div
-                id="biz-result-detail"
-                class="text-xs sm:text-sm font-mono text-[var(--text-secondary)]"
-              >
-                ...
-              </div>
-            </div>
-
-            <!-- Timeline Strip -->
-            <div>
-              <div
-                class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2"
-              >
-                Step-by-Step Trajectory Preview
-              </div>
-              <div
-                id="biz-timeline-strip"
-                class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 lg:grid-cols-10 gap-2"
-              ></div>
-            </div>
-
-            <!-- Code Inspector -->
-            <div class="terminal-window">
-              <div class="terminal-header">
-                <div class="terminal-dots">
-                  <span class="terminal-dot"></span>
-                  <span class="terminal-dot"></span>
-                  <span class="terminal-dot"></span>
-                </div>
-                <span class="font-mono text-xs">TypeScript Usage</span>
-                <button
-                  class="copy-code-btn text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
-                  data-target="biz-code-snippet"
-                >
-                  <i data-lucide="copy" class="w-3 h-3"></i>
-                  <span>Copy Code</span>
-                </button>
-              </div>
-              <pre class="code-pre"><code id="biz-code-snippet"></code></pre>
-            </div>
-          </div>
-
-          <!-- 3. Panel: TimeZones -->
-          <div
-            class="workbench-panel panel p-5 sm:p-6 space-y-6 hidden"
-            data-panel="timezone"
-          >
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label
-                  for="tz-zone-select"
-                  class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
-                  >Target TimeZone (IANA Identifier)</label
-                >
-                <select
-                  id="tz-zone-select"
-                  class="input-control w-full text-sm"
-                >
-                  <option value="Asia/Bangkok" selected>
-                    Asia/Bangkok (UTC+07:00)
-                  </option>
-                  <option value="Asia/Tokyo">Asia/Tokyo (UTC+09:00)</option>
-                  <option value="Europe/London">
-                    Europe/London (UTC+00:00 / GMT)
-                  </option>
-                  <option value="America/New_York">
-                    America/New_York (UTC-05:00 / EST)
-                  </option>
-                  <option value="America/Los_Angeles">
-                    America/Los_Angeles (UTC-08:00 / PST)
-                  </option>
-                  <option value="Asia/Dubai">Asia/Dubai (UTC+04:00)</option>
-                  <option value="Europe/Paris">
-                    Europe/Paris (UTC+01:00 / CET)
-                  </option>
-                  <option value="Australia/Sydney">
-                    Australia/Sydney (UTC+10:00 / AEST)
-                  </option>
-                  <option value="Asia/Singapore">
-                    Asia/Singapore (UTC+08:00)
-                  </option>
-                  <option value="UTC">UTC (Coordinated Universal Time)</option>
-                </select>
-              </div>
-              <div>
-                <label
-                  for="tz-pattern-select"
-                  class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
-                  >Formatting Pattern</label
-                >
-                <select
-                  id="tz-pattern-select"
-                  class="input-control w-full text-sm"
-                >
-                  <option value="YYYY-MM-DD HH:mm:ss" selected>
-                    YYYY-MM-DD HH:mm:ss
-                  </option>
-                  <option value="YYYY-MM-DD">YYYY-MM-DD (ISO Date)</option>
-                  <option value="HH:mm:ss">HH:mm:ss (24-Hour Time)</option>
-                  <option value="dddd, MMMM D, YYYY">
-                    dddd, MMMM D, YYYY (Verbose Legal)
-                  </option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Digital Clock Display Card -->
-            <div
-              class="panel-elevated p-8 text-center space-y-3 card-interactive"
-            >
-              <div
-                id="tz-clock-display"
-                class="font-mono text-5xl sm:text-6xl font-extrabold tracking-tight text-[var(--intech-tech-blue)]"
-              >
-                00:00:00
-              </div>
-              <div
-                id="tz-full-display"
-                class="font-mono text-xs sm:text-sm text-[var(--text-secondary)]"
-              >
-                Loading instant...
-              </div>
-              <div>
-                <span
-                  id="tz-offset-pill"
-                  class="badge badge-blue text-xs py-1 px-3"
-                  >UTC Offset</span
-                >
-              </div>
-            </div>
-
-            <!-- Code Inspector -->
-            <div class="terminal-window">
-              <div class="terminal-header">
-                <div class="terminal-dots">
-                  <span class="terminal-dot"></span>
-                  <span class="terminal-dot"></span>
-                  <span class="terminal-dot"></span>
-                </div>
-                <span class="font-mono text-xs">TypeScript Usage</span>
-                <button
-                  class="copy-code-btn text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
-                  data-target="tz-code-snippet"
-                >
-                  <i data-lucide="copy" class="w-3 h-3"></i>
-                  <span>Copy Code</span>
-                </button>
-              </div>
-              <pre class="code-pre"><code id="tz-code-snippet"></code></pre>
-            </div>
-          </div>
-
-          <!-- 4. Panel: Public Holidays -->
-          <div
-            class="workbench-panel panel p-5 sm:p-6 space-y-6 hidden"
-            data-panel="holidays"
-          >
-            <div
-              class="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-            >
-              <div class="flex items-center gap-3">
-                <label
-                  for="hol-country-select"
-                  class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]"
-                  >Select Country:</label
-                >
-                <select id="hol-country-select" class="input-control text-sm">
-                  <option value="TH" selected>Thailand (🇹🇭)</option>
-                  <option value="JP">Japan (🇯🇵)</option>
-                  <option value="US">United States (🇺🇸)</option>
-                  <option value="GB">United Kingdom (🇬🇧)</option>
-                  <option value="SG">Singapore (🇸🇬)</option>
-                  <option value="SA">Saudi Arabia (🇸🇦)</option>
-                </select>
-              </div>
-              <div
-                id="holidays-country-title"
-                class="text-sm font-semibold text-[var(--text-primary)]"
-              >
-                Statutory Holidays 2026
-              </div>
-            </div>
-
-            <!-- Table Container -->
-            <div
-              class="overflow-x-auto rounded-lg border border-[var(--border-subtle)]"
-            >
-              <table class="w-full text-left border-collapse">
-                <thead>
-                  <tr
-                    class="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-elevated)] text-[var(--text-muted)] font-mono text-xs uppercase tracking-wider"
-                  >
-                    <th class="py-2.5 px-3">Date (ISO 8601)</th>
-                    <th class="py-2.5 px-3">Official Holiday Name</th>
-                    <th class="py-2.5 px-3">English Translation</th>
-                  </tr>
-                </thead>
-                <tbody id="holidays-table-body" class="font-sans"></tbody>
-              </table>
-            </div>
-
-            <!-- Code Inspector -->
-            <div class="terminal-window">
-              <div class="terminal-header">
-                <div class="terminal-dots">
-                  <span class="terminal-dot"></span>
-                  <span class="terminal-dot"></span>
-                  <span class="terminal-dot"></span>
-                </div>
-                <span class="font-mono text-xs">TypeScript Usage</span>
-                <button
-                  class="copy-code-btn text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
-                  data-target="holidays-code-snippet"
-                >
-                  <i data-lucide="copy" class="w-3 h-3"></i>
-                  <span>Copy Code</span>
-                </button>
-              </div>
-              <pre
-                class="code-pre"
-              ><code id="holidays-code-snippet"></code></pre>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Architecture & Enterprise Features -->
+      <!-- The Full-Width Interactive Developer Workbench -->
+      <section id="workbench" class="space-y-6 pt-4">
+        <!-- Workbench Top Control Bar -->
+        <div
+          class="panel p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4"
+        >
+          <div class="flex items-center justify-between md:justify-start gap-4">
+            <div>
+              <div
+                class="text-xs font-semibold uppercase tracking-wider text-[var(--intech-light-blue)]"
+              >
+                Developer Studio
+              </div>
+              <h2
+                class="text-xl font-bold tracking-tight text-[var(--text-primary)]"
+              >
+                Live Interactive Workbench
+              </h2>
+            </div>
+            <div
+              class="flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs font-mono"
+            >
+              <span class="text-[var(--text-muted)]">โหมด:</span>
+              <span
+                id="demo-mode-name"
+                class="font-semibold text-[var(--intech-light-blue)]"
+                >7-Calendar Matrix</span
+              >
+              <span class="text-[var(--border-strong)]">|</span>
+              <span
+                id="tab-counter"
+                class="text-[var(--accent-emerald)] font-bold"
+                >1 / 4</span
+              >
+            </div>
+          </div>
+
+          <!-- Segmented Tab Pills (No scrollbar, clean and spacious) -->
+          <div
+            class="flex flex-wrap items-center gap-1.5 bg-[var(--bg-surface-elevated)] p-1.5 rounded-xl border border-[var(--border-subtle)]"
+          >
+            <button class="tab-pill workbench-tab active" data-tab="matrix">
+              <i data-lucide="calendar" class="w-4 h-4"></i>
+              <span>7-Calendar Matrix</span>
+            </button>
+            <button class="tab-pill workbench-tab" data-tab="biz">
+              <i data-lucide="briefcase" class="w-4 h-4"></i>
+              <span>Business Days & SLA</span>
+            </button>
+            <button class="tab-pill workbench-tab" data-tab="timezone">
+              <i data-lucide="clock" class="w-4 h-4"></i>
+              <span>World TimeZones</span>
+            </button>
+            <button class="tab-pill workbench-tab" data-tab="holidays">
+              <i data-lucide="flag" class="w-4 h-4"></i>
+              <span>Statutory Holidays</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. Panel: Multi-Calendar Matrix -->
+        <div
+          class="workbench-panel panel p-6 sm:p-8 space-y-6 tab-content-enter"
+          data-panel="matrix"
+        >
+          <!-- Input Date and Presets Toolbar -->
+          <div
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-5"
+          >
+            <div class="flex items-center gap-3">
+              <label
+                for="matrix-date-input"
+                class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]"
+                >Input Date (ISO):</label
+              >
+              <input
+                type="date"
+                id="matrix-date-input"
+                class="input-control text-sm"
+              />
+            </div>
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="text-xs text-[var(--text-muted)] mr-1"
+                >Quick Jumps:</span
+              >
+              <button class="btn-chip quick-date-chip" data-date="today">
+                Today
+              </button>
+              <button class="btn-chip quick-date-chip" data-date="2026-04-13">
+                Songkran 2026
+              </button>
+              <button class="btn-chip quick-date-chip" data-date="2019-05-01">
+                Reiwa Rollover
+              </button>
+              <button class="btn-chip quick-date-chip" data-date="2026-06-16">
+                Hijri 1448
+              </button>
+            </div>
+          </div>
+
+          <!-- 7-Calendar Cards Grid (Spacious & Crisp) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- 1. ISO 8601 -->
+            <div
+              id="card-iso"
+              class="panel-elevated p-4 sm:p-5 space-y-1.5 card-interactive"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >ISO 8601 (Gregorian)</span
+                >
+                <span class="badge badge-blue">Standard</span>
+              </div>
+              <div
+                class="cal-value text-2xl font-bold font-mono text-[var(--intech-tech-blue)]"
+              >
+                2026-04-13
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                International Standard
+              </div>
+            </div>
+
+            <!-- 2. Thai Buddhist -->
+            <div
+              id="card-thai"
+              class="panel-elevated p-4 sm:p-5 space-y-1.5 card-interactive"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >Thai Buddhist (พ.ศ.)</span
+                >
+                <span class="badge badge-emerald">พุทธศักราช 🇹🇭</span>
+              </div>
+              <div
+                class="cal-value text-2xl font-bold font-mono text-[var(--accent-emerald)]"
+              >
+                พ.ศ. 2569
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                13 เมษายน พ.ศ. 2569
+              </div>
+            </div>
+
+            <!-- 3. Japanese Era -->
+            <div
+              id="card-japanese"
+              class="panel-elevated p-4 sm:p-5 space-y-1.5 card-interactive"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >Japanese Era (元号)</span
+                >
+                <span class="badge badge-amber">令和 / 平成 🇯🇵</span>
+              </div>
+              <div
+                class="cal-value text-2xl font-bold font-mono text-[var(--accent-amber)]"
+              >
+                令和 8年
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                令和 8年 4月 13日
+              </div>
+            </div>
+
+            <!-- 4. Taiwan Minguo -->
+            <div
+              id="card-roc"
+              class="panel-elevated p-4 sm:p-5 space-y-1.5 card-interactive"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >Minguo (民國)</span
+                >
+                <span class="badge badge-blue">中華民國 🇹🇼</span>
+              </div>
+              <div
+                class="cal-value text-2xl font-bold font-mono text-[var(--text-primary)]"
+              >
+                民國 115 年
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                民國 115 年 4 月 13 日
+              </div>
+            </div>
+
+            <!-- 5. Islamic Hijri -->
+            <div
+              id="card-hijri"
+              class="panel-elevated p-4 sm:p-5 space-y-1.5 card-interactive"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >Islamic Hijri (الهجري)</span
+                >
+                <span class="badge badge-emerald">Hijri 🇸🇦</span>
+              </div>
+              <div
+                class="cal-value text-2xl font-bold font-mono text-[var(--text-primary)]"
+              >
+                1447 AH
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                Islamic Civil Calendar
+              </div>
+            </div>
+
+            <!-- 6. Persian Solar Hijri -->
+            <div
+              id="card-persian"
+              class="panel-elevated p-4 sm:p-5 space-y-1.5 card-interactive"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >Solar Hijri (هجری خورشیدی)</span
+                >
+                <span class="badge badge-amber">Solar Hijri 🇮🇷</span>
+              </div>
+              <div
+                class="cal-value text-2xl font-bold font-mono text-[var(--text-primary)]"
+              >
+                1405 AP
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                Solar Hijri Calendar
+              </div>
+            </div>
+
+            <!-- 7. Indian Saka -->
+            <div
+              id="card-indian"
+              class="panel-elevated p-4 sm:p-5 space-y-1.5 sm:col-span-2 lg:col-span-3 card-interactive"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono font-medium text-[var(--text-muted)]"
+                  >Indian National (शालिवाहन शक)</span
+                >
+                <span class="badge badge-rose">Saka Era 🇮🇳</span>
+              </div>
+              <div
+                class="cal-value text-2xl font-bold font-mono text-[var(--text-primary)]"
+              >
+                1948 Saka
+              </div>
+              <div class="cal-detail text-xs text-[var(--text-secondary)]">
+                Indian National Calendar
+              </div>
+            </div>
+          </div>
+
+          <!-- Code Inspector -->
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+              </div>
+              <span class="font-mono text-xs">TypeScript Inspector</span>
+              <button
+                class="copy-code-btn text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
+                data-target="matrix-code-snippet"
+              >
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy Snippet</span>
+              </button>
+            </div>
+            <pre class="code-pre"><code id="matrix-code-snippet"></code></pre>
+          </div>
+        </div>
+
+        <!-- 2. Panel: Business Days & SLA -->
+        <div
+          class="workbench-panel panel p-6 sm:p-8 space-y-6 hidden"
+          data-panel="biz"
+        >
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            <div>
+              <label
+                for="biz-start-input"
+                class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2"
+                >วันเริ่มต้น (Start Date)</label
+              >
+              <input
+                type="date"
+                id="biz-start-input"
+                class="input-control w-full text-sm"
+              />
+            </div>
+            <div>
+              <label
+                for="biz-amount-input"
+                class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2"
+                >จำนวนวันทำการ (+/- Business Days)</label
+              >
+              <input
+                type="number"
+                id="biz-amount-input"
+                value="5"
+                min="-60"
+                max="60"
+                class="input-control w-full text-sm"
+              />
+            </div>
+            <div>
+              <label
+                for="biz-country-select"
+                class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2"
+                >ปฏิทินวันหยุดนักขัตฤกษ์</label
+              >
+              <select
+                id="biz-country-select"
+                class="input-control w-full text-sm"
+              >
+                <option value="TH" selected>
+                  ไทย (🇹🇭 Songkran / วันหยุดราชการ)
+                </option>
+                <option value="JP">ญี่ปุ่น (🇯🇵 Golden Week / Equinoxes)</option>
+                <option value="US">สหรัฐอเมริกา (🇺🇸 Federal Holidays)</option>
+                <option value="GB">สหราชอาณาจักร (🇬🇧 Bank Holidays)</option>
+                <option value="SG">สิงคโปร์ (🇸🇬 Public Holidays)</option>
+                <option value="SA">
+                  ซาอุดีอาระเบีย (🇸🇦 Eid & National Days)
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Calculated Result Banner -->
+          <div
+            class="panel-elevated p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-l-4 border-l-[var(--intech-tech-blue)]"
+          >
+            <div>
+              <div
+                class="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]"
+              >
+                Calculated Target Business Date
+              </div>
+              <div
+                id="biz-result-date"
+                class="text-3xl sm:text-4xl font-extrabold font-mono text-[var(--intech-tech-blue)] mt-1"
+              >
+                ...
+              </div>
+            </div>
+            <div
+              id="biz-result-detail"
+              class="text-xs sm:text-sm font-mono text-[var(--text-secondary)]"
+            >
+              ...
+            </div>
+          </div>
+
+          <!-- Step-by-Step Trajectory Timeline Strip -->
+          <div>
+            <div
+              class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2"
+            >
+              Step-by-Step Trajectory Preview
+            </div>
+            <div
+              id="biz-timeline-strip"
+              class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 lg:grid-cols-10 gap-2"
+            ></div>
+          </div>
+
+          <!-- Code Inspector -->
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+              </div>
+              <span class="font-mono text-xs">TypeScript Inspector</span>
+              <button
+                class="copy-code-btn text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
+                data-target="biz-code-snippet"
+              >
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy Snippet</span>
+              </button>
+            </div>
+            <pre class="code-pre"><code id="biz-code-snippet"></code></pre>
+          </div>
+        </div>
+
+        <!-- 3. Panel: TimeZones -->
+        <div
+          class="workbench-panel panel p-6 sm:p-8 space-y-6 hidden"
+          data-panel="timezone"
+        >
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label
+                for="tz-zone-select"
+                class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2"
+                >Target TimeZone (IANA Identifier)</label
+              >
+              <select id="tz-zone-select" class="input-control w-full text-sm">
+                <option value="Asia/Bangkok" selected>
+                  Asia/Bangkok (UTC+07:00)
+                </option>
+                <option value="Asia/Tokyo">Asia/Tokyo (UTC+09:00)</option>
+                <option value="Europe/London">
+                  Europe/London (UTC+00:00 / GMT)
+                </option>
+                <option value="America/New_York">
+                  America/New_York (UTC-05:00 / EST)
+                </option>
+                <option value="America/Los_Angeles">
+                  America/Los_Angeles (UTC-08:00 / PST)
+                </option>
+                <option value="Asia/Dubai">Asia/Dubai (UTC+04:00)</option>
+                <option value="Europe/Paris">
+                  Europe/Paris (UTC+01:00 / CET)
+                </option>
+                <option value="Australia/Sydney">
+                  Australia/Sydney (UTC+10:00 / AEST)
+                </option>
+                <option value="Asia/Singapore">
+                  Asia/Singapore (UTC+08:00)
+                </option>
+                <option value="UTC">UTC (Coordinated Universal Time)</option>
+              </select>
+            </div>
+            <div>
+              <label
+                for="tz-pattern-select"
+                class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2"
+                >Formatting Pattern</label
+              >
+              <select
+                id="tz-pattern-select"
+                class="input-control w-full text-sm"
+              >
+                <option value="YYYY-MM-DD HH:mm:ss" selected>
+                  YYYY-MM-DD HH:mm:ss
+                </option>
+                <option value="YYYY-MM-DD">YYYY-MM-DD (ISO Date)</option>
+                <option value="HH:mm:ss">HH:mm:ss (24-Hour Time)</option>
+                <option value="dddd, MMMM D, YYYY">
+                  dddd, MMMM D, YYYY (Verbose Legal)
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Digital Clock Display Card -->
+          <div
+            class="panel-elevated p-8 sm:p-10 text-center space-y-3 card-interactive"
+          >
+            <div
+              id="tz-clock-display"
+              class="font-mono text-5xl sm:text-7xl font-extrabold tracking-tight text-[var(--intech-tech-blue)]"
+            >
+              00:00:00
+            </div>
+            <div
+              id="tz-full-display"
+              class="font-mono text-xs sm:text-sm text-[var(--text-secondary)]"
+            >
+              Loading instant...
+            </div>
+            <div>
+              <span
+                id="tz-offset-pill"
+                class="badge badge-blue text-xs py-1 px-3"
+                >UTC Offset</span
+              >
+            </div>
+          </div>
+
+          <!-- Code Inspector -->
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+              </div>
+              <span class="font-mono text-xs">TypeScript Inspector</span>
+              <button
+                class="copy-code-btn text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
+                data-target="tz-code-snippet"
+              >
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy Snippet</span>
+              </button>
+            </div>
+            <pre class="code-pre"><code id="tz-code-snippet"></code></pre>
+          </div>
+        </div>
+
+        <!-- 4. Panel: Public Holidays -->
+        <div
+          class="workbench-panel panel p-6 sm:p-8 space-y-6 hidden"
+          data-panel="holidays"
+        >
+          <div
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+          >
+            <div class="flex items-center gap-3">
+              <label
+                for="hol-country-select"
+                class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]"
+                >Select Country:</label
+              >
+              <select id="hol-country-select" class="input-control text-sm">
+                <option value="TH" selected>Thailand (🇹🇭)</option>
+                <option value="JP">Japan (🇯🇵)</option>
+                <option value="US">United States (🇺🇸)</option>
+                <option value="GB">United Kingdom (🇬🇧)</option>
+                <option value="SG">Singapore (🇸🇬)</option>
+                <option value="SA">Saudi Arabia (🇸🇦)</option>
+              </select>
+            </div>
+            <div
+              id="holidays-country-title"
+              class="text-sm font-semibold text-[var(--text-primary)]"
+            >
+              Statutory Holidays 2026
+            </div>
+          </div>
+
+          <!-- Table Container -->
+          <div
+            class="overflow-x-auto rounded-lg border border-[var(--border-subtle)]"
+          >
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr
+                  class="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-elevated)] text-[var(--text-muted)] font-mono text-xs uppercase tracking-wider"
+                >
+                  <th class="py-3 px-4">Date (ISO 8601)</th>
+                  <th class="py-3 px-4">Official Holiday Name</th>
+                  <th class="py-3 px-4">English Translation</th>
+                </tr>
+              </thead>
+              <tbody id="holidays-table-body" class="font-sans"></tbody>
+            </table>
+          </div>
+
+          <!-- Code Inspector -->
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+              </div>
+              <span class="font-mono text-xs">TypeScript Inspector</span>
+              <button
+                class="copy-code-btn text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
+                data-target="holidays-code-snippet"
+              >
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy Snippet</span>
+              </button>
+            </div>
+            <pre class="code-pre"><code id="holidays-code-snippet"></code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Architecture & Enterprise Features Grid -->
       <section id="features" class="space-y-8 pt-8">
         <div class="text-center max-w-2xl mx-auto space-y-2">
           <div class="badge badge-blue">Engine Architecture</div>
@@ -924,7 +864,7 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="panel p-6 space-y-3 card-interactive">
+          <div class="panel p-6 sm:p-7 space-y-3 card-interactive">
             <div
               class="w-10 h-10 rounded-lg bg-[var(--intech-tech-blue)]/15 border border-[var(--intech-tech-blue)]/30 text-[var(--intech-tech-blue)] flex items-center justify-center"
             >
@@ -942,7 +882,7 @@
             </p>
           </div>
 
-          <div class="panel p-6 space-y-3 card-interactive">
+          <div class="panel p-6 sm:p-7 space-y-3 card-interactive">
             <div
               class="w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-[var(--accent-emerald)] flex items-center justify-center"
             >
@@ -959,7 +899,7 @@
             </p>
           </div>
 
-          <div class="panel p-6 space-y-3 card-interactive">
+          <div class="panel p-6 sm:p-7 space-y-3 card-interactive">
             <div
               class="w-10 h-10 rounded-lg bg-amber-500/15 border border-amber-500/30 text-[var(--accent-amber)] flex items-center justify-center"
             >
@@ -997,7 +937,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Group 1: Core Instants & Dates -->
-          <div class="panel p-5 space-y-3 card-interactive">
+          <div class="panel p-6 space-y-3 card-interactive">
             <h3
               class="text-sm font-bold font-mono text-[var(--intech-tech-blue)] flex items-center gap-2"
             >
@@ -1034,7 +974,7 @@
           </div>
 
           <!-- Group 2: Business & Working Days -->
-          <div class="panel p-5 space-y-3 card-interactive">
+          <div class="panel p-6 space-y-3 card-interactive">
             <h3
               class="text-sm font-bold font-mono text-[var(--accent-emerald)] flex items-center gap-2"
             >
@@ -1071,7 +1011,7 @@
           </div>
 
           <!-- Group 3: Multi-Calendar Conversion -->
-          <div class="panel p-5 space-y-3 card-interactive">
+          <div class="panel p-6 space-y-3 card-interactive">
             <h3
               class="text-sm font-bold font-mono text-[var(--accent-amber)] flex items-center gap-2"
             >
@@ -1100,7 +1040,7 @@
           </div>
 
           <!-- Group 4: TimeZone & Formatter -->
-          <div class="panel p-5 space-y-3 card-interactive">
+          <div class="panel p-6 space-y-3 card-interactive">
             <h3
               class="text-sm font-bold font-mono text-[var(--accent-rose)] flex items-center gap-2"
             >
@@ -1218,10 +1158,10 @@
 
     <!-- Production Enterprise Footer -->
     <footer
-      class="border-t border-[var(--border-subtle)] bg-[var(--bg-surface)] py-8 mt-16"
+      class="border-t border-[var(--border-subtle)] bg-[var(--bg-surface)] py-8 mt-20 relative z-10"
     >
       <div
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-secondary)]"
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-secondary)]"
       >
         <div class="flex items-center gap-2">
           <span>&copy; 2026 INTECH Software House.</span>
