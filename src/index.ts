@@ -41,6 +41,14 @@ export {
   subtractSeconds,
 } from "./operations/time-convenience.js";
 
+export {
+  isWeekend,
+  isWeekday,
+  addBusinessDays,
+  subtractBusinessDays,
+  diffInBusinessDays,
+} from "./operations/business-days.js";
+
 export { convertCalendarDate } from "./operations/convert-calendar-date.js";
 
 export {
