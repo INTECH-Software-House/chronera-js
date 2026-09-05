@@ -1,12 +1,3 @@
----
-title: Designing Type-Safe Multi-Calendar Primitives in TypeScript Without 'any'
-published: true
-description: A deep architectural dive into building a zero-dependency, type-safe multi-calendar engine (Thai Buddhist, Japanese Reiwa, Islamic Hijri, Persian, Indian) using strict discriminated unions.
-tags: typescript, javascript, webdev, opensource
-canonical_url: https://intech-software-house.github.io/chronera-js/
-cover_image: https://raw.githubusercontent.com/INTECH-Software-House/chronera-js/main/docs/assets/cover.png
----
-
 Handling dates in JavaScript is notoriously error-prone. While ECMAScript's native `Date` object has well-documented pitfalls—uncontrolled mutability, 0-indexed months, and automatic local-timezone conversions—there is an even larger blind spot in existing libraries like `date-fns`, `dayjs`, and `luxon`: **non-Gregorian calendar systems and regional legal date semantics.**
 
 Global and regional enterprise applications (e.g., banking, fintech, tax compliance, healthcare, public sector, and international travel) frequently operate under official non-Gregorian legal rules:
@@ -123,7 +114,7 @@ function printEraInfo(date: CalendarDate) {
 
 ---
 
-## 3. Mathematical Foundations: The `AbsoluteDay` Pivot ($O(1)$ Conversion)
+## 3. Mathematical Foundations: The `AbsoluteDay` Pivot (O(1) Conversion)
 
 How do you convert a Persian date (`1405-06-14`) to a Thai Buddhist date (`2569-09-05`) without creating a combinatorial matrix of $N \times (N - 1)$ bespoke converters?
 
