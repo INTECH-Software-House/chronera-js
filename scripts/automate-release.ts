@@ -68,14 +68,58 @@ async function updateChangelog(version: string): Promise<string> {
   let content = await readFile(changelogPath, "utf-8");
 
   const today =
-    version === "0.1.3"
-      ? "2026-09-07"
-      : version === "0.1.2"
-        ? "2026-09-06"
-        : "2026-09-05";
+    version === "0.1.5"
+      ? "2026-09-09"
+      : version === "0.1.4"
+        ? "2026-09-08"
+        : version === "0.1.3"
+          ? "2026-09-07"
+          : version === "0.1.2"
+            ? "2026-09-06"
+            : "2026-09-05";
 
   let releaseNotes = "";
-  if (version === "0.1.3") {
+  if (version === "0.1.5") {
+    releaseNotes = `## [${version}] - ${today}
+
+### Added
+
+- **Public Holidays & Statutory Working Days Engine** covering 15 global jurisdictions:
+  - 🇹🇭 Thailand (\`th\`) - Official Bank of Thailand (BOT) financial & statutory holidays.
+  - 🇯🇵 Japan (\`jp\`) - Cabinet Office statutory holidays with Happy Monday system & substitute holidays (Furikae Kyūjitsu).
+  - 🇺🇸 United States (\`us\`) - Federal holidays with Monday uniform holiday observance rules.
+  - 🇬🇧 United Kingdom (\`gb\`) - Bank holidays for England, Wales, Scotland, and Northern Ireland.
+  - 🇩🇪 Germany (\`de\`) - Nationwide statutory holidays with astronomical Computus Easter calculation.
+  - 🇫🇷 France (\`fr\`) - Jours fériés légaux with Easter, Ascension, and Pentecost.
+  - 🇸🇬 Singapore (\`sg\`) - MOM statutory public holidays with Sunday carry-over rule.
+  - 🇭🇰 Hong Kong (\`hk\`) - General holidays with Lunar New Year & Mid-Autumn festival sync.
+  - 🇦🇺 Australia (\`au\`) - National public holidays with substitute day observances.
+  - 🇨🇳 China (\`cn\`) - Official statutory public holidays.
+  - 🇹🇼 Taiwan (\`tw\`) - National statutory holidays.
+  - 🇮🇳 India (\`in\`) - Gazetted central government holidays.
+  - 🇸🇦 Saudi Arabia (\`sa\`) - Official national and religious holiday periods.
+  - 🇦🇪 United Arab Emirates (\`ae\`) - Official public & private sector unified holidays.
+  - 🇮🇷 Iran (\`ir\`) - Solar Hijri national statutory holidays.
+- **Astronomical Easter Computus Engine**: Meeus/Jones/Butcher algorithm for Gregorian Easter and dependent movable feasts.
+- **Islamic Tabular & Umm al-Qura Holiday Rules**: Astronomical calculation for Eid al-Fitr, Eid al-Adha, and Islamic New Year.
+- **Holiday Registry & Custom Engines**:
+  - \`getHolidays(country, year)\`
+  - \`isPublicHoliday(date, country)\`
+  - \`getHolidayDetails(date, country)\`
+  - Polymorphic integration into \`addBusinessDays(date, n, { country })\`, \`subtractBusinessDays\`, and \`diffInBusinessDays\`.
+`;
+  } else if (version === "0.1.4") {
+    releaseNotes = `## [${version}] - ${today}
+
+### Added
+
+- **TimeZone Engine & Cross-Zone Formatting**:
+  - \`formatInTimeZone(instant, timeZone, pattern, options)\`: High-performance deterministic timezone formatter.
+  - \`getTimeZoneOffset(timeZone, instant)\`: Resolves signed minute offset for IANA canonical timezone identifiers.
+  - \`isSameTimeZone(tz1, tz2)\`: IANA timezone alias comparison and canonical resolution.
+- **CLDR TimeZone Database 2026a**: Integrated historical and daylight saving transition rules.
+`;
+  } else if (version === "0.1.3") {
     releaseNotes = `## [${version}] - ${today}
 
 ### Added
@@ -215,11 +259,15 @@ async function main() {
     "git add package.json CHANGELOG.md src/ tests/ scripts/ .github/ artifacts/",
   );
   const releaseTitle =
-    config.version === "0.1.3"
-      ? `v${config.version} - Business & Working Days Helpers`
-      : config.version === "0.1.2"
-        ? `v${config.version} - Time & Instant Helpers`
-        : `v${config.version} - Daily Convenience Helpers`;
+    config.version === "0.1.5"
+      ? `v${config.version} - Public Holidays & Working Days Engine (15 Countries)`
+      : config.version === "0.1.4"
+        ? `v${config.version} - TimeZone Engine & Cross-Zone Formatting`
+        : config.version === "0.1.3"
+          ? `v${config.version} - Business & Working Days Helpers`
+          : config.version === "0.1.2"
+            ? `v${config.version} - Time & Instant Helpers`
+            : `v${config.version} - Daily Convenience Helpers`;
 
   run(`git commit -m "chore(release): ${releaseTitle}"`);
   run(`git tag -a v${config.version} -m "${releaseTitle}"`);
