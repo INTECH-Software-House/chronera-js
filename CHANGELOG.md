@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-09-07
+
+### Added
+
+- **Business & Working Days Convenience Helpers** for enterprise, HR, logistics, and fintech operations:
+  - **Weekend & Weekday Predicates**:
+    - `isWeekend(date)`: Returns `true` if date is Saturday or Sunday.
+    - `isWeekday(date)`: Returns `true` if date is Monday through Friday.
+  - **Business Days Arithmetic**:
+    - `addBusinessDays(date, n)`: Adds business days, skipping Saturdays and Sundays automatically with $O(1)$ weekly fast-path.
+    - `subtractBusinessDays(date, n)`: Subtracts business days, skipping weekends.
+  - **Working Days Difference**:
+    - `diffInBusinessDays(left, right)`: Returns signed count of working days between two dates (`left - right`).
+- **Universal Cross-Calendar Precision**:
+  - Seamless support for `LocalDate` and all supported calendar systems (Thai Buddhist, Japanese Reiwa, Hijri, Persian, etc.).
+
+## [0.1.3] - 2026-09-07
+
+### Added
+
+- **Business & Working Days Convenience Helpers** for enterprise, HR, logistics, and fintech operations:
+  - **Weekend & Weekday Predicates**:
+    - `isWeekend(date)`: Returns `true` if date is Saturday or Sunday.
+    - `isWeekday(date)`: Returns `true` if date is Monday through Friday.
+  - **Business Days Arithmetic**:
+    - `addBusinessDays(date, n)`: Adds business days, skipping Saturdays and Sundays automatically with $O(1)$ weekly fast-path.
+    - `subtractBusinessDays(date, n)`: Subtracts business days, skipping weekends.
+  - **Working Days Difference**:
+    - `diffInBusinessDays(left, right)`: Returns signed count of working days between two dates (`left - right`).
+- **Universal Cross-Calendar Precision**:
+  - Seamless support for `LocalDate` and all supported calendar systems (Thai Buddhist, Japanese Reiwa, Hijri, Persian, etc.).
+
 ## [0.1.2] - 2026-09-06
 
 ### Added

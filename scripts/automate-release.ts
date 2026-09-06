@@ -211,9 +211,7 @@ async function main() {
   run("pnpm pack:check");
 
   console.log("\n--- Phase 4: Git Version Control ---");
-  run(
-    "git add package.json CHANGELOG.md src/ tests/ scripts/ .github/ artifacts/",
-  );
+  run("git add package.json CHANGELOG.md src/ tests/ scripts/ .github/");
   const releaseTitle =
     config.version === "0.1.3"
       ? `v${config.version} - Business & Working Days Helpers`
