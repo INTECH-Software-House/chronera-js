@@ -51,6 +51,16 @@ export {
 } from "./operations/business-days.js";
 
 export {
+  isBusinessHour,
+  addBusinessHours,
+  subtractBusinessHours,
+  diffInBusinessHours,
+  nextBusinessShift,
+  startOfBusinessDay,
+  endOfBusinessDay,
+} from "./operations/business-hours.js";
+
+export {
   isPublicHoliday,
   getPublicHolidays,
   getHolidayDetails,
@@ -93,6 +103,14 @@ export type {
 } from "./holidays/types.js";
 
 export type { BusinessDaysOptions } from "./operations/business-days.js";
+export type {
+  ShiftWindow,
+  BusinessSchedule,
+  NormalizedShift,
+  BusinessTimeInput,
+  NextBusinessShiftOptions,
+  NextBusinessShiftResult,
+} from "./operations/business-hours.js";
 
 export {
   formatInTimeZone,

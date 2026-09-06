@@ -31,6 +31,8 @@ describe("package exports", () => {
     expect(typeof Root.getHolidayDetails).toBe("function");
     expect(typeof Root.isBusinessDay).toBe("function");
     expect(typeof Root.addBusinessDays).toBe("function");
+    expect(typeof Root.addBusinessHours).toBe("function");
+    expect(typeof Root.diffInBusinessHours).toBe("function");
   });
 
   it("exports calendar symbols from ./calendar", () => {

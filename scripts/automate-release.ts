@@ -68,18 +68,36 @@ async function updateChangelog(version: string): Promise<string> {
   let content = await readFile(changelogPath, "utf-8");
 
   const today =
-    version === "0.1.5"
-      ? "2026-09-09"
-      : version === "0.1.4"
-        ? "2026-09-08"
-        : version === "0.1.3"
-          ? "2026-09-07"
-          : version === "0.1.2"
-            ? "2026-09-06"
-            : "2026-09-05";
+    version === "0.1.6"
+      ? "2026-09-10"
+      : version === "0.1.5"
+        ? "2026-09-09"
+        : version === "0.1.4"
+          ? "2026-09-08"
+          : version === "0.1.3"
+            ? "2026-09-07"
+            : version === "0.1.2"
+              ? "2026-09-06"
+              : "2026-09-05";
 
   let releaseNotes = "";
-  if (version === "0.1.5") {
+  if (version === "0.1.6") {
+    releaseNotes = `## [${version}] - ${today}
+
+### Added
+
+- **Business Hours & Shift SLA Engine**:
+  - \`isBusinessHour(time, schedule?)\`: Evaluates whether a timestamp falls within an active working shift, excluding non-working days, statutory holidays, weekends, and lunch breaks.
+  - \`addBusinessHours(time, hours, schedule?)\`: High-precision SLA deadline resolution. Automatically rolls off-hours and lunch arrivals to the next active shift start. Supports fractional hours (e.g. \`2.5\` hrs).
+  - \`subtractBusinessHours(time, hours, schedule?)\`: Symmetrical backward business hours subtraction across shifts, weekends, and holidays.
+  - \`diffInBusinessHours(left, right, schedule?)\`: Computes exact signed working duration elapsed between two timestamps, ignoring all non-working periods.
+  - \`nextBusinessShift(time, schedule?, options?)\`: Discovers upcoming or currently active shift windows.
+  - \`startOfBusinessDay(date, schedule?)\` & \`endOfBusinessDay(date, schedule?)\`: Resolves earliest opening and latest closing boundaries.
+- **Polymorphic Time Input Preservation**:
+  - Fully supports \`LocalDateTime\`, \`Instant\`, JavaScript \`Date\`, and \`LocalDate\`.
+  - Seamless integration with v0.1.4 TimeZone Engine (using \`timeZone\`) and v0.1.5 Public Holidays (using \`country: "th"\` etc.).
+`;
+  } else if (version === "0.1.5") {
     releaseNotes = `## [${version}] - ${today}
 
 ### Added
@@ -259,15 +277,17 @@ async function main() {
     "git add package.json CHANGELOG.md src/ tests/ scripts/ .github/ artifacts/",
   );
   const releaseTitle =
-    config.version === "0.1.5"
-      ? `v${config.version} - Public Holidays & Working Days Engine (15 Countries)`
-      : config.version === "0.1.4"
-        ? `v${config.version} - TimeZone Engine & Cross-Zone Formatting`
-        : config.version === "0.1.3"
-          ? `v${config.version} - Business & Working Days Helpers`
-          : config.version === "0.1.2"
-            ? `v${config.version} - Time & Instant Helpers`
-            : `v${config.version} - Daily Convenience Helpers`;
+    config.version === "0.1.6"
+      ? `v${config.version} - Business Hours & Shift SLA Engine`
+      : config.version === "0.1.5"
+        ? `v${config.version} - Public Holidays & Working Days Engine (15 Countries)`
+        : config.version === "0.1.4"
+          ? `v${config.version} - TimeZone Engine & Cross-Zone Formatting`
+          : config.version === "0.1.3"
+            ? `v${config.version} - Business & Working Days Helpers`
+            : config.version === "0.1.2"
+              ? `v${config.version} - Time & Instant Helpers`
+              : `v${config.version} - Daily Convenience Helpers`;
 
   run(`git commit -m "chore(release): ${releaseTitle}"`);
   run(`git tag -a v${config.version} -m "${releaseTitle}"`);
