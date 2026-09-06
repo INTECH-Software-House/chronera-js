@@ -67,10 +67,33 @@ async function updateChangelog(version: string): Promise<string> {
   const changelogPath = join(process.cwd(), "CHANGELOG.md");
   let content = await readFile(changelogPath, "utf-8");
 
-  const today = version === "0.1.2" ? "2026-09-06" : "2026-09-05";
-  const releaseNotes =
-    version === "0.1.2"
-      ? `## [${version}] - ${today}
+  const today =
+    version === "0.1.3"
+      ? "2026-09-07"
+      : version === "0.1.2"
+        ? "2026-09-06"
+        : "2026-09-05";
+
+  let releaseNotes = "";
+  if (version === "0.1.3") {
+    releaseNotes = `## [${version}] - ${today}
+
+### Added
+
+- **Business & Working Days Convenience Helpers** for enterprise, HR, logistics, and fintech operations:
+  - **Weekend & Weekday Predicates**:
+    - \`isWeekend(date)\`: Returns \`true\` if date is Saturday or Sunday.
+    - \`isWeekday(date)\`: Returns \`true\` if date is Monday through Friday.
+  - **Business Days Arithmetic**:
+    - \`addBusinessDays(date, n)\`: Adds business days, skipping Saturdays and Sundays automatically with $O(1)$ weekly fast-path.
+    - \`subtractBusinessDays(date, n)\`: Subtracts business days, skipping weekends.
+  - **Working Days Difference**:
+    - \`diffInBusinessDays(left, right)\`: Returns signed count of working days between two dates (\`left - right\`).
+- **Universal Cross-Calendar Precision**:
+  - Seamless support for \`LocalDate\` and all supported calendar systems (Thai Buddhist, Japanese Reiwa, Hijri, Persian, etc.).
+`;
+  } else if (version === "0.1.2") {
+    releaseNotes = `## [${version}] - ${today}
 
 ### Added
 
@@ -83,8 +106,9 @@ async function updateChangelog(version: string): Promise<string> {
     - \`addSeconds(target, n)\` / \`subtractSeconds(target, n)\`
     - Seamless polymorphic support for \`LocalTime\`, \`LocalDateTime\`, and \`Instant\` with automatic calendar-date rollover across midnights and leap days.
 - **Exported Types**: \`TimeOrDateTimeOrInstant\` in root barrel.
-`
-      : `## [${version}] - ${today}
+`;
+  } else {
+    releaseNotes = `## [${version}] - ${today}
 
 ### Added
 
@@ -103,6 +127,7 @@ async function updateChangelog(version: string): Promise<string> {
     - 🌐 Gregorian (\`gregory\`) and ISO 8601 (\`iso8601\`).
 - Exported convenience types \`DateOrCalendarDate\` and \`IntervalInclusivity\` from root barrel.
 `;
+  }
 
   if (content.includes("## [Unreleased]")) {
     content = content.replace(
@@ -190,9 +215,11 @@ async function main() {
     "git add package.json CHANGELOG.md src/ tests/ scripts/ .github/ artifacts/",
   );
   const releaseTitle =
-    config.version === "0.1.2"
-      ? `v${config.version} - Time & Instant Helpers`
-      : `v${config.version} - Daily Convenience Helpers`;
+    config.version === "0.1.3"
+      ? `v${config.version} - Business & Working Days Helpers`
+      : config.version === "0.1.2"
+        ? `v${config.version} - Time & Instant Helpers`
+        : `v${config.version} - Daily Convenience Helpers`;
 
   run(`git commit -m "chore(release): ${releaseTitle}"`);
   run(`git tag -a v${config.version} -m "${releaseTitle}"`);
