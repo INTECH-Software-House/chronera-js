@@ -21,6 +21,9 @@ describe("package exports", () => {
     expect(typeof Root.convertCalendarDate).toBe("function");
     expect(typeof Root.localDate).toBe("function");
     expect(typeof Root.instantFromDate).toBe("function");
+    expect(typeof Root.formatInTimeZone).toBe("function");
+    expect(typeof Root.getTimeZoneOffset).toBe("function");
+    expect(typeof Root.isSameTimeZone).toBe("function");
   });
 
   it("exports calendar symbols from ./calendar", () => {
