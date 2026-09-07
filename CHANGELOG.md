@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-09-08
+
+### Added
+
+- **TimeZone Engine & Cross-Zone Formatting Operations**:
+  - `formatInTimeZone(date, timeZone, pattern, options?)`: Format any date, instant, or ISO string in any IANA time zone (e.g. `America/New_York`, `Asia/Tokyo`, `Europe/London`) with full LDML pattern tokens.
+  - `getTimeZoneOffset(date, timeZone)`: Returns exact offset string (e.g. `"+07:00"`, `"-05:00"`) and millisecond offset with complete Daylight Saving Time (DST) transition fidelity.
+  - `isSameTimeZone(tz1, tz2)`: Compares two IANA timezone identifiers for canonical or behavioral equality.
+- **Pattern Tokens Expansion**:
+  - Full timezone token support in pattern formatter: `z`, `zzzz`, `Z`, `ZZZZ`, `xxx`, `X`, `v`, `vvvv`, `O`, `OOOO`.
+- **Exported Types**:
+  - `FormatInTimeZoneOptions`, `TimeZoneOffsetResult`.
+
 ## [0.1.3] - 2026-09-07
 
 ### Added
