@@ -68,14 +68,30 @@ async function updateChangelog(version: string): Promise<string> {
   let content = await readFile(changelogPath, "utf-8");
 
   const today =
-    version === "0.1.3"
-      ? "2026-09-07"
-      : version === "0.1.2"
-        ? "2026-09-06"
-        : "2026-09-05";
+    version === "0.1.4"
+      ? "2026-09-08"
+      : version === "0.1.3"
+        ? "2026-09-07"
+        : version === "0.1.2"
+          ? "2026-09-06"
+          : "2026-09-05";
 
   let releaseNotes = "";
-  if (version === "0.1.3") {
+  if (version === "0.1.4") {
+    releaseNotes = `## [${version}] - ${today}
+
+### Added
+
+- **TimeZone Engine & Cross-Zone Formatting Operations**:
+  - \`formatInTimeZone(date, timeZone, pattern, options?)\`: Format any date, instant, or ISO string in any IANA time zone (e.g. \`America/New_York\`, \`Asia/Tokyo\`, \`Europe/London\`) with full LDML pattern tokens.
+  - \`getTimeZoneOffset(date, timeZone)\`: Returns exact offset string (e.g. \`"+07:00"\`, \`"-05:00"\`) and millisecond offset with complete Daylight Saving Time (DST) transition fidelity.
+  - \`isSameTimeZone(tz1, tz2)\`: Compares two IANA timezone identifiers for canonical or behavioral equality.
+- **Pattern Tokens Expansion**:
+  - Full timezone token support in pattern formatter: \`z\`, \`zzzz\`, \`Z\`, \`ZZZZ\`, \`xxx\`, \`X\`, \`v\`, \`vvvv\`, \`O\`, \`OOOO\`.
+- **Exported Types**:
+  - \`FormatInTimeZoneOptions\`, \`TimeZoneOffsetResult\`.
+`;
+  } else if (version === "0.1.3") {
     releaseNotes = `## [${version}] - ${today}
 
 ### Added
@@ -213,11 +229,13 @@ async function main() {
   console.log("\n--- Phase 4: Git Version Control ---");
   run("git add package.json CHANGELOG.md src/ tests/ scripts/ .github/");
   const releaseTitle =
-    config.version === "0.1.3"
-      ? `v${config.version} - Business & Working Days Helpers`
-      : config.version === "0.1.2"
-        ? `v${config.version} - Time & Instant Helpers`
-        : `v${config.version} - Daily Convenience Helpers`;
+    config.version === "0.1.4"
+      ? `v${config.version} - TimeZone Engine & Cross-Zone Formatting`
+      : config.version === "0.1.3"
+        ? `v${config.version} - Business & Working Days Helpers`
+        : config.version === "0.1.2"
+          ? `v${config.version} - Time & Instant Helpers`
+          : `v${config.version} - Daily Convenience Helpers`;
 
   run(`git commit -m "chore(release): ${releaseTitle}"`);
   run(`git tag -a v${config.version} -m "${releaseTitle}"`);
@@ -237,7 +255,7 @@ async function main() {
   console.log("\n--- Phase 7: NPM Registry Publication ---");
   try {
     run(
-      `npm publish ./artifacts/chronera.tgz --access public --tag latest`,
+      `node scripts/publish-with-webauth.mjs ./artifacts/intech-software-chronera-${config.version}.tgz`,
       config.dryRun,
     );
   } catch {
