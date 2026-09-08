@@ -68,16 +68,34 @@ async function updateChangelog(version: string): Promise<string> {
   let content = await readFile(changelogPath, "utf-8");
 
   const today =
-    version === "0.1.4"
-      ? "2026-09-08"
-      : version === "0.1.3"
-        ? "2026-09-07"
-        : version === "0.1.2"
-          ? "2026-09-06"
-          : "2026-09-05";
+    version === "0.1.5"
+      ? "2026-09-09"
+      : version === "0.1.4"
+        ? "2026-09-08"
+        : version === "0.1.3"
+          ? "2026-09-07"
+          : version === "0.1.2"
+            ? "2026-09-06"
+            : "2026-09-05";
 
   let releaseNotes = "";
-  if (version === "0.1.4") {
+  if (version === "0.1.5") {
+    releaseNotes = `## [${version}] - ${today}
+
+### Added
+
+- **Public Holidays & Statutory Working Days Engine (15 Countries)**:
+  - \`getPublicHolidays(year, country)\`: Returns all statutory public holidays for a given year and country code.
+  - \`isPublicHoliday(date, country)\`: Returns \`true\` if the given date is a statutory public holiday.
+  - \`isWorkingDay(date, country)\`: Returns \`true\` if the date is a working day (not weekend, not holiday).
+  - \`addWorkingDays(date, n, country)\`: Adds working days skipping weekends AND public holidays.
+  - \`subtractWorkingDays(date, n, country)\`: Subtracts working days skipping weekends AND public holidays.
+  - \`diffInWorkingDays(left, right, country)\`: Returns signed count of actual working days between two dates.
+- **15 Countries Supported**: 🇹🇭 Thailand, 🇯🇵 Japan, 🇺🇸 USA, 🇬🇧 UK, 🇩🇪 Germany, 🇫🇷 France, 🇸🇬 Singapore, 🇭🇰 Hong Kong, 🇨🇳 China, 🇮🇳 India, 🇦🇺 Australia, 🇸🇦 Saudi Arabia, 🇦🇪 UAE, 🇮🇷 Iran, 🇹🇼 Taiwan.
+- **Holiday Rule Engine**: Fixed-date rules, floating rules (e.g. Thanksgiving), Easter-based rules, Hijri-based rules with full DST and leap-year awareness.
+- **Exported Types**: \`CountryCode\`, \`PublicHoliday\`, \`HolidayRule\`, \`HolidayRegistry\`.
+`;
+  } else if (version === "0.1.4") {
     releaseNotes = `## [${version}] - ${today}
 
 ### Added
@@ -229,13 +247,15 @@ async function main() {
   console.log("\n--- Phase 4: Git Version Control ---");
   run("git add package.json CHANGELOG.md src/ tests/ scripts/ .github/");
   const releaseTitle =
-    config.version === "0.1.4"
-      ? `v${config.version} - TimeZone Engine & Cross-Zone Formatting`
-      : config.version === "0.1.3"
-        ? `v${config.version} - Business & Working Days Helpers`
-        : config.version === "0.1.2"
-          ? `v${config.version} - Time & Instant Helpers`
-          : `v${config.version} - Daily Convenience Helpers`;
+    config.version === "0.1.5"
+      ? `v${config.version} - Public Holidays & Statutory Working Days (15 Countries)`
+      : config.version === "0.1.4"
+        ? `v${config.version} - TimeZone Engine & Cross-Zone Formatting`
+        : config.version === "0.1.3"
+          ? `v${config.version} - Business & Working Days Helpers`
+          : config.version === "0.1.2"
+            ? `v${config.version} - Time & Instant Helpers`
+            : `v${config.version} - Daily Convenience Helpers`;
 
   run(`git commit -m "chore(release): ${releaseTitle}"`);
   run(`git tag -a v${config.version} -m "${releaseTitle}"`);
