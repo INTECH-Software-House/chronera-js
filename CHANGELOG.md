@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-09-09
+
+### Added
+
+- **Public Holidays & Statutory Working Days Engine (15 Countries)**:
+  - `getPublicHolidays(year, country)`: Returns all statutory public holidays for a given year and country code.
+  - `isPublicHoliday(date, country)`: Returns `true` if the given date is a statutory public holiday.
+  - `isWorkingDay(date, country)`: Returns `true` if the date is a working day (not weekend, not holiday).
+  - `addWorkingDays(date, n, country)`: Adds working days skipping weekends AND public holidays.
+  - `subtractWorkingDays(date, n, country)`: Subtracts working days skipping weekends AND public holidays.
+  - `diffInWorkingDays(left, right, country)`: Returns signed count of actual working days between two dates.
+- **15 Countries Supported**: 🇹🇭 Thailand, 🇯🇵 Japan, 🇺🇸 USA, 🇬🇧 UK, 🇩🇪 Germany, 🇫🇷 France, 🇸🇬 Singapore, 🇭🇰 Hong Kong, 🇨🇳 China, 🇮🇳 India, 🇦🇺 Australia, 🇸🇦 Saudi Arabia, 🇦🇪 UAE, 🇮🇷 Iran, 🇹🇼 Taiwan.
+- **Holiday Rule Engine**: Fixed-date rules, floating rules (e.g. Thanksgiving), Easter-based rules, Hijri-based rules with full DST and leap-year awareness.
+- **Exported Types**: `CountryCode`, `PublicHoliday`, `HolidayRule`, `HolidayRegistry`.
+
 ## [0.1.4] - 2026-09-08
 
 ### Added
