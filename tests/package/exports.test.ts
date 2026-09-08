@@ -4,6 +4,7 @@ import * as Root from "../../dist/index.js";
 import * as Calendar from "../../dist/calendar/index.js";
 import * as Format from "../../dist/format/index.js";
 import * as Parse from "../../dist/parse/index.js";
+import * as Holidays from "../../dist/holidays/index.js";
 
 describe("package exports", () => {
   it("package.json defines expected subpaths", async () => {
@@ -12,6 +13,7 @@ describe("package exports", () => {
     expect(pkg.exports["./calendar"]).toBeDefined();
     expect(pkg.exports["./format"]).toBeDefined();
     expect(pkg.exports["./parse"]).toBeDefined();
+    expect(pkg.exports["./holidays"]).toBeDefined();
   });
 
   it("exports all expected symbols from root", () => {
@@ -24,6 +26,11 @@ describe("package exports", () => {
     expect(typeof Root.formatInTimeZone).toBe("function");
     expect(typeof Root.getTimeZoneOffset).toBe("function");
     expect(typeof Root.isSameTimeZone).toBe("function");
+    expect(typeof Root.isPublicHoliday).toBe("function");
+    expect(typeof Root.getPublicHolidays).toBe("function");
+    expect(typeof Root.getHolidayDetails).toBe("function");
+    expect(typeof Root.isBusinessDay).toBe("function");
+    expect(typeof Root.addBusinessDays).toBe("function");
   });
 
   it("exports calendar symbols from ./calendar", () => {
@@ -44,5 +51,13 @@ describe("package exports", () => {
     expect(typeof Parse.parseInstant).toBe("function");
     expect(typeof Parse.safeParseLocalDate).toBe("function");
     expect(typeof Parse.safeParseInstant).toBe("function");
+  });
+
+  it("exports holidays symbols from ./holidays", () => {
+    expect(typeof Holidays.getHolidayCalendar).toBe("function");
+    expect(typeof Holidays.resolveAnnualHolidays).toBe("function");
+    expect(typeof Holidays.calculateEasterSunday).toBe("function");
+    expect(typeof Holidays.thailandHolidays).toBe("object");
+    expect(typeof Holidays.japanHolidays).toBe("object");
   });
 });

@@ -32,3 +32,5 @@ export function localDate(year: number, month: number, day: number): LocalDate {
     day,
   };
 }
+
+export const createLocalDate = localDate;

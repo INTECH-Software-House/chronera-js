@@ -53,6 +53,10 @@
     "./parse": {
       "types": "./dist/parse/index.d.ts",
       "import": "./dist/parse/index.js"
+    },
+    "./holidays": {
+      "types": "./dist/holidays/index.d.ts",
+      "import": "./dist/holidays/index.js"
     }
   },
   "files": [
@@ -124,6 +128,11 @@
     {
       "name": "Parse (@intech-software/chronera/parse)",
       "path": "dist/parse/index.js",
+      "limit": "10 KB"
+    },
+    {
+      "name": "Holidays (@intech-software/chronera/holidays)",
+      "path": "dist/holidays/index.js",
       "limit": "10 KB"
     }
   ],
