@@ -68,18 +68,35 @@ async function updateChangelog(version: string): Promise<string> {
   let content = await readFile(changelogPath, "utf-8");
 
   const today =
-    version === "0.1.5"
-      ? "2026-09-09"
-      : version === "0.1.4"
-        ? "2026-09-08"
-        : version === "0.1.3"
-          ? "2026-09-07"
-          : version === "0.1.2"
-            ? "2026-09-06"
-            : "2026-09-05";
+    version === "0.1.6"
+      ? "2026-09-11"
+      : version === "0.1.5"
+        ? "2026-09-09"
+        : version === "0.1.4"
+          ? "2026-09-08"
+          : version === "0.1.3"
+            ? "2026-09-07"
+            : version === "0.1.2"
+              ? "2026-09-06"
+              : "2026-09-05";
 
   let releaseNotes = "";
-  if (version === "0.1.5") {
+  if (version === "0.1.6") {
+    releaseNotes = `## [${version}] - ${today}
+
+### Added
+
+- **Business Hours & Shift SLA Engine**:
+  - \`isWithinBusinessHours(instant, schedule)\`: Returns \`true\` if a given instant falls within configured business hours for a timezone-aware schedule.
+  - \`addBusinessHours(instant, n, schedule)\`: Adds business hours to an instant, skipping non-working periods (nights, weekends, holidays).
+  - \`subtractBusinessHours(instant, n, schedule)\`: Subtracts business hours from an instant, skipping non-working periods.
+  - \`diffInBusinessHours(start, end, schedule)\`: Returns the signed count of business hours between two instants.
+  - \`getNextBusinessOpen(instant, schedule)\`: Returns the next business open time from a given instant.
+  - \`getNextBusinessClose(instant, schedule)\`: Returns the next business close time from a given instant.
+- **Shift-Aware SLA Tracking**: Configurable work schedules with multi-shift support, per-day overrides, timezone awareness, and public holiday integration.
+- **Exported Types**: \`BusinessHoursSchedule\`, \`ShiftDefinition\`, \`BusinessHoursResult\`.
+`;
+  } else if (version === "0.1.5") {
     releaseNotes = `## [${version}] - ${today}
 
 ### Added
@@ -247,15 +264,17 @@ async function main() {
   console.log("\n--- Phase 4: Git Version Control ---");
   run("git add package.json CHANGELOG.md src/ tests/ scripts/ .github/");
   const releaseTitle =
-    config.version === "0.1.5"
-      ? `v${config.version} - Public Holidays & Statutory Working Days (15 Countries)`
-      : config.version === "0.1.4"
-        ? `v${config.version} - TimeZone Engine & Cross-Zone Formatting`
-        : config.version === "0.1.3"
-          ? `v${config.version} - Business & Working Days Helpers`
-          : config.version === "0.1.2"
-            ? `v${config.version} - Time & Instant Helpers`
-            : `v${config.version} - Daily Convenience Helpers`;
+    config.version === "0.1.6"
+      ? `v${config.version} - Business Hours & Shift SLA Engine`
+      : config.version === "0.1.5"
+        ? `v${config.version} - Public Holidays & Statutory Working Days (15 Countries)`
+        : config.version === "0.1.4"
+          ? `v${config.version} - TimeZone Engine & Cross-Zone Formatting`
+          : config.version === "0.1.3"
+            ? `v${config.version} - Business & Working Days Helpers`
+            : config.version === "0.1.2"
+              ? `v${config.version} - Time & Instant Helpers`
+              : `v${config.version} - Daily Convenience Helpers`;
 
   run(`git commit -m "chore(release): ${releaseTitle}"`);
   run(`git tag -a v${config.version} -m "${releaseTitle}"`);
