@@ -1,6 +1,54 @@
 export { createChronera } from "./create-chronera.js";
 
 export {
+  parseNaturalDate,
+  safeParseNaturalDate,
+  parseNaturalDateDebug,
+} from "./operations/natural-language.js";
+
+export type {
+  ParseNaturalDateOptions,
+  ParseNaturalDateResult,
+} from "./operations/natural-language.js";
+
+export {
+  calculateAge,
+  nextBirthday,
+  daysUntilBirthday,
+  isBirthday,
+  isMilestoneAge,
+  countdown,
+  timeElapsed,
+} from "./operations/age-countdown.js";
+
+export type {
+  AgeResult,
+  CountdownResult,
+  ElapsedResult,
+} from "./operations/age-countdown.js";
+
+export {
+  bucketDates,
+  bucketByDay,
+  bucketByWeek,
+  bucketByMonth,
+  bucketByQuarter,
+  bucketByYear,
+  histogram,
+  sortDates,
+  minDate,
+  maxDate,
+  nearestDate,
+  uniqueDates,
+} from "./operations/time-series.js";
+
+export type {
+  BucketUnit,
+  BucketKey,
+  HistogramEntry,
+} from "./operations/time-series.js";
+
+export {
   compareInstants,
   compareLocalDates,
   sameAbsoluteDate,
