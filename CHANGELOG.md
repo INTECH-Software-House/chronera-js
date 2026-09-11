@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-09-11
+
+### Added
+
+- **Business Hours & Shift SLA Engine**:
+  - `isWithinBusinessHours(instant, schedule)`: Returns `true` if a given instant falls within configured business hours for a timezone-aware schedule.
+  - `addBusinessHours(instant, n, schedule)`: Adds business hours to an instant, skipping non-working periods (nights, weekends, holidays).
+  - `subtractBusinessHours(instant, n, schedule)`: Subtracts business hours from an instant, skipping non-working periods.
+  - `diffInBusinessHours(start, end, schedule)`: Returns the signed count of business hours between two instants.
+  - `getNextBusinessOpen(instant, schedule)`: Returns the next business open time from a given instant.
+  - `getNextBusinessClose(instant, schedule)`: Returns the next business close time from a given instant.
+- **Shift-Aware SLA Tracking**: Configurable work schedules with multi-shift support, per-day overrides, timezone awareness, and public holiday integration.
+- **Exported Types**: `BusinessHoursSchedule`, `ShiftDefinition`, `BusinessHoursResult`.
+
 ## [0.1.5] - 2026-09-09
 
 ### Added
