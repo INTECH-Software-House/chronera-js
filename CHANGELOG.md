@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7] - 2026-09-17
+
+### Added
+
+- **Date Range & Interval Engine**:
+  - `rangeContains(range, date)`: Returns `true` if a date falls within a DateRange (respects inclusivity).
+  - `rangeOverlaps(a, b)`: Returns `true` if two ranges overlap.
+  - `rangeIntersection(a, b)`: Returns the intersection of two ranges, or `null` if none.
+  - `rangeUnion(a, b)`: Returns the union of two ranges.
+  - `rangeLengthInDays(range)`: Returns the number of days in a range.
+  - `eachDayOfInterval(start, end)`: Returns every date in an interval as an array.
+  - `eachWeekOfInterval(start, end)`: Returns the first day of each week in an interval.
+  - `eachMonthOfInterval(start, end)`: Returns the first day of each month in an interval.
+  - `splitByDay/splitByWeek/splitByMonth(start, end)`: Splits an interval into sub-ranges.
+- **Duration & Period Engine**:
+  - `parseDuration(iso)`: Parses ISO 8601 duration strings (e.g. `"P1Y2M3DT4H"`).
+  - `durationToISO(dur)`: Serializes a Duration to ISO 8601 string.
+  - `durationToHuman(dur, locale)`: Human-readable duration in 8 locales (en, th, ja, zh, ko, fr, de, ar).
+  - `addDuration/subtractDuration(date, dur)`: Date arithmetic using Duration objects.
+  - `diffAsDuration(start, end)`: Returns the difference between two dates as a Duration.
+  - `addDurations/scaleDuration/durationTotalDays`: Duration math utilities.
+- **Recurring Schedule Engine**:
+  - `recur(startDate).every(n).weeks().on(['monday','friday']).until(end).next(10)`: Fluent recurring schedule builder.
+  - `getOccurrences(startDate, rule)`: Returns all occurrences matching a RecurrenceRule.
+  - `isOccurrence(date, startDate, rule)`: Returns `true` if a date matches a recurrence pattern.
+  - Supports daily, weekly, monthly, and yearly frequencies with interval, daysOfWeek, until, and count options.
+- **Exported Types**: `RecurrenceFrequency`, `DayOfWeek`, `RecurrenceRule`.
+
 ## [0.1.6] - 2026-09-11
 
 ### Added

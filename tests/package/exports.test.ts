@@ -33,6 +33,48 @@ describe("package exports", () => {
     expect(typeof Root.addBusinessDays).toBe("function");
     expect(typeof Root.addBusinessHours).toBe("function");
     expect(typeof Root.diffInBusinessHours).toBe("function");
+    // v0.1.7 — interval operations
+    expect(typeof Root.rangeContains).toBe("function");
+    expect(typeof Root.rangeOverlaps).toBe("function");
+    expect(typeof Root.rangeIntersection).toBe("function");
+    expect(typeof Root.rangeUnion).toBe("function");
+    expect(typeof Root.rangeLengthInDays).toBe("function");
+    expect(typeof Root.eachDayOfInterval).toBe("function");
+    expect(typeof Root.eachWeekOfInterval).toBe("function");
+    expect(typeof Root.eachMonthOfInterval).toBe("function");
+    expect(typeof Root.splitByDay).toBe("function");
+    expect(typeof Root.splitByWeek).toBe("function");
+    expect(typeof Root.splitByMonth).toBe("function");
+    // v0.1.7 — duration operations
+    expect(typeof Root.parseDuration).toBe("function");
+    expect(typeof Root.durationToISO).toBe("function");
+    expect(typeof Root.durationToHuman).toBe("function");
+    expect(typeof Root.addDuration).toBe("function");
+    expect(typeof Root.subtractDuration).toBe("function");
+    expect(typeof Root.diffAsDuration).toBe("function");
+    expect(typeof Root.addDurations).toBe("function");
+    expect(typeof Root.scaleDuration).toBe("function");
+    expect(typeof Root.durationTotalDays).toBe("function");
+    // v0.1.7 — recurrence engine
+    expect(typeof Root.recur).toBe("function");
+    expect(typeof Root.getOccurrences).toBe("function");
+    expect(typeof Root.isOccurrence).toBe("function");
+    // v0.1.8 — natural language, age & countdown, time-series
+    expect(typeof Root.parseNaturalDate).toBe("function");
+    expect(typeof Root.safeParseNaturalDate).toBe("function");
+    expect(typeof Root.calculateAge).toBe("function");
+    expect(typeof Root.nextBirthday).toBe("function");
+    expect(typeof Root.daysUntilBirthday).toBe("function");
+    expect(typeof Root.isBirthday).toBe("function");
+    expect(typeof Root.countdown).toBe("function");
+    expect(typeof Root.timeElapsed).toBe("function");
+    expect(typeof Root.bucketDates).toBe("function");
+    expect(typeof Root.bucketByDay).toBe("function");
+    expect(typeof Root.bucketByMonth).toBe("function");
+    expect(typeof Root.histogram).toBe("function");
+    expect(typeof Root.sortDates).toBe("function");
+    expect(typeof Root.minDate).toBe("function");
+    expect(typeof Root.maxDate).toBe("function");
   });
 
   it("exports calendar symbols from ./calendar", () => {

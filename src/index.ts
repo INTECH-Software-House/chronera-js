@@ -262,6 +262,47 @@ export {
   ChroneraUnsupportedError,
 } from "./errors/index.js";
 
+export {
+  rangeContains,
+  rangeOverlaps,
+  rangeIntersection,
+  rangeUnion,
+  rangeLengthInDays,
+  eachDayOfInterval,
+  eachWeekOfInterval,
+  eachMonthOfInterval,
+  splitByDay,
+  splitByWeek,
+  splitByMonth,
+} from "./operations/interval.js";
+
+export {
+  parseDuration,
+  durationToISO,
+  durationToHuman,
+  addDuration,
+  subtractDuration,
+  diffAsDuration,
+  addDurations,
+  scaleDuration,
+  durationTotalDays,
+} from "./operations/duration-ops.js";
+
+export {
+  recur,
+  getOccurrences,
+  isOccurrence,
+} from "./operations/recurrence.js";
+
+export type {
+  RecurrenceFrequency,
+  DayOfWeek,
+  RecurrenceRule,
+  RecurrenceBuilder,
+  FrequencySelector,
+  RecurrenceRuleBuilder,
+} from "./operations/recurrence.js";
+
 export type {
   BuiltInCalendarId,
   CalendarPlugin,
