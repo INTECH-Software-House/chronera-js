@@ -69,7 +69,7 @@ async function updateChangelog(version: string): Promise<string> {
 
   const today =
     version === "0.1.7"
-      ? "2026-09-12"
+      ? "2026-09-17"
       : version === "0.1.6"
         ? "2026-09-11"
         : version === "0.1.5"
