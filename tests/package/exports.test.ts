@@ -75,6 +75,22 @@ describe("package exports", () => {
     expect(typeof Root.sortDates).toBe("function");
     expect(typeof Root.minDate).toBe("function");
     expect(typeof Root.maxDate).toBe("function");
+    // v0.1.9 — Cron, Calendar Grid, World Clock
+    expect(typeof Root.parseCron).toBe("function");
+    expect(typeof Root.isCronMatch).toBe("function");
+    expect(typeof Root.cronNextRun).toBe("function");
+    expect(typeof Root.cronNextN).toBe("function");
+    expect(typeof Root.cronPrevRun).toBe("function");
+    expect(typeof Root.cronToHuman).toBe("function");
+    expect(typeof Root.generateMonthGrid).toBe("function");
+    expect(typeof Root.getMonthMatrix).toBe("function");
+    expect(typeof Root.generateYearGrid).toBe("function");
+    expect(typeof Root.getAdjacentMonths).toBe("function");
+    expect(typeof Root.getWeekDaysHeader).toBe("function");
+    expect(typeof Root.worldClock).toBe("function");
+    expect(typeof Root.findOverlapHours).toBe("function");
+    expect(typeof Root.isDSTAtInstant).toBe("function");
+    expect(typeof Root.getNextDSTTransition).toBe("function");
   });
 
   it("exports calendar symbols from ./calendar", () => {

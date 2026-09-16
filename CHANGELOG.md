@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.9] - 2026-09-17
+
+### Added
+
+- **Cron Expression Engine & Humanizer** (`src/operations/cron.ts`):
+  - `parseCron(expression)`: Parses standard 5-part cron expressions with support for steps (`*/15`), ranges (`1-5`), lists (`1,15,30`), and month/day names (`MON-FRI`, `JAN-DEC`).
+  - `isCronMatch(expression, date)`: Evaluates if a given date or instant matches the cron schedule.
+  - `cronNextRun(expression, from?)`: Computes the exact next execution instant.
+  - `cronNextN(expression, from, n)`: Computes the next `n` execution instants chronologically.
+  - `cronPrevRun(expression, from?)`: Computes the previous execution instant.
+  - `cronToHuman(expression, locale?)`: Human-readable cron schedule descriptions in Thai (`"th"`) and English (`"en"`).
+  - Exported Types: `CronJob`, `CronFields`.
+- **Calendar Grid & DatePicker Engine** (`src/operations/calendar-grid.ts`):
+  - `generateMonthGrid(year, month, options?)`: Generates complete UI-ready calendar grids with leading and trailing padding cells, ISO week numbers, weekend indicators, and `isToday` flags.
+  - `getMonthMatrix(year, month, options?)`: Returns a 2D matrix (`CalendarGridCell[][]`) representing the weeks of a month.
+  - `generateYearGrid(year, options?)`: Generates the entire 12-month calendar grid for a given year.
+  - `getAdjacentMonths(year, month)`: Calculates previous and next month/year tuples handling year transitions.
+  - `getWeekDaysHeader(locale?, format?, weekStartsOn?)`: Localized weekday headers for UI date pickers supporting `'monday'` or `'sunday'` start days and `'short'`, `'narrow'`, or `'long'` formats.
+  - Exported Types: `CalendarGridCell`, `MonthGridResult`, `MonthGridOptions`, `WeekStartDay`, `WeekdayHeaderFormat`.
+- **World Clock & Meeting Overlap Planner** (`src/operations/world-clock.ts`):
+  - `worldClock(timezones, instant?)`: Computes multi-timezone world clock entries with formatted local time, date, UTC offset string, DST status, and business hours detection.
+  - `findOverlapHours(participants, referenceInstant?)`: Identifies mutual working hour overlap windows across international team members in disparate time zones.
+  - `isDSTAtInstant(timeZone, instant)`: Determines whether Daylight Saving Time is active in a given IANA timezone at a specific instant.
+  - `getNextDSTTransition(timeZone, fromYear?)`: Detects upcoming DST transition events (`spring-forward` or `fall-back`) with transition dates and offset shifts using binary search.
+  - Exported Types: `WorldClockEntry`, `MeetingParticipant`, `MeetingWindow`, `DSTTransition`.
+
 ## [0.1.7] - 2026-09-17
 
 ### Added

@@ -1,6 +1,47 @@
 export { createChronera } from "./create-chronera.js";
 
 export {
+  parseCron,
+  isCronMatch,
+  cronNextRun,
+  cronNextN,
+  cronPrevRun,
+  cronToHuman,
+} from "./operations/cron.js";
+
+export type { CronJob, CronFields } from "./operations/cron.js";
+
+export {
+  generateMonthGrid,
+  getMonthMatrix,
+  generateYearGrid,
+  getAdjacentMonths,
+  getWeekDaysHeader,
+} from "./operations/calendar-grid.js";
+
+export type {
+  WeekStartDay,
+  WeekdayHeaderFormat,
+  MonthGridOptions,
+  CalendarGridCell,
+  MonthGridResult,
+} from "./operations/calendar-grid.js";
+
+export {
+  worldClock,
+  findOverlapHours,
+  isDSTAtInstant,
+  getNextDSTTransition,
+} from "./operations/world-clock.js";
+
+export type {
+  WorldClockEntry,
+  MeetingParticipant,
+  MeetingWindow,
+  DSTTransition,
+} from "./operations/world-clock.js";
+
+export {
   parseNaturalDate,
   safeParseNaturalDate,
   parseNaturalDateDebug,
