@@ -11,8 +11,8 @@ interface ReleaseConfig {
 
 function parseArgs(): ReleaseConfig {
   const args = process.argv.slice(2);
-  let targetIso = "2026-09-05T00:00:00+07:00";
-  let version = "0.1.1";
+  let targetIso = "2026-09-21T00:00:00+07:00";
+  let version = "0.2.0";
   let dryRun = false;
   let runNow = false;
 
@@ -42,8 +42,11 @@ function run(cmd: string, dryRun = false): string {
   if (
     dryRun &&
     (cmd.startsWith("git push") ||
+      cmd.startsWith("git tag") ||
+      cmd.startsWith("git commit") ||
       cmd.startsWith("gh release") ||
-      cmd.startsWith("npm publish"))
+      cmd.startsWith("npm publish") ||
+      cmd.startsWith("node scripts/publish-with-webauth.mjs"))
   ) {
     console.log(`\x1b[33m[DRY-RUN SKIP]\x1b[0m ${cmd}`);
     return "";
@@ -66,6 +69,26 @@ async function updatePackageJson(version: string): Promise<void> {
 async function updateChangelog(version: string): Promise<string> {
   const changelogPath = join(process.cwd(), "CHANGELOG.md");
   let content = await readFile(changelogPath, "utf-8");
+
+  // If CHANGELOG.md already contains release notes for this version, extract them directly!
+  const escapedVer = version.replace(/\./g, "\\.");
+  const versionHeadingRegex = new RegExp(`## \\[${escapedVer}\\][^\n]*`, "g");
+  const match = versionHeadingRegex.exec(content);
+
+  if (match) {
+    const startIndex = match.index;
+    const rest = content.slice(startIndex);
+    const nextHeadingMatch = rest.slice(match[0].length).search(/\n## \[/);
+    const section =
+      nextHeadingMatch === -1
+        ? rest
+        : rest.slice(0, match[0].length + nextHeadingMatch);
+    const releaseNotes = section.trim() + "\n";
+    console.log(
+      `\x1b[32m[OK]\x1b[0m Extracted existing release notes for v${version} directly from CHANGELOG.md.`,
+    );
+    return releaseNotes;
+  }
 
   const today =
     version === "0.1.7"
@@ -295,19 +318,23 @@ async function main() {
   console.log("\n--- Phase 4: Git Version Control ---");
   run("git add package.json CHANGELOG.md src/ tests/ scripts/ .github/");
   const releaseTitle =
-    config.version === "0.1.7"
-      ? `v${config.version} - Date Range, Duration & Recurring Schedule Engine`
-      : config.version === "0.1.6"
-        ? `v${config.version} - Business Hours & Shift SLA Engine`
-        : config.version === "0.1.5"
-          ? `v${config.version} - Public Holidays & Statutory Working Days (15 Countries)`
-          : config.version === "0.1.4"
-            ? `v${config.version} - TimeZone Engine & Cross-Zone Formatting`
-            : config.version === "0.1.3"
-              ? `v${config.version} - Business & Working Days Helpers`
-              : config.version === "0.1.2"
-                ? `v${config.version} - Time & Instant Helpers`
-                : `v${config.version} - Daily Convenience Helpers`;
+    config.version === "0.2.0"
+      ? `v${config.version} - iCalendar RFC 5545, RRULE Engine, Financial Periods & Time Buckets`
+      : config.version === "0.1.9"
+        ? `v${config.version} - Cron Expression Engine, Calendar Grid & World Clock`
+        : config.version === "0.1.7"
+          ? `v${config.version} - Date Range, Duration & Recurring Schedule Engine`
+          : config.version === "0.1.6"
+            ? `v${config.version} - Business Hours & Shift SLA Engine`
+            : config.version === "0.1.5"
+              ? `v${config.version} - Public Holidays & Statutory Working Days (15 Countries)`
+              : config.version === "0.1.4"
+                ? `v${config.version} - TimeZone Engine & Cross-Zone Formatting`
+                : config.version === "0.1.3"
+                  ? `v${config.version} - Business & Working Days Helpers`
+                  : config.version === "0.1.2"
+                    ? `v${config.version} - Time & Instant Helpers`
+                    : `v${config.version} - Daily Convenience Helpers`;
 
   run(`git commit -m "chore(release): ${releaseTitle}"`);
   run(`git tag -a v${config.version} -m "${releaseTitle}"`);
