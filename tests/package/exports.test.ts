@@ -91,6 +91,17 @@ describe("package exports", () => {
     expect(typeof Root.findOverlapHours).toBe("function");
     expect(typeof Root.isDSTAtInstant).toBe("function");
     expect(typeof Root.getNextDSTTransition).toBe("function");
+    // v0.2.0 — RRULE, iCalendar, Financial Periods, Time Buckets
+    expect(typeof Root.parseRRule).toBe("function");
+    expect(typeof Root.rruleToString).toBe("function");
+    expect(typeof Root.rruleToHuman).toBe("function");
+    expect(typeof Root.generateICS).toBe("function");
+    expect(typeof Root.parseICS).toBe("function");
+    expect(typeof Root.financialPeriods).toBe("function");
+    expect(typeof Root.priorYearSamePeriod).toBe("function");
+    expect(typeof Root.priorPeriod).toBe("function");
+    expect(typeof Root.isYTD).toBe("function");
+    expect(typeof Root.timeBuckets).toBe("function");
   });
 
   it("exports calendar symbols from ./calendar", () => {

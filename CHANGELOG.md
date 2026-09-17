@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-17
+
+### Added
+
+- **Recurrence Rule (RFC 5545 RRULE) Engine** (`src/operations/rrule.ts`):
+  - `parseRRule(expression, dtstart?)`: Parses standard RFC 5545 RRULE strings with support for `FREQ` (`DAILY`, `WEEKLY`, `MONTHLY`, `YEARLY`), `INTERVAL`, `COUNT`, `UNTIL`, `BYDAY` (including positional weekdays like `1MO`, `-1FR`), `BYMONTH`, `BYMONTHDAY`, and `WKST`.
+  - `job.next(from?)`, `job.nextN(from, n)`, `job.all(limit?)`: High-performance recurrence evaluations.
+  - `job.matches(date)`: Evaluates whether a date or instant matches the recurrence rule pattern.
+  - `rruleToString(options)`: Serializes RRULE options into standard RFC 5545 recurrence strings.
+  - `rruleToHuman(rrule, locale?)`: Natural language schedule descriptions in Thai (`"th"`) and English (`"en"`).
+  - Exported Types: `RRuleFrequency`, `RRuleWeekday`, `ByDayRule`, `RRuleOptions`, `RRuleJob`.
+- **iCalendar (RFC 5545) Engine** (`src/operations/icalendar.ts`):
+  - `generateICS(events, calendarOptions?)`: Produces valid RFC 5545 `.ics` calendar files supporting single and multiple events, all-day dates (`VALUE=DATE`), timezone designations (`TZID`), event status, descriptions, locations, organizers, attendees, and RRULE integration.
+  - Full compliance with RFC 5545 Section 3.1 Line Folding (75-octet limit with CRLF continuations) and RFC 5545 Section 3.3.11 text escaping.
+  - `parseICS(icsContent)`: Unfolds and parses `.ics` files into structured event objects with Chronera `Instant` representations.
+  - Exported Types: `ICSOrganizer`, `ICSAttendee`, `ICSEventInput`, `ICSCalendarOptions`, `ParsedICSEvent`, `ParsedICSCalendar`.
+- **Financial & Accounting Periods Engine** (`src/operations/financial-periods.ts`):
+  - `financialPeriods(referenceDate?, options?)`: Computes standard corporate financial accounting periods: Month-to-Date (`mtd`), Quarter-to-Date (`qtd`), Year-to-Date (`ytd`), and Last Twelve Months (`ltm`), with support for customizable `fiscalYearStartMonth` (e.g. 1 for Calendar year, 10 for Thai/US Federal Gov, 4 for UK/Japan/India, 7 for Australia).
+  - `priorYearSamePeriod(range)`: Accurate Year-over-Year (YoY) comparative period generation with leap-year handling (Feb 29 $\rightarrow$ Feb 28).
+  - `priorPeriod(range)`: Sequential preceding comparison periods (e.g. prior N days).
+  - `isYTD(date, referenceDate?, options?)`: Checks whether a given timestamp falls within the YTD window.
+  - Exported Types: `FinancialPeriodsOptions`, `FinancialPeriodsResult`.
+- **Time-Series Data Binning & Gap Filling Engine** (`src/operations/time-buckets.ts`):
+  - `timeBuckets(items, options)`: Groups arbitrary domain data items into time buckets (`minute`, `hour`, `day`, `week`, `month`, `quarter`, `year`) using property keys or custom selector functions.
+  - Gap Filling (`fillGaps: true`): Generates empty buckets with 0 count / sums across intervals to ensure uninterrupted graph rendering in frontend dashboards.
+  - Computes bucket aggregates: `count`, `sum`, `avg`, `min`, `max`.
+  - Exported Types: `TimeBucketGranularity`, `TimeBucketOptions`, `TimeBucketResult`.
+
 ## [0.1.9] - 2026-09-17
 
 ### Added

@@ -1,5 +1,46 @@
 export { createChronera } from "./create-chronera.js";
 
+export { parseRRule, rruleToString, rruleToHuman } from "./operations/rrule.js";
+
+export type {
+  RRuleFrequency,
+  RRuleWeekday,
+  ByDayRule,
+  RRuleOptions,
+  RRuleJob,
+} from "./operations/rrule.js";
+
+export { generateICS, parseICS } from "./operations/icalendar.js";
+
+export type {
+  ICSOrganizer,
+  ICSAttendee,
+  ICSEventInput,
+  ICSCalendarOptions,
+  ParsedICSEvent,
+  ParsedICSCalendar,
+} from "./operations/icalendar.js";
+
+export {
+  financialPeriods,
+  priorYearSamePeriod,
+  priorPeriod,
+  isYTD,
+} from "./operations/financial-periods.js";
+
+export type {
+  FinancialPeriodsOptions,
+  FinancialPeriodsResult,
+} from "./operations/financial-periods.js";
+
+export { timeBuckets } from "./operations/time-buckets.js";
+
+export type {
+  TimeBucketGranularity,
+  TimeBucketOptions,
+  TimeBucketResult,
+} from "./operations/time-buckets.js";
+
 export {
   parseCron,
   isCronMatch,
