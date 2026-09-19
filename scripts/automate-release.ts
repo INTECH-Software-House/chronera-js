@@ -322,19 +322,21 @@ async function main() {
       ? `v${config.version} - iCalendar RFC 5545, RRULE Engine, Financial Periods & Time Buckets`
       : config.version === "0.1.9"
         ? `v${config.version} - Cron Expression Engine, Calendar Grid & World Clock`
-        : config.version === "0.1.7"
-          ? `v${config.version} - Date Range, Duration & Recurring Schedule Engine`
-          : config.version === "0.1.6"
-            ? `v${config.version} - Business Hours & Shift SLA Engine`
-            : config.version === "0.1.5"
-              ? `v${config.version} - Public Holidays & Statutory Working Days (15 Countries)`
-              : config.version === "0.1.4"
-                ? `v${config.version} - TimeZone Engine & Cross-Zone Formatting`
-                : config.version === "0.1.3"
-                  ? `v${config.version} - Business & Working Days Helpers`
-                  : config.version === "0.1.2"
-                    ? `v${config.version} - Time & Instant Helpers`
-                    : `v${config.version} - Daily Convenience Helpers`;
+        : config.version === "0.1.8"
+          ? `v${config.version} - Natural Language Parsing, Age & Countdown, Time Series Bucketing`
+          : config.version === "0.1.7"
+            ? `v${config.version} - Date Range, Duration & Recurring Schedule Engine`
+            : config.version === "0.1.6"
+              ? `v${config.version} - Business Hours & Shift SLA Engine`
+              : config.version === "0.1.5"
+                ? `v${config.version} - Public Holidays & Statutory Working Days (15 Countries)`
+                : config.version === "0.1.4"
+                  ? `v${config.version} - TimeZone Engine & Cross-Zone Formatting`
+                  : config.version === "0.1.3"
+                    ? `v${config.version} - Business & Working Days Helpers`
+                    : config.version === "0.1.2"
+                      ? `v${config.version} - Time & Instant Helpers`
+                      : `v${config.version} - Daily Convenience Helpers`;
 
   run(`git commit -m "chore(release): ${releaseTitle}"`);
   run(`git tag -a v${config.version} -m "${releaseTitle}"`);

@@ -61,6 +61,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `getNextDSTTransition(timeZone, fromYear?)`: Detects upcoming DST transition events (`spring-forward` or `fall-back`) with transition dates and offset shifts using binary search.
   - Exported Types: `WorldClockEntry`, `MeetingParticipant`, `MeetingWindow`, `DSTTransition`.
 
+## [0.1.8] - 2026-09-19
+
+### Added
+
+- **Natural Language Date Parsing Engine** (`src/operations/natural-language.ts`):
+  - `parseNaturalDate(expression, options?)`: Parses natural language temporal expressions into `LocalDate` (e.g. `"today"`, `"tomorrow"`, `"yesterday"`, `"next monday"`, `"last friday"`, `"in 3 days"`, `"2 weeks ago"`, `"first day of next month"`, `"end of year"`).
+  - Multi-language support including English and Thai keywords (`"วันนี้"`, `"พรุ่งนี้"`, `"เมื่อวาน"`, `"วันจันทร์หน้า"`, `"อีก 3 วัน"`).
+  - `safeParseNaturalDate(expression, options?)`: Non-throwing parsing returning `{ success: true, data } | { success: false, error }`.
+  - Configurable `referenceDate`, `timeZone`, and `locale`.
+  - Exported Types: `ParseNaturalDateOptions`, `ParseNaturalDateResult`.
+- **Age, Birthday & Countdown Engine** (`src/operations/age-countdown.ts`):
+  - `calculateAge(birthDate, asOf?)`: Calculates exact chronological age returning `{ years, months, days, totalDays }` with full leap year accuracy.
+  - `nextBirthday(birthDate, asOf?)`: Computes the exact `LocalDate` of the next birthday.
+  - `daysUntilBirthday(birthDate, asOf?)`: Returns the remaining days until next birthday.
+  - `isBirthday(birthDate, asOf?)`: Predicate to check if today (or `asOf`) is the person's birthday.
+  - `countdown(target, asOf?)`: Real-time temporal countdown returning `{ days, hours, minutes, seconds, milliseconds, isPast }`.
+  - `timeElapsed(target, asOf?)`: Elapsed duration from a past target date.
+  - Exported Types: `AgeResult`, `CountdownResult`.
+- **Time-Series Data Bucketing & Analysis** (`src/operations/time-series.ts`):
+  - `bucketDates(dates, granularity, options?)`: Groups an array of dates into time buckets (`day`, `week`, `month`, `year`).
+  - `bucketByDay(dates, options?)`: Convenience bucket group by calendar day.
+  - `bucketByMonth(dates, options?)`: Convenience bucket group by calendar month (`YYYY-MM`).
+  - `histogram(dates, granularity, options?)`: Generates count histograms across intervals.
+  - `sortDates(dates, order?)`: Chronological sorting (`asc` or `desc`).
+  - `minDate(dates)` and `maxDate(dates)`: Earliest and latest date boundary helpers.
+  - Exported Types: `BucketGranularity`, `DateBucket`, `DateHistogram`.
+
 ## [0.1.7] - 2026-09-17
 
 ### Added
