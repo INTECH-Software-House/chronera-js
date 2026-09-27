@@ -108,21 +108,28 @@ export function resolveDateFormattingInput(
     };
   }
 
-  // Instant or Date input
+  // Instant, Date, or ZonedDateTime input
   let instant: Instant;
-  if ("kind" in input && input.kind === "instant") {
+  let inputTimeZone: TimeZoneId | undefined;
+  let inputCalendar: CalendarId | undefined;
+
+  if ("kind" in input && input.kind === "zoned-date-time") {
+    instant = input.instant;
+    inputTimeZone = input.timeZone;
+    inputCalendar = input.calendar;
+  } else if ("kind" in input && input.kind === "instant") {
     instant = input;
   } else if (input instanceof Date) {
     instant = instantFromDate(input);
   } else {
     throw new ChroneraError(
       "CHRONERA_INVALID_DATE",
-      "Expected LocalDate, CalendarDate, Instant, or Date.",
+      "Expected LocalDate, CalendarDate, Instant, ZonedDateTime, or Date.",
     );
   }
 
-  const timeZone: TimeZoneId = options.timeZone ?? "UTC";
-  const calId: CalendarId = targetCalendar ?? "gregory";
+  const timeZone: TimeZoneId = options.timeZone ?? inputTimeZone ?? "UTC";
+  const calId: CalendarId = targetCalendar ?? inputCalendar ?? "gregory";
 
   const zonedFields = projectInstantToZonedFields(instant, timeZone);
   let calDate: CalendarDate = {

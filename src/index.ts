@@ -1,3 +1,5 @@
+export { chronera, Chronera } from "./chronera.js";
+export type { ChroneraInput } from "./chronera.js";
 export { createChronera } from "./create-chronera.js";
 
 export { parseRRule, rruleToString, rruleToHuman } from "./operations/rrule.js";
@@ -334,6 +336,30 @@ export { localDate, createLocalDate } from "./core/local-date.js";
 export { localTime } from "./core/local-time.js";
 
 export { localDateTime } from "./core/local-date-time.js";
+
+export { zonedDateTime } from "./core/zoned-date-time.js";
+
+export {
+  createZonedDateTime,
+  getZonedFields,
+  withTimeZone,
+  withCalendar,
+  addZonedDuration,
+  subtractZonedDuration,
+  diffZoned,
+  formatZonedDateTime,
+  zonedDateTimeToLocalDate,
+  zonedDateTimeToLocalTime,
+  zonedDateTimeToLocalDateTime,
+  zonedDateTimeToInstant,
+} from "./operations/zoned-operations.js";
+
+export type {
+  DisambiguationOption,
+  ZonedDateTimeFields,
+  ZonedFields,
+  CreateZonedOptions,
+} from "./public-types.js";
 
 export { dateRange } from "./core/range.js";
 

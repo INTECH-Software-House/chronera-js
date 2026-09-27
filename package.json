@@ -1,6 +1,6 @@
 {
   "name": "@intech-software/chronera",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.",
   "keywords": [
     "date",
@@ -57,6 +57,10 @@
     "./holidays": {
       "types": "./dist/holidays/index.d.ts",
       "import": "./dist/holidays/index.js"
+    },
+    "./scheduling": {
+      "types": "./dist/scheduling/index.d.ts",
+      "import": "./dist/scheduling/index.js"
     }
   },
   "files": [
@@ -134,6 +138,11 @@
       "name": "Holidays (@intech-software/chronera/holidays)",
       "path": "dist/holidays/index.js",
       "limit": "10 KB"
+    },
+    {
+      "name": "Scheduling (@intech-software/chronera/scheduling)",
+      "path": "dist/scheduling/index.js",
+      "limit": "30 KB"
     }
   ],
   "publishConfig": {

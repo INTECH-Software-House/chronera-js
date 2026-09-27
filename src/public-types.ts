@@ -90,7 +90,41 @@ export interface ZonedDateTime {
   readonly calendar: CalendarId;
 }
 
-export type FormatDateInput = LocalDate | CalendarDate | Instant | Date;
+export type DisambiguationOption =
+  "compatible" | "earlier" | "later" | "reject";
+
+export interface ZonedDateTimeFields {
+  readonly year: number;
+  readonly month: number;
+  readonly day: number;
+  readonly hour?: number;
+  readonly minute?: number;
+  readonly second?: number;
+  readonly millisecond?: number;
+}
+
+export interface ZonedFields {
+  readonly year: number;
+  readonly month: number;
+  readonly day: number;
+  readonly hour: number;
+  readonly minute: number;
+  readonly second: number;
+  readonly millisecond: number;
+  readonly offsetString: string;
+  readonly offsetMilliseconds: number;
+  readonly isDST: boolean;
+  readonly timeZone: TimeZoneId;
+  readonly calendar: CalendarId;
+}
+
+export interface CreateZonedOptions {
+  readonly disambiguation?: DisambiguationOption;
+  readonly calendar?: CalendarId;
+}
+
+export type FormatDateInput =
+  LocalDate | CalendarDate | Instant | Date | ZonedDateTime;
 export type DateOrCalendarDate = LocalDate | CalendarDate;
 export type TimeOrDateTimeOrInstant = LocalTime | LocalDateTime | Instant;
 export type IntervalInclusivity = "()" | "[]" | "[)" | "(]";

@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-09-27
+
+### Added
+
+- **Modular Subpath Exports (`@intech-software/chronera/scheduling`)**:
+  - Decoupled enterprise scheduling engines (Cron, RRULE, iCalendar, Intervals, Recurrence, Financial Periods, Time Buckets) into a dedicated subpath export `./scheduling`.
+  - Enables front-end applications to import core date/time logic without paying the bundle cost for backend scheduling parsers.
+  - Added size-limit verification for `@intech-software/chronera/scheduling`.
+- **Complete Temporal Proposal Alignment & `ZonedDateTime` Implementation** (`src/core/zoned-date-time.ts`, `src/operations/zoned-operations.ts`):
+  - `zonedDateTime(instant, timeZone, calendar?)`: Immutable domain primitive adhering to Clean Architecture entity rules.
+  - `createZonedDateTime(fields, timeZone, options?)`: Local wall-clock instantiation with TC39 Temporal disambiguation (`"compatible"`, `"earlier"`, `"later"`, `"reject"`) correctly resolving DST spring-forward gaps and fall-back overlaps.
+  - `addZonedDuration(zdt, duration)` / `subtractZonedDuration(zdt, duration)`: Dual-mode temporal arithmetic (calendar units preserve wall-clock time across 23h/25h DST days; clock units add exact elapsed time).
+  - Timezone projection and conversions: `getZonedFields(zdt)`, `withTimeZone(zdt, tz)`, `withCalendar(zdt, cal)`, `diffZoned(a, b, unit)`, `formatZonedDateTime(zdt, options?)`, `zonedDateTimeToLocalDate`, `zonedDateTimeToLocalTime`, `zonedDateTimeToLocalDateTime`, `zonedDateTimeToInstant`.
+  - Supported `ZonedDateTime` directly inside `formatDate(zdt, options)`.
+- **Ergonomics & Fluent API (`chronera`)** (`src/chronera.ts`):
+  - `chronera(input)` / `Chronera`: Immutable, zero-mutation fluent wrapper unifying Chronera's 50+ domain functions into an intuitive chainable API (`chronera(date).addDays(5).addBusinessDays(2, "TH").toCalendar("buddhist").format(...)`).
+  - Supports polymorphous inputs: string ISO date/timestamp, epoch timestamp, Date, LocalDate, Instant, ZonedDateTime, CalendarDate.
+- **Performance Benchmark Suite** (`benchmarks/core-operations.bench.ts`):
+  - Integrated `vitest bench` suite benchmarking instantiation, parsing, calendar arithmetic, Buddhist conversion, and fluent ergonomics against native `Date` and `Intl`.
+  - Confirmed `instantFromEpochMilliseconds` reaches >20M ops/sec and `localDate` reaches >14M ops/sec.
+
 ## [0.2.0] - 2026-09-26
 
 ### Added

@@ -5,6 +5,7 @@ import * as Calendar from "../../dist/calendar/index.js";
 import * as Format from "../../dist/format/index.js";
 import * as Parse from "../../dist/parse/index.js";
 import * as Holidays from "../../dist/holidays/index.js";
+import * as Scheduling from "../../dist/scheduling/index.js";
 
 describe("package exports", () => {
   it("package.json defines expected subpaths", async () => {
@@ -14,9 +15,12 @@ describe("package exports", () => {
     expect(pkg.exports["./format"]).toBeDefined();
     expect(pkg.exports["./parse"]).toBeDefined();
     expect(pkg.exports["./holidays"]).toBeDefined();
+    expect(pkg.exports["./scheduling"]).toBeDefined();
   });
 
   it("exports all expected symbols from root", () => {
+    expect(typeof Root.chronera).toBe("function");
+    expect(typeof Root.Chronera).toBe("function");
     expect(typeof Root.formatDate).toBe("function");
     expect(typeof Root.parseLocalDate).toBe("function");
     expect(typeof Root.createChronera).toBe("function");
@@ -102,6 +106,16 @@ describe("package exports", () => {
     expect(typeof Root.priorPeriod).toBe("function");
     expect(typeof Root.isYTD).toBe("function");
     expect(typeof Root.timeBuckets).toBe("function");
+    // v0.2.1 — ZonedDateTime (Temporal)
+    expect(typeof Root.zonedDateTime).toBe("function");
+    expect(typeof Root.createZonedDateTime).toBe("function");
+    expect(typeof Root.getZonedFields).toBe("function");
+    expect(typeof Root.withTimeZone).toBe("function");
+    expect(typeof Root.withCalendar).toBe("function");
+    expect(typeof Root.addZonedDuration).toBe("function");
+    expect(typeof Root.subtractZonedDuration).toBe("function");
+    expect(typeof Root.diffZoned).toBe("function");
+    expect(typeof Root.formatZonedDateTime).toBe("function");
   });
 
   it("exports calendar symbols from ./calendar", () => {
@@ -130,5 +144,16 @@ describe("package exports", () => {
     expect(typeof Holidays.calculateEasterSunday).toBe("function");
     expect(typeof Holidays.thailandHolidays).toBe("object");
     expect(typeof Holidays.japanHolidays).toBe("object");
+  });
+
+  it("exports scheduling symbols from ./scheduling", () => {
+    expect(typeof Scheduling.parseCron).toBe("function");
+    expect(typeof Scheduling.parseRRule).toBe("function");
+    expect(typeof Scheduling.generateICS).toBe("function");
+    expect(typeof Scheduling.parseICS).toBe("function");
+    expect(typeof Scheduling.rangeContains).toBe("function");
+    expect(typeof Scheduling.recur).toBe("function");
+    expect(typeof Scheduling.financialPeriods).toBe("function");
+    expect(typeof Scheduling.timeBuckets).toBe("function");
   });
 });
