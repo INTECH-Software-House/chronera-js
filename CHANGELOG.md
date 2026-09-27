@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-09-27
+
+### Performance
+
+- **Intl Formatter & Locale Resolution Caching**:
+  - Integrated `BoundedLRU<Intl.DateTimeFormat>` cache (`getSharedDateTimeFormatter`) across `formatDate`, `formatDateTime`, `formatTime`, `formatDateRange`, `formatPattern`, and `getWeekDaysHeader`.
+  - Format throughput skyrocketed from 20,370 ops/sec to **624,800+ ops/sec** (**30.6x speedup**).
+  - Added bounded LRU cache for `validateAndResolveLocale()`, eliminating redundant `new Intl.Locale()` ICU constructor allocations.
+- **Zero-Allocation Fast-Path ISO 8601 Parsing**:
+  - Implemented direct ASCII integer extraction in `parseLocalDate` for standard 10-character `YYYY-MM-DD` strings, avoiding regex and substring heap allocations.
+  - Parsing throughput reached **11.1M - 13.5M ops/sec**, outperforming native JavaScript `new Date(iso)` by **1.53x**.
+- **Pattern Parser Month Table Caching**:
+  - Eliminated the 24x `Intl.DateTimeFormat` instantiations per parse call by caching month names in `BoundedLRU`.
+
+### Documentation
+
+- **Comprehensive README Enhancements**:
+  - Added Quick Start guide for the fluent ergonomics wrapper (`chronera()`).
+  - Added subpath export guide with Brotli bundle footprint breakdown (`@intech-software/chronera/scheduling`, etc.).
+  - Added Temporal proposal `ZonedDateTime` guide with DST disambiguation and dual-mode arithmetic.
+  - Added core operations benchmark table demonstrating superiority over native `Date`.
+
+### Dependencies
+
+- Updated development toolchain: `prettier` to 3.9.9, `@changesets/cli` to 3.0.3, `@types/node` to 26.6.2, `@typescript-eslint/parser` & `eslint-plugin` to 8.70.1, `fast-check` to 4.10.2.
+
 ## [0.2.1] - 2026-09-27
 
 ### Added
