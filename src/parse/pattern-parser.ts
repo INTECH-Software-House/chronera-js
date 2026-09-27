@@ -2,8 +2,48 @@ import { scanPattern } from "../format/pattern-scanner.js";
 import { ChroneraParseError } from "../errors/errors.js";
 import { localDate } from "../core/local-date.js";
 import { parseDigitsToLatin } from "../locale/numbering-system.js";
+import { getSharedDateTimeFormatter } from "../runtime/intl-date-time.js";
+import { BoundedLRU } from "../runtime/bounded-lru.js";
 
 import type { LocalDate } from "../public-types.js";
+
+interface MonthNameTables {
+  readonly shortMonths: readonly string[];
+  readonly longMonths: readonly string[];
+}
+
+const monthTablesCache = new BoundedLRU<MonthNameTables>(32);
+
+function getMonthTables(locale: string): MonthNameTables {
+  const cached = monthTablesCache.get(locale);
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  const shortFmt = getSharedDateTimeFormatter(locale, {
+    month: "short",
+    timeZone: "UTC",
+  });
+  const longFmt = getSharedDateTimeFormatter(locale, {
+    month: "long",
+    timeZone: "UTC",
+  });
+
+  const shortMonths: string[] = [];
+  const longMonths: string[] = [];
+  for (let m = 1; m <= 12; m++) {
+    const d = new Date(Date.UTC(2026, m - 1, 1));
+    shortMonths[m] = shortFmt.format(d).toLowerCase();
+    longMonths[m] = longFmt.format(d).toLowerCase();
+  }
+
+  const tables: MonthNameTables = {
+    shortMonths,
+    longMonths,
+  };
+  monthTablesCache.set(locale, tables);
+  return tables;
+}
 
 export function parseDateWithPattern(
   input: string,
@@ -18,24 +58,7 @@ export function parseDateWithPattern(
   let month: number | undefined;
   let day: number | undefined;
 
-  // Build month name tables for locale
-  const shortMonths: string[] = [];
-  const longMonths: string[] = [];
-  for (let m = 1; m <= 12; m++) {
-    const d = new Date(Date.UTC(2026, m - 1, 1));
-    shortMonths[m] = new Intl.DateTimeFormat(locale, {
-      month: "short",
-      timeZone: "UTC",
-    })
-      .format(d)
-      .toLowerCase();
-    longMonths[m] = new Intl.DateTimeFormat(locale, {
-      month: "long",
-      timeZone: "UTC",
-    })
-      .format(d)
-      .toLowerCase();
-  }
+  const { shortMonths, longMonths } = getMonthTables(locale);
 
   for (const token of tokens) {
     if (token.type === "literal") {

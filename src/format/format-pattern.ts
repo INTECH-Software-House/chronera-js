@@ -10,6 +10,7 @@ import {
   getIsoWeekFromAbsoluteDay,
 } from "../core/iso-week.js";
 import { ChroneraError } from "../errors/errors.js";
+import { getSharedDateTimeFormatter } from "../runtime/intl-date-time.js";
 
 import type { CalendarRegistry } from "../calendar/registry.js";
 import type {
@@ -129,7 +130,7 @@ export function formatWithPatternWithRegistry(
       const tz = tzId;
 
       // Project fields using Intl
-      const dtf = new Intl.DateTimeFormat("en-US", {
+      const dtf = getSharedDateTimeFormatter("en-US", {
         timeZone: tz,
         hourCycle: "h23",
         hour: "numeric",
@@ -167,7 +168,7 @@ export function formatWithPatternWithRegistry(
       return tzShortName;
     }
     const d = new Date(resolvedInstant.epochMilliseconds);
-    const parts = new Intl.DateTimeFormat(locale, {
+    const parts = getSharedDateTimeFormatter(locale, {
       timeZone: tzId,
       timeZoneName: "short",
     }).formatToParts(d);
@@ -184,7 +185,7 @@ export function formatWithPatternWithRegistry(
       return tzLongName;
     }
     const d = new Date(resolvedInstant.epochMilliseconds);
-    const parts = new Intl.DateTimeFormat(locale, {
+    const parts = getSharedDateTimeFormatter(locale, {
       timeZone: tzId,
       timeZoneName: "long",
     }).formatToParts(d);
@@ -237,7 +238,7 @@ export function formatWithPatternWithRegistry(
         );
         break;
       case "MMM": {
-        const dtf = new Intl.DateTimeFormat(locale, {
+        const dtf = getSharedDateTimeFormatter(locale, {
           calendar: calDate.calendar,
           month: "short",
           timeZone: "UTC",
@@ -246,7 +247,7 @@ export function formatWithPatternWithRegistry(
         break;
       }
       case "MMMM": {
-        const dtf = new Intl.DateTimeFormat(locale, {
+        const dtf = getSharedDateTimeFormatter(locale, {
           calendar: calDate.calendar,
           month: "long",
           timeZone: "UTC",
@@ -264,7 +265,7 @@ export function formatWithPatternWithRegistry(
         );
         break;
       case "E": {
-        const dtf = new Intl.DateTimeFormat(locale, {
+        const dtf = getSharedDateTimeFormatter(locale, {
           calendar: calDate.calendar,
           weekday: "short",
           timeZone: "UTC",
@@ -273,7 +274,7 @@ export function formatWithPatternWithRegistry(
         break;
       }
       case "EEEE": {
-        const dtf = new Intl.DateTimeFormat(locale, {
+        const dtf = getSharedDateTimeFormatter(locale, {
           calendar: calDate.calendar,
           weekday: "long",
           timeZone: "UTC",
@@ -285,7 +286,7 @@ export function formatWithPatternWithRegistry(
         out += calDate.era ?? (year >= 0 ? "AD" : "BC");
         break;
       case "GGGG": {
-        const dtf = new Intl.DateTimeFormat(locale, {
+        const dtf = getSharedDateTimeFormatter(locale, {
           calendar: calDate.calendar,
           era: "long",
           timeZone: "UTC",

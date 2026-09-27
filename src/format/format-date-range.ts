@@ -2,6 +2,7 @@ import { ChroneraError } from "../errors/errors.js";
 import { compareInstants, compareLocalDates } from "../operations/compare.js";
 import { formatDate } from "./format-date.js";
 import { validateAndResolveLocale } from "../locale/resolve-locale.js";
+import { getSharedDateTimeFormatter } from "../runtime/intl-date-time.js";
 
 import type {
   CalendarDate,
@@ -113,7 +114,7 @@ export function formatDateRange(
         endDate = new Date((end as Instant).epochMilliseconds);
       }
 
-      const dtf = new Intl.DateTimeFormat(locale, {
+      const dtf = getSharedDateTimeFormatter(locale, {
         dateStyle: style as Intl.DateTimeFormatOptions["dateStyle"],
         timeZone: options.timeZone ?? "UTC",
         ...(cal !== "iso8601" ? { calendar: cal } : { calendar: "gregory" }),

@@ -35,6 +35,7 @@ import { defaultCalendarRegistry } from "../calendar/registry.js";
 import { validateAndResolveLocale } from "../locale/resolve-locale.js";
 import { formatNumberWithSystem } from "../locale/numbering-system.js";
 import { gregorianFieldsFromAbsoluteDay } from "../core/absolute-day.js";
+import { getSharedDateTimeFormatter } from "../runtime/intl-date-time.js";
 
 import type { CalendarRegistry } from "../calendar/registry.js";
 import type { FormatDateInput, FormatDateOptions } from "../public-types.js";
@@ -250,7 +251,7 @@ export function formatDateWithRegistry(
     formatterOptions.numberingSystem = numberingSystem;
   }
 
-  const formatted = new Intl.DateTimeFormat(locale, formatterOptions).format(
+  const formatted = getSharedDateTimeFormatter(locale, formatterOptions).format(
     utcDate,
   );
 

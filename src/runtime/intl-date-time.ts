@@ -56,3 +56,12 @@ export class IntlDateTimeService {
     return this.cache.size;
   }
 }
+
+export const defaultDateTimeService = new IntlDateTimeService(128);
+
+export function getSharedDateTimeFormatter(
+  locale: string,
+  options: Intl.DateTimeFormatOptions = {},
+): Intl.DateTimeFormat {
+  return defaultDateTimeService.getFormatter(locale, options);
+}

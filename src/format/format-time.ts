@@ -2,6 +2,7 @@ import { ChroneraError } from "../errors/errors.js";
 import { instantFromDate } from "../core/instant.js";
 import { validateAndResolveLocale } from "../locale/resolve-locale.js";
 import { formatNumberWithSystem } from "../locale/numbering-system.js";
+import { getSharedDateTimeFormatter } from "../runtime/intl-date-time.js";
 
 import type { FormatTimeOptions, Instant, LocalTime } from "../public-types.js";
 
@@ -60,7 +61,7 @@ export function formatTime(
     ...(numberingSystem !== undefined ? { numberingSystem } : {}),
   };
 
-  const dtf = new Intl.DateTimeFormat(locale, intlOpts);
+  const dtf = getSharedDateTimeFormatter(locale, intlOpts);
   let output = dtf.format(new Date(timestamp));
 
   if (numberingSystem && numberingSystem !== "latn") {

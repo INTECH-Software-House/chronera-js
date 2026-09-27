@@ -3,6 +3,7 @@ import { absoluteDayFromGregorianFields } from "../core/absolute-day.js";
 import { daysInGregorianMonth } from "../core/gregorian-math.js";
 import { getIsoWeekFromAbsoluteDay } from "../core/iso-week.js";
 import { localDate } from "../core/local-date.js";
+import { getSharedDateTimeFormatter } from "../runtime/intl-date-time.js";
 import type { LocalDate } from "../public-types.js";
 
 export type WeekStartDay = "monday" | "sunday";
@@ -249,7 +250,7 @@ export function getWeekDaysHeader(
   format: WeekdayHeaderFormat = "short",
   weekStartsOn: WeekStartDay = "monday",
 ): string[] {
-  const dtf = new Intl.DateTimeFormat(locale, { weekday: format });
+  const dtf = getSharedDateTimeFormatter(locale, { weekday: format });
   // Reference known week: 2026-09-07 is Monday, 2026-09-13 is Sunday
   // Sunday = 2026-09-06 (or 2026-09-13)
   const mondayDates: Date[] = [

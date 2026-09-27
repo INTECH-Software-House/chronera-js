@@ -1,4 +1,5 @@
 import { ChroneraError } from "../errors/errors.js";
+import { BoundedLRU } from "../runtime/bounded-lru.js";
 
 import type {
   CalendarId,
@@ -15,11 +16,17 @@ export interface ResolvedLocaleInfo {
   unicodeNumberingSystem?: NumberingSystemId;
 }
 
+const DEFAULT_RESOLVED_LOCALE: ResolvedLocaleInfo = Object.freeze({
+  baseLocale: "en-US",
+});
+
+const localeCache = new BoundedLRU<ResolvedLocaleInfo>(128);
+
 export function validateAndResolveLocale(
   localeInput?: unknown,
 ): ResolvedLocaleInfo {
   if (localeInput === undefined) {
-    return { baseLocale: "en-US" };
+    return DEFAULT_RESOLVED_LOCALE;
   }
 
   if (typeof localeInput !== "string") {
@@ -48,6 +55,11 @@ export function validateAndResolveLocale(
 
   const primary = parts[0]?.trim() ?? "en-US";
 
+  const cached = localeCache.get(primary);
+  if (cached !== undefined) {
+    return cached;
+  }
+
   // Validate BCP 47 tag
   let unicodeCalendar: CalendarId | undefined;
   let unicodeNumberingSystem: NumberingSystemId | undefined;
@@ -61,13 +73,15 @@ export function validateAndResolveLocale(
       if (loc.numberingSystem) {
         unicodeNumberingSystem = loc.numberingSystem;
       }
-      return {
+      const result: ResolvedLocaleInfo = {
         baseLocale: loc.baseName,
         ...(unicodeCalendar !== undefined ? { unicodeCalendar } : {}),
         ...(unicodeNumberingSystem !== undefined
           ? { unicodeNumberingSystem }
           : {}),
       };
+      localeCache.set(primary, result);
+      return result;
     }
   } catch (err) {
     throw new ChroneraError(
@@ -84,7 +98,9 @@ export function validateAndResolveLocale(
     );
   }
 
-  return {
+  const result: ResolvedLocaleInfo = {
     baseLocale: primary,
   };
+  localeCache.set(primary, result);
+  return result;
 }
