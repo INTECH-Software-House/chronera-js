@@ -1,6 +1,6 @@
 {
   "name": "@intech-software/chronera",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.",
   "keywords": [
     "date",
@@ -146,8 +146,7 @@
     }
   ],
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   },
   "packageManager": "pnpm@11.25.0",
   "devDependencies": {
