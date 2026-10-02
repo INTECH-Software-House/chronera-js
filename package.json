@@ -186,7 +186,7 @@
     "simple-git-hooks": "^2.14.0",
     "size-limit": "13.0.3",
     "tstyche": "7.2.5",
-    "tsx": "4.23.13",
+    "tsx": "4.23.15",
     "typescript": "6.0.3",
     "vitest": "4.1.11",
     "zod": "^3.25.76"
