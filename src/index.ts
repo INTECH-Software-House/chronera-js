@@ -180,6 +180,7 @@ export {
   addBusinessDays,
   subtractBusinessDays,
   diffInBusinessDays,
+  createCorporateCalendar,
 } from "./operations/business-days.js";
 
 export {
@@ -196,6 +197,7 @@ export {
   isPublicHoliday,
   getPublicHolidays,
   getHolidayDetails,
+  getHolidayDetailsAll,
 } from "./operations/holidays.js";
 
 export {
@@ -232,6 +234,8 @@ export type {
   HolidayRule,
   HolidayOptions,
   ObservedRollRule,
+  HolidayTarget,
+  CorporateCalendarConfig,
 } from "./holidays/types.js";
 
 export type { BusinessDaysOptions } from "./operations/business-days.js";
@@ -360,6 +364,13 @@ export type {
   ZonedFields,
   CreateZonedOptions,
 } from "./public-types.js";
+
+export { isIXDTF, parseIXDTF, formatIXDTF } from "./operations/ixdtf.js";
+
+export type {
+  ParseIXDTFOptions,
+  FormatIXDTFOptions,
+} from "./operations/ixdtf.js";
 
 export { dateRange } from "./core/range.js";
 

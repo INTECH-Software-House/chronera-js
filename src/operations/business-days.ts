@@ -5,8 +5,14 @@ import { ChroneraError } from "../errors/errors.js";
 import { addDays, getAbsoluteDay } from "./convenience.js";
 import { isPublicHoliday } from "./holidays.js";
 import { getHolidayCalendar } from "../holidays/registry.js";
+import { parseLocalDate } from "../parse/parse-local-date.js";
 
-import type { CountryCode, HolidayCalendar } from "../holidays/types.js";
+import type {
+  CorporateCalendarConfig,
+  CountryCode,
+  HolidayCalendar,
+  HolidayTarget,
+} from "../holidays/types.js";
 import type { DateOrCalendarDate, LocalDate } from "../public-types.js";
 
 /**
@@ -14,18 +20,80 @@ import type { DateOrCalendarDate, LocalDate } from "../public-types.js";
  */
 export interface BusinessDaysOptions {
   /**
-   * Country code (e.g. "TH", "JP", "US") or custom HolidayCalendar or holiday date list or holiday predicate.
+   * Country code (e.g. "TH"), array of country codes (e.g. ["TH", "SG"]),
+   * custom HolidayCalendar, holiday date list, or holiday predicate.
    */
   readonly holidays?:
     | CountryCode
     | string
     | HolidayCalendar
-    | readonly DateOrCalendarDate[]
-    | ((date: LocalDate) => boolean);
+    | readonly (CountryCode | string | HolidayCalendar)[]
+    | readonly (DateOrCalendarDate | string)[]
+    | ((date: LocalDate) => boolean)
+    | undefined;
   /**
    * Custom weekend days (defaults to [6, 7], or [4, 5] if country is Iran, etc.).
    */
-  readonly weekendDays?: readonly number[];
+  readonly weekendDays?: readonly number[] | undefined;
+  /**
+   * Additional company-specific or ad-hoc off-days (e.g. company retreat, annual shutdown).
+   */
+  readonly customHolidays?:
+    readonly (DateOrCalendarDate | string)[] | undefined;
+  /**
+   * Dates that are normally holidays or weekends but designated as working days
+   * (e.g. compensation working Saturdays). Overrides weekends and public holidays.
+   */
+  readonly workingDayOverrides?:
+    readonly (DateOrCalendarDate | string)[] | undefined;
+}
+
+function toAbsoluteDaySafe(d: DateOrCalendarDate | string): number {
+  if (typeof d === "string") {
+    return getAbsoluteDay(parseLocalDate(d));
+  }
+  return getAbsoluteDay(d);
+}
+
+/**
+ * Creates a corporate calendar configuration helper for business days calculations.
+ *
+ * @example
+ * ```ts
+ * const corpCal = createCorporateCalendar({
+ *   baseCountry: ["TH", "SG"],
+ *   customHolidays: [localDate(2026, 12, 28)], // Company shutdown
+ *   workingDayOverrides: [localDate(2026, 10, 24)], // Working Saturday
+ * });
+ *
+ * const isWorkDay = isBusinessDay(date, corpCal);
+ * ```
+ */
+export function createCorporateCalendar(
+  config: CorporateCalendarConfig,
+): BusinessDaysOptions {
+  const options: {
+    holidays?: BusinessDaysOptions["holidays"];
+    weekendDays?: readonly number[];
+    customHolidays?: readonly (DateOrCalendarDate | string)[];
+    workingDayOverrides?: readonly (DateOrCalendarDate | string)[];
+  } = {};
+
+  const holidays = config.publicHolidays ?? config.baseCountry;
+  if (holidays !== undefined) {
+    options.holidays = holidays;
+  }
+  if (config.weekendDays !== undefined) {
+    options.weekendDays = config.weekendDays;
+  }
+  if (config.customHolidays !== undefined) {
+    options.customHolidays = config.customHolidays;
+  }
+  if (config.workingDayOverrides !== undefined) {
+    options.workingDayOverrides = config.workingDayOverrides;
+  }
+
+  return Object.freeze(options);
 }
 
 /**
@@ -40,14 +108,13 @@ function isWeekendForOptions(
     return options.weekendDays.includes(dow);
   }
 
+  const holidays = options?.holidays;
   if (
-    typeof options?.holidays === "string" ||
-    (typeof options?.holidays === "object" &&
-      options?.holidays !== null &&
-      "country" in options.holidays)
+    typeof holidays === "string" ||
+    (typeof holidays === "object" && holidays !== null && "country" in holidays)
   ) {
     try {
-      const cal = getHolidayCalendar(options.holidays);
+      const cal = getHolidayCalendar(holidays as HolidayTarget);
       if (cal.defaultWeekendDays) {
         return cal.defaultWeekendDays.includes(dow);
       }
@@ -63,10 +130,26 @@ function isWeekendForOptions(
  * Returns true if the specified absolute day is a non-working day (weekend or holiday).
  */
 function isNonWorkingDay(abs: number, options?: BusinessDaysOptions): boolean {
+  // 1. Explicit working day overrides always take absolute precedence!
+  if (options?.workingDayOverrides && options.workingDayOverrides.length > 0) {
+    if (options.workingDayOverrides.some((w) => toAbsoluteDaySafe(w) === abs)) {
+      return false;
+    }
+  }
+
+  // 2. Custom holidays / corporate off-days
+  if (options?.customHolidays && options.customHolidays.length > 0) {
+    if (options.customHolidays.some((h) => toAbsoluteDaySafe(h) === abs)) {
+      return true;
+    }
+  }
+
+  // 3. Weekend check
   if (isWeekendForOptions(abs, options)) {
     return true;
   }
 
+  // 4. Public holidays
   const holidays = options?.holidays;
   if (!holidays) {
     return false;
@@ -79,11 +162,30 @@ function isNonWorkingDay(abs: number, options?: BusinessDaysOptions): boolean {
     return holidays(gDate);
   }
 
-  if (typeof holidays === "string" || "rules" in holidays) {
-    return isPublicHoliday(gDate, holidays);
+  if (
+    typeof holidays === "string" ||
+    (typeof holidays === "object" && "rules" in holidays)
+  ) {
+    return isPublicHoliday(gDate, holidays as HolidayTarget);
   }
 
-  return holidays.some((hDate) => getAbsoluteDay(hDate) === abs);
+  if (Array.isArray(holidays)) {
+    if (holidays.length === 0) return false;
+    const first = holidays[0];
+    if (
+      (typeof first === "string" && !first.includes("-")) ||
+      (typeof first === "object" && first !== null && "rules" in first)
+    ) {
+      // Array of country codes or HolidayCalendars, e.g. ["TH", "SG"]
+      return isPublicHoliday(gDate, holidays as readonly HolidayTarget[]);
+    }
+    // Array of DateOrCalendarDate | string
+    return (holidays as readonly (DateOrCalendarDate | string)[]).some(
+      (hDate) => toAbsoluteDaySafe(hDate) === abs,
+    );
+  }
+
+  return false;
 }
 
 /**
@@ -91,10 +193,10 @@ function isNonWorkingDay(abs: number, options?: BusinessDaysOptions): boolean {
  * Supports custom weekend definitions per country (e.g. Thursday & Friday for Iran).
  */
 export function isWeekend(
-  date: DateOrCalendarDate,
+  date: DateOrCalendarDate | string,
   options?: Pick<BusinessDaysOptions, "weekendDays" | "holidays">,
 ): boolean {
-  const abs = getAbsoluteDay(date);
+  const abs = toAbsoluteDaySafe(date);
   return isWeekendForOptions(abs, options);
 }
 
@@ -102,7 +204,7 @@ export function isWeekend(
  * Returns true if the specified date falls on a weekday.
  */
 export function isWeekday(
-  date: DateOrCalendarDate,
+  date: DateOrCalendarDate | string,
   options?: Pick<BusinessDaysOptions, "weekendDays" | "holidays">,
 ): boolean {
   return !isWeekend(date, options);
@@ -112,10 +214,10 @@ export function isWeekday(
  * Returns true if the specified date is a business day (neither weekend nor public holiday).
  */
 export function isBusinessDay(
-  date: DateOrCalendarDate,
+  date: DateOrCalendarDate | string,
   options?: BusinessDaysOptions,
 ): boolean {
-  const abs = getAbsoluteDay(date);
+  const abs = toAbsoluteDaySafe(date);
   return !isNonWorkingDay(abs, options);
 }
 

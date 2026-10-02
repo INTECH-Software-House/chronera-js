@@ -347,3 +347,15 @@ export interface SameTimeZoneOptions {
   readonly instant?: Instant | Date;
   readonly mode?: "canonical" | "offset";
 }
+
+export type {
+  HolidayTarget,
+  CorporateCalendarConfig,
+} from "./holidays/types.js";
+
+export type { BusinessDaysOptions } from "./operations/business-days.js";
+
+export type {
+  ParseIXDTFOptions,
+  FormatIXDTFOptions,
+} from "./operations/ixdtf.js";

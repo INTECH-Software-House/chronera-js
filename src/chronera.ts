@@ -38,7 +38,6 @@ import {
   isWeekday,
   isBusinessDay,
   addBusinessDays,
-  subtractBusinessDays,
   diffInBusinessDays,
 } from "./operations/business-days.js";
 import { isPublicHoliday } from "./operations/holidays.js";
@@ -52,9 +51,16 @@ import {
   subtractZonedDuration,
   formatZonedDateTime,
 } from "./operations/zoned-operations.js";
+import {
+  isIXDTF,
+  parseIXDTF,
+  formatIXDTF,
+  type FormatIXDTFOptions,
+} from "./operations/ixdtf.js";
+import { type BusinessDaysOptions } from "./operations/business-days.js";
 import { ChroneraError } from "./errors/errors.js";
 
-import type { CountryCode } from "./holidays/types.js";
+import type { CountryCode, HolidayTarget } from "./holidays/types.js";
 import type {
   CalendarDate,
   CalendarId,
@@ -83,6 +89,30 @@ export type ChroneraInput =
   | Chronera
   | null
   | undefined;
+
+function resolveBusinessDaysOptions(
+  input?:
+    | CountryCode
+    | string
+    | HolidayTarget
+    | readonly HolidayTarget[]
+    | BusinessDaysOptions,
+): BusinessDaysOptions | undefined {
+  if (!input) return undefined;
+  if (typeof input === "string") {
+    return { holidays: input as CountryCode };
+  }
+  if (Array.isArray(input)) {
+    return { holidays: input as readonly HolidayTarget[] };
+  }
+  if (typeof input === "object") {
+    if ("rules" in input) {
+      return { holidays: input as HolidayTarget };
+    }
+    return input as BusinessDaysOptions;
+  }
+  return undefined;
+}
 
 /**
  * Chronera Fluent Wrapper providing immutable, chainable ergonomics
@@ -205,6 +235,36 @@ export class Chronera {
     }
     const inst = this.toInstant();
     return new Chronera(zonedDateTime(inst, timeZone, calendar));
+  }
+
+  toZonedDateTime(
+    timeZone: TimeZoneId = "UTC",
+    calendar: CalendarId = "gregory",
+  ): ZonedDateTime {
+    if (this.#value.kind === "zoned-date-time") {
+      return this.#value;
+    }
+    if (this.#value.kind === "local-date") {
+      return createZonedDateTime(
+        {
+          year: this.#value.year,
+          month: this.#value.month,
+          day: this.#value.day,
+        },
+        timeZone,
+        { calendar },
+      );
+    }
+    const inst = this.toInstant();
+    return zonedDateTime(inst, timeZone, calendar);
+  }
+
+  toIXDTF(options?: FormatIXDTFOptions): string {
+    const zdt = this.toZonedDateTime(
+      this.#value.kind === "zoned-date-time" ? this.#value.timeZone : "UTC",
+      this.#value.kind === "zoned-date-time" ? this.#value.calendar : "gregory",
+    );
+    return formatIXDTF(zdt, options);
   }
 
   toCalendar(calendarId: CalendarId): Chronera {
@@ -355,44 +415,63 @@ export class Chronera {
     return isWeekday(this.toLocalDate());
   }
 
-  isBusinessDay(country?: CountryCode): boolean {
-    return isBusinessDay(
-      this.toLocalDate(),
-      country ? { holidays: country } : undefined,
-    );
+  isBusinessDay(
+    optionsOrCountry?:
+      | CountryCode
+      | string
+      | HolidayTarget
+      | readonly HolidayTarget[]
+      | BusinessDaysOptions,
+  ): boolean {
+    const opts = resolveBusinessDaysOptions(optionsOrCountry);
+    return isBusinessDay(this.toLocalDate(), opts);
   }
 
-  isPublicHoliday(country: CountryCode = "TH"): boolean {
+  isPublicHoliday(
+    country: HolidayTarget | readonly HolidayTarget[] = "TH",
+  ): boolean {
     return isPublicHoliday(this.toLocalDate(), country);
   }
 
-  addBusinessDays(amount: number, country?: CountryCode): Chronera {
+  addBusinessDays(
+    amount: number,
+    optionsOrCountry?:
+      | CountryCode
+      | string
+      | HolidayTarget
+      | readonly HolidayTarget[]
+      | BusinessDaysOptions,
+  ): Chronera {
     const ld = this.toLocalDate();
-    const res = addBusinessDays(
-      ld,
-      amount,
-      country ? { holidays: country } : undefined,
-    );
+    const opts = resolveBusinessDaysOptions(optionsOrCountry);
+    const res = addBusinessDays(ld, amount, opts);
     return new Chronera(res);
   }
 
-  subtractBusinessDays(amount: number, country?: CountryCode): Chronera {
-    const ld = this.toLocalDate();
-    const res = subtractBusinessDays(
-      ld,
-      amount,
-      country ? { holidays: country } : undefined,
-    );
-    return new Chronera(res);
+  subtractBusinessDays(
+    amount: number,
+    optionsOrCountry?:
+      | CountryCode
+      | string
+      | HolidayTarget
+      | readonly HolidayTarget[]
+      | BusinessDaysOptions,
+  ): Chronera {
+    return this.addBusinessDays(-amount, optionsOrCountry);
   }
 
-  diffInBusinessDays(other: ChroneraInput, country?: CountryCode): number {
+  diffInBusinessDays(
+    other: ChroneraInput,
+    optionsOrCountry?:
+      | CountryCode
+      | string
+      | HolidayTarget
+      | readonly HolidayTarget[]
+      | BusinessDaysOptions,
+  ): number {
     const otherLd = chronera(other).toLocalDate();
-    return diffInBusinessDays(
-      this.toLocalDate(),
-      otherLd,
-      country ? { holidays: country } : undefined,
-    );
+    const opts = resolveBusinessDaysOptions(optionsOrCountry);
+    return diffInBusinessDays(this.toLocalDate(), otherLd, opts);
   }
 
   // --- Predicates & Comparison ---
@@ -518,6 +597,10 @@ export function chronera(input?: ChroneraInput): Chronera {
 
   if (typeof input === "string") {
     const trimmed = input.trim();
+    // Check if it's an RFC 9557 (IXDTF) string with timezone/calendar annotations
+    if (isIXDTF(trimmed)) {
+      return new Chronera(parseIXDTF(trimmed));
+    }
     // Check if it's an ISO timestamp with time or timezone
     if (
       trimmed.includes("T") ||

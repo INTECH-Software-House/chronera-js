@@ -116,6 +116,12 @@ describe("package exports", () => {
     expect(typeof Root.subtractZonedDuration).toBe("function");
     expect(typeof Root.diffZoned).toBe("function");
     expect(typeof Root.formatZonedDateTime).toBe("function");
+    // v0.2.5 — IXDTF (RFC 9557) & Cross-Border Corporate Calendar
+    expect(typeof Root.createCorporateCalendar).toBe("function");
+    expect(typeof Root.getHolidayDetailsAll).toBe("function");
+    expect(typeof Root.isIXDTF).toBe("function");
+    expect(typeof Root.parseIXDTF).toBe("function");
+    expect(typeof Root.formatIXDTF).toBe("function");
   });
 
   it("exports calendar symbols from ./calendar", () => {

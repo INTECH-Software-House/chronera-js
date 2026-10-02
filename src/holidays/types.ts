@@ -1,4 +1,4 @@
-import type { LocalDate } from "../public-types.js";
+import type { DateOrCalendarDate, LocalDate } from "../public-types.js";
 
 /**
  * Supported 15 country codes (ISO 3166-1 alpha-2).
@@ -132,6 +132,11 @@ export interface HolidayCalendar {
 }
 
 /**
+ * Valid target representing a country or holiday calendar.
+ */
+export type HolidayTarget = CountryCode | (string & {}) | HolidayCalendar;
+
+/**
  * Options for holiday queries.
  */
 export interface HolidayOptions {
@@ -139,4 +144,13 @@ export interface HolidayOptions {
   readonly includeObserved?: boolean;
   /** Additional custom holidays to include */
   readonly additionalHolidays?: readonly LocalDate[];
+}
+
+export interface CorporateCalendarConfig {
+  readonly name?: string;
+  readonly baseCountry?: HolidayTarget | readonly HolidayTarget[];
+  readonly publicHolidays?: HolidayTarget | readonly HolidayTarget[];
+  readonly customHolidays?: readonly (DateOrCalendarDate | string)[];
+  readonly workingDayOverrides?: readonly (DateOrCalendarDate | string)[];
+  readonly weekendDays?: readonly number[];
 }

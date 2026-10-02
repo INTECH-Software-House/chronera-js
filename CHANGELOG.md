@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.5] - 2026-10-03
+
+### Added
+
+- **RFC 9557 (IXDTF) Date-Time Engine** (`src/operations/ixdtf.ts`):
+  - Added full support for RFC 9557 (Internet Extended Date/Time Format - IXDTF), bringing 2024-2026 modern standards alignment to Temporal and ZonedDateTime operations.
+  - `parseIXDTF(input, options?)`: Parses extended ISO 8601 timestamps containing bracketed time zone identifiers (e.g. `[Asia/Bangkok]`) and calendar systems (e.g. `[u-ca=buddhist]`).
+  - Strict RFC 9557 compliance: Rejects unrecognized critical annotations prefixed with `!` (e.g. `[!unknown=foo]`), while safely accepting standard annotations and critical timezone tags (`[!Asia/Tokyo]`).
+  - `formatIXDTF(zdt, options?)`: Serializes `ZonedDateTime` instances into RFC 9557 format with configurable calendar tags (`includeCalendar`), critical timezone markers (`criticalTimezone`), and fractional seconds precision.
+  - `isIXDTF(input)`: Lightweight predicate detecting bracket-annotated date-time strings.
+  - Fluent ergonomics integration: `chronera("2026-10-03T01:13:43+07:00[Asia/Bangkok][u-ca=buddhist]")` automatically parses IXDTF annotations into internal `ZonedDateTime`, and exposes `.toIXDTF()`.
+
+- **Cross-Border Multi-Region Holidays & Corporate Calendar** (`src/operations/business-days.ts`, `src/operations/holidays.ts`, `src/holidays/types.ts`):
+  - **Cross-Border Multi-Country Settlements**: `isPublicHoliday`, `addBusinessDays`, `subtractBusinessDays`, and `diffInBusinessDays` now accept arrays of country codes (e.g. `["TH", "SG"]`). If a date is a public holiday in either jurisdiction, settlement calendar arithmetic accurately skips the non-settlement day.
+  - **Chronological Multi-Country Holiday Aggregator**: `getPublicHolidays(year, ["TH", "SG"])` chronologically merges all statutory holidays from multiple nations into a unified schedule.
+  - **Multi-Jurisdiction Holiday Details**: `getHolidayDetailsAll(date, countries)` retrieves holiday metadata for every country celebrating on a common date (e.g. New Year's Day across TH, SG, US).
+  - **Corporate Calendar Engine (`createCorporateCalendar`)**:
+    - `customHolidays`: Configure company-specific holidays and annual shutdown periods (e.g. company retreats, foundation days).
+    - `workingDayOverrides`: Support compensation working days (e.g. working Saturdays compensating for extended holiday periods) that take absolute precedence over standard weekends and public holidays.
+    - Custom weekend definitions and multi-country holiday targets.
+  - **Polymorphic Date Support**: Holiday and business day queries accept `LocalDate`, `CalendarDate`, or ISO date strings (`"YYYY-MM-DD"`).
+
 ## [0.2.4] - 2026-09-27
 
 ### Performance
