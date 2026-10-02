@@ -16,6 +16,7 @@ describe("package exports", () => {
     expect(pkg.exports["./parse"]).toBeDefined();
     expect(pkg.exports["./holidays"]).toBeDefined();
     expect(pkg.exports["./scheduling"]).toBeDefined();
+    expect(pkg.exports["./zod"]).toBeDefined();
   });
 
   it("exports all expected symbols from root", () => {
@@ -161,5 +162,13 @@ describe("package exports", () => {
     expect(typeof Scheduling.recur).toBe("function");
     expect(typeof Scheduling.financialPeriods).toBe("function");
     expect(typeof Scheduling.timeBuckets).toBe("function");
+  });
+
+  it("exports zod symbols from ./zod", async () => {
+    const Zod = await import("../../dist/zod/index.js");
+    expect(typeof Zod.zChronera).toBe("function");
+    expect(typeof Zod.zLocalDate).toBe("function");
+    expect(typeof Zod.zInstant).toBe("function");
+    expect(typeof Zod.zZonedDateTime).toBe("function");
   });
 });

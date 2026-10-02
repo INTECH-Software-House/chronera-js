@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.6] - 2026-10-03
+
+### Added
+
+- **First-Class Zod Integration (`@intech-software/chronera/zod`)**:
+  - Modular subpath export `./zod` providing seamless schema validation and parsing for forms, DTOs, and APIs.
+  - Zero mandatory runtime overhead: Configured with optional `peerDependencies` on `zod` (`^3.22.0 || ^4.0.0`), keeping Chronera core zero-dependency.
+  - `zChronera(options?)`: Validates ISO strings, RFC 9557 timestamps, Dates, and epoch numbers, transforming them into immutable `Chronera` instances with built-in validation rules:
+    - `min` / `max`: Boundary checking.
+    - `future` / `past`: Temporal direction validation.
+    - `businessDay`: Validates dates against country settlement calendars (e.g. `["TH", "SG"]`).
+    - `notPublicHoliday`: Ensures dates do not fall on statutory holidays.
+    - `weekend` / `weekday`: Weekday/weekend constraints.
+  - `zLocalDate(options?)`: Validates and transforms inputs directly into primitive `LocalDate` entities.
+  - `zInstant(options?)`: Validates and transforms inputs into primitive `Instant` entities.
+  - `zZonedDateTime(timeZone?, options?)`: Validates and transforms inputs into `ZonedDateTime` instances.
+
 ## [0.2.5] - 2026-10-03
 
 ### Added

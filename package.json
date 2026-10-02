@@ -1,6 +1,6 @@
 {
   "name": "@intech-software/chronera",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.",
   "keywords": [
     "date",
@@ -61,6 +61,10 @@
     "./scheduling": {
       "types": "./dist/scheduling/index.d.ts",
       "import": "./dist/scheduling/index.js"
+    },
+    "./zod": {
+      "types": "./dist/zod/index.d.ts",
+      "import": "./dist/zod/index.js"
     }
   },
   "files": [
@@ -69,6 +73,14 @@
     "README.md"
   ],
   "sideEffects": false,
+  "peerDependencies": {
+    "zod": "^3.22.0 || ^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "zod": {
+      "optional": true
+    }
+  },
   "dependencies": {},
   "engines": {
     "node": ">=22.14.0"
@@ -143,6 +155,11 @@
       "name": "Scheduling (@intech-software/chronera/scheduling)",
       "path": "dist/scheduling/index.js",
       "limit": "30 KB"
+    },
+    {
+      "name": "Zod (@intech-software/chronera/zod)",
+      "path": "dist/zod/index.js",
+      "limit": "25 KB"
     }
   ],
   "publishConfig": {
@@ -171,6 +188,7 @@
     "tstyche": "7.2.5",
     "tsx": "4.23.13",
     "typescript": "6.0.3",
-    "vitest": "4.1.11"
+    "vitest": "4.1.11",
+    "zod": "^3.25.76"
   }
 }
