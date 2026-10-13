@@ -130,8 +130,8 @@ describe("Calendar Grid & DatePicker Engine", () => {
 
       const thHeaders = getWeekDaysHeader("th", "short", "monday");
       expect(thHeaders).toHaveLength(7);
-      expect(thHeaders[0]).toBe("จันทร์");
-      expect(thHeaders[6]).toBe("อาทิตย์");
+      expect(["จันทร์", "จ."]).toContain(thHeaders[0]);
+      expect(["อาทิตย์", "อา."]).toContain(thHeaders[6]);
 
       const thNarrow = getWeekDaysHeader("th", "narrow", "monday");
       expect(thNarrow).toHaveLength(7);

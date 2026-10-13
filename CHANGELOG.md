@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.7] - 2026-10-13
+
+### Added
+
+- **First-Class Valibot Integration (`@intech-software/chronera/valibot`)**:
+  - Dedicated subpath export `./valibot` delivering lightweight schema validation with sub-kilobyte footprint.
+  - Configured with optional `peerDependencies: { valibot: "^1.0.0" }`, maintaining strict zero-dependency core.
+  - `vChronera(options?)`: Full validation schema producing immutable `Chronera` instances.
+  - `vLocalDate`, `vInstant`, `vZonedDateTime`: Direct transformations to primitive domain entities.
+  - Modular pipeline actions: `toChronera`, `toLocalDate`, `toInstant`, `toZonedDateTime`, `chroneraFuture`, `chroneraPast`, `chroneraMin`, `chroneraMax`, `chroneraBusinessDay`, `chroneraNotPublicHoliday`, `chroneraWeekend`, `chroneraWeekday`.
+
+- **Day.js & Moment Migration Engine & Drop-in Compat (`@intech-software/chronera/compat`)**:
+  - `dayjs(date)` / `dayjsCompat(date)`: Drop-in class matching Day.js API ergonomics (`.format()`, `.add()`, `.subtract()`, `.startOf()`, `.endOf()`, `.isSame()`, `.isBefore()`, `.isAfter()`, `.isSameOrBefore()`, `.isSameOrAfter()`, `.isBetween()`, `.diff()`, `.year()`, `.month()`, `.date()`, `.day()`, `.toDate()`, `.toChronera()`).
+  - `convertDayjsPattern(pattern)`: Automatic bidirectional token translation from Day.js/Moment conventions (`YYYY-MM-DD HH:mm:ss`, `[at]`) to LDML/Unicode patterns (`yyyy-MM-dd HH:mm:ss`, `'at'`).
+  - `formatDayjs(date, pattern)` and `Chronera.prototype.formatDayjs(pattern)`.
+  - Universal duck-typing in `chronera(input)`: Automatically ingests Day.js, Moment, and Luxon objects possessing `.toDate()` or `.valueOf()` without manual conversion.
+  - `fromDayjs`, `fromMoment`, `toDayjs`, `toMoment`, and `chroneraDayjsPlugin` (`dayjs.extend(chroneraDayjsPlugin)`).
+
+- **Standard Schema (`~standard`) Specification Compliance (`@intech-software/chronera/standard`)**:
+  - Zero-dependency schema validation implementing the official `@standard-schema/spec` v1 standard.
+  - Direct, turnkey integration with TanStack Form, tRPC, React Hook Form, and all Standard Schema consumers without requiring Zod or Valibot.
+  - `standardChronera(options?)`, `standardLocalDate`, `standardInstant`, `standardZonedDateTime`.
+
+- **Testing & Clock Mocking Engine (`@intech-software/chronera/testing`)**:
+  - `setSystemTime(date)` and `restoreSystemTime()`: Freezes and restores Chronera's internal clock without polluting or patching global `Date`.
+  - `advanceSystemTimeBy(ms)`: Simulates time progression in unit tests.
+  - `withMockTime(date, fn)`: Scoped mock execution with guaranteed cleanup.
+  - Test seed helpers: `mockBusinessDay`, `mockHoliday`, `mockDateRange`.
+
+### Fixed
+
+- **Cross-ICU Thai Header Compatibility**:
+  - Harmonized Thai short weekday assertions in `calendar-grid.test.ts` across Node 22.14.0 (ICU 74) and Node 24.
+
+### Dependencies
+
+- Bumped `actions/setup-node` from 7.0.0 to 7.1.0 across all GitHub Actions workflows (#31).
+- Bumped `lint-staged` to 17.6.0 (#30).
+- Bumped `@commitlint/cli` and `@commitlint/config-conventional` to 21.2.3 (#29, #26).
+- Bumped `eslint` to 10.11.0 (#28).
+- Bumped `tsx` to 4.23.15 (#27).
+
 ## [0.2.6] - 2026-10-03
 
 ### Added

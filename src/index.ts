@@ -472,7 +472,28 @@ export type {
   SameTimeZoneOptions,
   TimeZoneId,
   TimeZoneOffsetFormat,
-  TimeZoneOffsetInfo,
   TimeOrDateTimeOrInstant,
   ZonedDateTime,
 } from "./public-types.js";
+
+export {
+  convertDayjsPattern,
+  isDayjsPattern,
+  formatDayjs,
+} from "./compat/index.js";
+
+export {
+  standardChronera,
+  standardLocalDate,
+  standardInstant,
+  standardZonedDateTime,
+} from "./standard/index.js";
+
+export type {
+  StandardSchemaV1,
+  StandardChroneraOptions,
+  StandardIssue,
+  StandardResult,
+} from "./standard/index.js";
+
+export type { DateLike } from "./chronera.js";

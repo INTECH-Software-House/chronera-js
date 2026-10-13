@@ -59,6 +59,8 @@ import {
 } from "./operations/ixdtf.js";
 import { type BusinessDaysOptions } from "./operations/business-days.js";
 import { ChroneraError } from "./errors/errors.js";
+import { getNowDate } from "./runtime/clock.js";
+import { convertDayjsPattern, isDayjsPattern } from "./compat/patterns.js";
 
 import type { CountryCode, HolidayTarget } from "./holidays/types.js";
 import type {
@@ -76,6 +78,12 @@ import type {
   ZonedDateTime,
 } from "./public-types.js";
 
+export interface DateLike {
+  toDate?(): unknown;
+  toISOString?(): unknown;
+  valueOf?(): unknown;
+}
+
 export type ChroneraInput =
   | LocalDate
   | Instant
@@ -87,6 +95,7 @@ export type ChroneraInput =
   | string
   | number
   | Chronera
+  | DateLike
   | null
   | undefined;
 
@@ -537,21 +546,45 @@ export class Chronera {
 
   // --- Formatting ---
 
-  format(optionsOrPattern?: string | Readonly<FormatDateOptions>): string {
-    if (this.#value.kind === "zoned-date-time") {
-      return formatZonedDateTime(this.#value, optionsOrPattern);
+  format(
+    optionsOrPattern?:
+      string | Readonly<FormatDateOptions & { syntax?: "ldml" | "dayjs" }>,
+    formatOptions?: { syntax?: "ldml" | "dayjs" },
+  ): string {
+    let resolvedPattern = optionsOrPattern;
+    if (typeof resolvedPattern === "string") {
+      if (
+        formatOptions?.syntax === "dayjs" ||
+        isDayjsPattern(resolvedPattern)
+      ) {
+        resolvedPattern = convertDayjsPattern(resolvedPattern);
+      }
     }
-    if (typeof optionsOrPattern === "string") {
+
+    if (this.#value.kind === "zoned-date-time") {
+      return formatZonedDateTime(
+        this.#value,
+        resolvedPattern as FormatDateOptions,
+      );
+    }
+    if (typeof resolvedPattern === "string") {
       const inst = this.toInstant();
-      return formatInTimeZone(inst, "UTC", optionsOrPattern);
+      return formatInTimeZone(inst, "UTC", resolvedPattern);
     }
     if (this.#value.kind === "instant") {
       return formatDateTime(
         this.#value,
-        optionsOrPattern as FormatDateTimeOptions,
+        resolvedPattern as FormatDateTimeOptions,
       );
     }
-    return formatDate(this.toLocalDate(), optionsOrPattern);
+    return formatDate(this.toLocalDate(), resolvedPattern);
+  }
+
+  /**
+   * Formats this date using Day.js / Moment pattern tokens (e.g. "YYYY-MM-DD HH:mm:ss").
+   */
+  formatDayjs(pattern: string): string {
+    return this.format(convertDayjsPattern(pattern));
   }
 
   toISOString(): string {
@@ -580,7 +613,7 @@ export class Chronera {
  */
 export function chronera(input?: ChroneraInput): Chronera {
   if (input === null || input === undefined) {
-    return new Chronera(instantFromDate(new Date()));
+    return new Chronera(instantFromDate(getNowDate()));
   }
 
   if (input instanceof Chronera) {
@@ -613,8 +646,52 @@ export function chronera(input?: ChroneraInput): Chronera {
     return new Chronera(parseLocalDate(trimmed));
   }
 
-  if (typeof input === "object" && "kind" in input) {
-    return new Chronera(input);
+  if (typeof input === "object" && input !== null) {
+    if ("kind" in input) {
+      return new Chronera(
+        input as
+          | LocalDate
+          | Instant
+          | ZonedDateTime
+          | CalendarDate
+          | LocalDateTime
+          | LocalTime,
+      );
+    }
+
+    // Duck-typing support for Day.js, Moment.js, Luxon, etc.
+    if (
+      "toDate" in input &&
+      typeof (input as { toDate?: unknown }).toDate === "function"
+    ) {
+      const d = (input as { toDate(): unknown }).toDate();
+      if (d instanceof Date && !Number.isNaN(d.getTime())) {
+        return new Chronera(instantFromDate(d));
+      }
+    }
+
+    if (
+      "toISOString" in input &&
+      typeof (input as { toISOString?: unknown }).toISOString === "function"
+    ) {
+      const s = (input as { toISOString(): unknown }).toISOString();
+      if (typeof s === "string") {
+        return chronera(s);
+      }
+    }
+
+    if (
+      "valueOf" in input &&
+      typeof (input as { valueOf?: unknown }).valueOf === "function"
+    ) {
+      const v = (input as { valueOf(): unknown }).valueOf();
+      if (typeof v === "number" && Number.isFinite(v)) {
+        return new Chronera(instantFromEpochMilliseconds(v));
+      }
+      if (v instanceof Date && !Number.isNaN(v.getTime())) {
+        return new Chronera(instantFromDate(v));
+      }
+    }
   }
 
   throw new ChroneraError(

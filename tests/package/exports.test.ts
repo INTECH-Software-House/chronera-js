@@ -17,6 +17,10 @@ describe("package exports", () => {
     expect(pkg.exports["./holidays"]).toBeDefined();
     expect(pkg.exports["./scheduling"]).toBeDefined();
     expect(pkg.exports["./zod"]).toBeDefined();
+    expect(pkg.exports["./valibot"]).toBeDefined();
+    expect(pkg.exports["./compat"]).toBeDefined();
+    expect(pkg.exports["./testing"]).toBeDefined();
+    expect(pkg.exports["./standard"]).toBeDefined();
   });
 
   it("exports all expected symbols from root", () => {
@@ -170,5 +174,40 @@ describe("package exports", () => {
     expect(typeof Zod.zLocalDate).toBe("function");
     expect(typeof Zod.zInstant).toBe("function");
     expect(typeof Zod.zZonedDateTime).toBe("function");
+  });
+
+  it("exports valibot symbols from ./valibot", async () => {
+    const Valibot = await import("../../dist/valibot/index.js");
+    expect(typeof Valibot.vChronera).toBe("function");
+    expect(typeof Valibot.vLocalDate).toBe("function");
+    expect(typeof Valibot.vInstant).toBe("function");
+    expect(typeof Valibot.vZonedDateTime).toBe("function");
+  });
+
+  it("exports compat symbols from ./compat", async () => {
+    const Compat = await import("../../dist/compat/index.js");
+    expect(typeof Compat.dayjs).toBe("function");
+    expect(typeof Compat.dayjsCompat).toBe("function");
+    expect(typeof Compat.fromDayjs).toBe("function");
+    expect(typeof Compat.fromMoment).toBe("function");
+    expect(typeof Compat.convertDayjsPattern).toBe("function");
+    expect(typeof Compat.formatDayjs).toBe("function");
+  });
+
+  it("exports testing symbols from ./testing", async () => {
+    const Testing = await import("../../dist/testing/index.js");
+    expect(typeof Testing.setSystemTime).toBe("function");
+    expect(typeof Testing.restoreSystemTime).toBe("function");
+    expect(typeof Testing.withMockTime).toBe("function");
+    expect(typeof Testing.mockBusinessDay).toBe("function");
+    expect(typeof Testing.mockHoliday).toBe("function");
+  });
+
+  it("exports standard schema symbols from ./standard", async () => {
+    const Standard = await import("../../dist/standard/index.js");
+    expect(typeof Standard.standardChronera).toBe("function");
+    expect(typeof Standard.standardLocalDate).toBe("function");
+    expect(typeof Standard.standardInstant).toBe("function");
+    expect(typeof Standard.standardZonedDateTime).toBe("function");
   });
 });
