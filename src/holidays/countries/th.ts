@@ -1,8 +1,13 @@
-import type { HolidayCalendar } from "../types.js";
+import {
+  THAI_LUNAR_HOLIDAYS_TABLE,
+  evaluateThaiLunarHoliday,
+} from "./th-lunar.js";
+
+import type { HolidayCalendar, PublicHoliday } from "../types.js";
 
 /**
  * Official Public Holidays for Thailand 🇹🇭
- * Enforces Cabinet Substituted Holiday Rules (วันหยุดชดเชย).
+ * Enforces Cabinet Substituted Holiday Rules (วันหยุดราชการตามมติคณะรัฐมนตรี).
  */
 export const thailandHolidays: HolidayCalendar = {
   country: "TH",
@@ -17,6 +22,25 @@ export const thailandHolidays: HolidayCalendar = {
       name: "วันขึ้นปีใหม่",
       nameEn: "New Year's Day",
       observed: "weekend-to-monday",
+    },
+    {
+      type: "custom",
+      id: "th-makha-bucha",
+      name: "วันมาฆบูชา",
+      nameEn: "Makha Bucha Day",
+      evaluate(year: number): readonly PublicHoliday[] {
+        const entry = THAI_LUNAR_HOLIDAYS_TABLE[year];
+        if (!entry) return [];
+        return evaluateThaiLunarHoliday(
+          "th-makha-bucha",
+          "วันมาฆบูชา",
+          "Makha Bucha Day",
+          entry.makhaBucha[0],
+          entry.makhaBucha[1],
+          year,
+          "TH",
+        );
+      },
     },
     {
       type: "fixed",
@@ -74,6 +98,44 @@ export const thailandHolidays: HolidayCalendar = {
       validFromYear: 2019,
     },
     {
+      type: "custom",
+      id: "th-royal-ploughing",
+      name: "วันพืชมงคลจรดพระนังคัลแรกนาขวัญ",
+      nameEn: "Royal Ploughing Ceremony",
+      evaluate(year: number): readonly PublicHoliday[] {
+        const entry = THAI_LUNAR_HOLIDAYS_TABLE[year];
+        if (!entry?.royalPloughing) return [];
+        return evaluateThaiLunarHoliday(
+          "th-royal-ploughing",
+          "วันพืชมงคลจรดพระนังคัลแรกนาขวัญ",
+          "Royal Ploughing Ceremony",
+          entry.royalPloughing[0],
+          entry.royalPloughing[1],
+          year,
+          "TH",
+        );
+      },
+    },
+    {
+      type: "custom",
+      id: "th-visakha-bucha",
+      name: "วันวิสาขบูชา",
+      nameEn: "Wisakha Bucha Day",
+      evaluate(year: number): readonly PublicHoliday[] {
+        const entry = THAI_LUNAR_HOLIDAYS_TABLE[year];
+        if (!entry) return [];
+        return evaluateThaiLunarHoliday(
+          "th-visakha-bucha",
+          "วันวิสาขบูชา",
+          "Wisakha Bucha Day",
+          entry.visakhaBucha[0],
+          entry.visakhaBucha[1],
+          year,
+          "TH",
+        );
+      },
+    },
+    {
       type: "fixed",
       id: "th-queen-birthday",
       month: 6,
@@ -82,6 +144,44 @@ export const thailandHolidays: HolidayCalendar = {
       nameEn: "HM Queen Suthida's Birthday",
       observed: "weekend-to-monday",
       validFromYear: 2019,
+    },
+    {
+      type: "custom",
+      id: "th-asarnha-bucha",
+      name: "วันอาสาฬหบูชา",
+      nameEn: "Asarnha Bucha Day",
+      evaluate(year: number): readonly PublicHoliday[] {
+        const entry = THAI_LUNAR_HOLIDAYS_TABLE[year];
+        if (!entry) return [];
+        return evaluateThaiLunarHoliday(
+          "th-asarnha-bucha",
+          "วันอาสาฬหบูชา",
+          "Asarnha Bucha Day",
+          entry.asarnhaBucha[0],
+          entry.asarnhaBucha[1],
+          year,
+          "TH",
+        );
+      },
+    },
+    {
+      type: "custom",
+      id: "th-khao-phansa",
+      name: "วันเข้าพรรษา",
+      nameEn: "Buddhist Lent Day",
+      evaluate(year: number): readonly PublicHoliday[] {
+        const entry = THAI_LUNAR_HOLIDAYS_TABLE[year];
+        if (!entry) return [];
+        return evaluateThaiLunarHoliday(
+          "th-khao-phansa",
+          "วันเข้าพรรษา",
+          "Buddhist Lent Day",
+          entry.khaoPhansa[0],
+          entry.khaoPhansa[1],
+          year,
+          "TH",
+        );
+      },
     },
     {
       type: "fixed",

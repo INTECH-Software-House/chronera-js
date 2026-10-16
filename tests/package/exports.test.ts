@@ -21,6 +21,7 @@ describe("package exports", () => {
     expect(pkg.exports["./compat"]).toBeDefined();
     expect(pkg.exports["./testing"]).toBeDefined();
     expect(pkg.exports["./standard"]).toBeDefined();
+    expect(pkg.exports["./superjson"]).toBeDefined();
   });
 
   it("exports all expected symbols from root", () => {
@@ -127,6 +128,16 @@ describe("package exports", () => {
     expect(typeof Root.isIXDTF).toBe("function");
     expect(typeof Root.parseIXDTF).toBe("function");
     expect(typeof Root.formatIXDTF).toBe("function");
+    // v0.2.8 — BOT Bank Holidays & Smart Relative Time
+    expect(typeof Root.isBankHoliday).toBe("function");
+    expect(typeof Root.getBankHolidays).toBe("function");
+    expect(typeof Root.isBankBusinessDay).toBe("function");
+    expect(typeof Root.addBankBusinessDays).toBe("function");
+    expect(typeof Root.diffInBankBusinessDays).toBe("function");
+    expect(typeof Root.timeAgo).toBe("function");
+    expect(typeof Root.formatDistance).toBe("function");
+    expect(typeof Root.formatDistanceToNow).toBe("function");
+    expect(typeof Root.thailandBankHolidays).toBe("object");
   });
 
   it("exports calendar symbols from ./calendar", () => {
@@ -154,6 +165,7 @@ describe("package exports", () => {
     expect(typeof Holidays.resolveAnnualHolidays).toBe("function");
     expect(typeof Holidays.calculateEasterSunday).toBe("function");
     expect(typeof Holidays.thailandHolidays).toBe("object");
+    expect(typeof Holidays.thailandBankHolidays).toBe("object");
     expect(typeof Holidays.japanHolidays).toBe("object");
   });
 
@@ -209,5 +221,15 @@ describe("package exports", () => {
     expect(typeof Standard.standardLocalDate).toBe("function");
     expect(typeof Standard.standardInstant).toBe("function");
     expect(typeof Standard.standardZonedDateTime).toBe("function");
+  });
+
+  it("exports superjson symbols from ./superjson", async () => {
+    const Superjson = await import("../../dist/superjson/index.js");
+    expect(typeof Superjson.registerChroneraSuperJSON).toBe("function");
+    expect(typeof Superjson.chroneraSuperJSONTransformer).toBe("object");
+    expect(typeof Superjson.localDateSuperJSONTransformer).toBe("object");
+    expect(typeof Superjson.instantSuperJSONTransformer).toBe("object");
+    expect(typeof Superjson.zonedDateTimeSuperJSONTransformer).toBe("object");
+    expect(typeof Superjson.calendarDateSuperJSONTransformer).toBe("object");
   });
 });

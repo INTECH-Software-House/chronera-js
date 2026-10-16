@@ -154,3 +154,71 @@ export function getHolidayDetailsAll(
 
   return Object.freeze(results);
 }
+
+function resolveBankTarget(target: HolidayTarget): HolidayTarget {
+  if (typeof target === "string") {
+    const upper = target.toUpperCase();
+    if (upper === "TH" || upper === "TH-BOT" || upper === "TH-BANK") {
+      return "TH-BOT";
+    }
+  }
+  return target;
+}
+
+/**
+ * Returns true if the specified date is a recognized financial institution / bank holiday.
+ * For Thailand ("TH"), evaluates according to the official Bank of Thailand (ธปท.) settlement calendar.
+ *
+ * @example
+ * ```ts
+ * isBankHoliday("2026-05-01", "TH"); // true (Labour Day is a bank holiday)
+ * isBankHoliday("2026-05-11", "TH"); // false (Royal Ploughing Ceremony: banks open!)
+ * ```
+ */
+export function isBankHoliday(
+  date: DateOrCalendarDate | string,
+  country: HolidayTarget | readonly HolidayTarget[] = "TH",
+  options?: HolidayOptions,
+): boolean {
+  if (Array.isArray(country)) {
+    return country.some((c) => isBankHoliday(date, c, options));
+  }
+  return isPublicHoliday(
+    date,
+    resolveBankTarget(country as HolidayTarget),
+    options,
+  );
+}
+
+/**
+ * Returns all financial institution / bank holidays for a given year.
+ * For Thailand ("TH"), returns the official Bank of Thailand (ธปท.) holiday schedule.
+ *
+ * @example
+ * ```ts
+ * const bankHolidays = getBankHolidays(2026, "TH");
+ * ```
+ */
+export function getBankHolidays(
+  year: number,
+  country: HolidayTarget | readonly HolidayTarget[] = "TH",
+  options?: HolidayOptions,
+): readonly PublicHoliday[] {
+  if (Array.isArray(country)) {
+    const list: PublicHoliday[] = [];
+    for (const c of country) {
+      list.push(...getBankHolidays(year, c, options));
+    }
+    list.sort((a, b) => {
+      const aAbs = getAbsoluteDay(a.date);
+      const bAbs = getAbsoluteDay(b.date);
+      return aAbs - bAbs;
+    });
+    return Object.freeze(list);
+  }
+  return getPublicHolidays(
+    year,
+    resolveBankTarget(country as HolidayTarget),
+    options,
+  );
+}

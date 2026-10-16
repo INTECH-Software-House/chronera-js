@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.8] - 2026-10-17
+
+### Added
+
+- **SuperJSON & Fullstack Serialization Integration (`@intech-software/chronera/superjson`)**:
+  - Dedicated subpath export `./superjson` with custom transformers for `Chronera`, `LocalDate`, `Instant`, `ZonedDateTime`, and `CalendarDate`.
+  - Seamless zero-loss serialization and deserialization across tRPC, Next.js App Router (Server Actions / RSC), Nuxt, Remix, and Blitz.
+  - `registerChroneraSuperJSON(superjson)` for one-line registration into any SuperJSON registry instance.
+  - Optional `peerDependencies: { superjson: "^1.12.0 || ^2.0.0" }`, preserving zero-dependency core.
+- **Bank of Thailand (BOT / ธปท.) Financial Settlement Calendar**:
+  - Official BOT financial market calendar (`TH-BOT` / `TH-BANK`) compliant with Bank of Thailand regulations.
+  - Verified lunar holiday substitutions (Makha Bucha, Visakha Bucha, Asahna Bucha, Chulalongkorn Memorial Day, King Bhumibol Memorial Day, etc.) from 2020 through 2035 with weekend-to-Monday substitution rolls.
+  - Explicit distinction between civil and bank holidays: National Labour Day (May 1) is recognized as a bank holiday, while Royal Ploughing Ceremony (วันพืชมงคล) and Buddhist Lent (วันเข้าพรรษา) remain financial business days.
+  - New functions: `isBankHoliday(date, countryCode?)`, `getBankHolidays(year, countryCode?)`, `isBankBusinessDay(date, countryCode?)`, `addBankBusinessDays(date, days, countryCode?)`, `diffInBankBusinessDays(from, to, countryCode?)`.
+  - Fluent methods on `Chronera`: `.isBankHoliday()`, `.isBankBusinessDay()`, `.addBankBusinessDays()`, `.subtractBankBusinessDays()`, `.diffInBankBusinessDays()`.
+- **Smart Relative Time & Humanizer Engine**:
+  - `timeAgo(date, options?)`: Relative time calculations across all scales (seconds, minutes, hours, days, months, years) without arbitrary day caps.
+  - `formatDistance(from, to, options?)` and `formatDistanceToNow(date, options?)`.
+  - Fluent methods on `Chronera`: `.fromNow()`, `.toNow()`, `.timeAgo()`, `.from()`, `.to()`.
+  - Natural Thai localization (`"เมื่อสักครู่"`, `"เมื่อวานนี้"`, `"พรุ่งนี้"`, `"3 นาทีที่แล้ว"`, `"อีก 2 วัน"`).
+  - Compact short mode: `"now"`, `"15s"`, `"5m"`, `"2h"`, `"3d"`, `"2mo"`, `"1y"` and Thai compact (`"เมื่อสักครู่"`, `"15 วิ"`, `"5 นาที"`, `"2 ชม."`, `"3 วัน"`, `"2 ด."`, `"1 ปี"`).
+  - Fully integrated with Chronera mock clock engine (`setSystemTime`, `withMockTime`).
+
 ## [0.2.7] - 2026-10-13
 
 ### Added

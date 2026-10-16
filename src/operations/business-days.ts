@@ -344,3 +344,88 @@ export function diffInBusinessDays(
 
   return count;
 }
+
+function resolveBankTargetParam(
+  country: HolidayTarget | readonly HolidayTarget[],
+): HolidayTarget | readonly HolidayTarget[] {
+  if (Array.isArray(country)) {
+    return country.map((c) =>
+      typeof c === "string" &&
+      (c.toUpperCase() === "TH" ||
+        c.toUpperCase() === "TH-BOT" ||
+        c.toUpperCase() === "TH-BANK")
+        ? "TH-BOT"
+        : c,
+    );
+  }
+  if (
+    typeof country === "string" &&
+    (country.toUpperCase() === "TH" ||
+      country.toUpperCase() === "TH-BOT" ||
+      country.toUpperCase() === "TH-BANK")
+  ) {
+    return "TH-BOT";
+  }
+  return country;
+}
+
+/**
+ * Returns true if the specified date is a business day for financial institutions / banks.
+ * For Thailand ("TH"), takes Bank of Thailand (ธปท.) financial holidays into account.
+ *
+ * @example
+ * ```ts
+ * isBankBusinessDay("2026-05-01", "TH"); // false (Labour Day: banks closed)
+ * isBankBusinessDay("2026-05-11", "TH"); // true (Royal Ploughing: banks open!)
+ * ```
+ */
+export function isBankBusinessDay(
+  date: DateOrCalendarDate | string,
+  country: HolidayTarget | readonly HolidayTarget[] = "TH",
+  options?: Omit<BusinessDaysOptions, "holidays">,
+): boolean {
+  const bankTarget = resolveBankTargetParam(country);
+  return isBusinessDay(date, {
+    ...options,
+    holidays: bankTarget as BusinessDaysOptions["holidays"],
+  });
+}
+
+/**
+ * Adds business days to a date skipping weekends and financial institution / bank holidays.
+ *
+ * @example
+ * ```ts
+ * const settlement = addBankBusinessDays("2026-05-08", 2, "TH");
+ * ```
+ */
+export function addBankBusinessDays<T extends DateOrCalendarDate>(
+  date: T,
+  amount: number,
+  country: HolidayTarget | readonly HolidayTarget[] = "TH",
+  options?: Omit<BusinessDaysOptions, "holidays">,
+): T {
+  const bankTarget = resolveBankTargetParam(country);
+  return addBusinessDays(date, amount, {
+    ...options,
+    holidays: bankTarget as BusinessDaysOptions["holidays"],
+  });
+}
+
+/**
+ * Calculates the number of financial institution / bank business days between two dates.
+ */
+export function diffInBankBusinessDays(
+  start: DateOrCalendarDate | string,
+  end: DateOrCalendarDate | string,
+  country: HolidayTarget | readonly HolidayTarget[] = "TH",
+  options?: Omit<BusinessDaysOptions, "holidays">,
+): number {
+  const bankTarget = resolveBankTargetParam(country);
+  const s = typeof start === "string" ? parseLocalDate(start) : start;
+  const e = typeof end === "string" ? parseLocalDate(end) : end;
+  return diffInBusinessDays(s, e, {
+    ...options,
+    holidays: bankTarget as BusinessDaysOptions["holidays"],
+  });
+}

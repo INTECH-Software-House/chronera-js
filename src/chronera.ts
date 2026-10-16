@@ -39,8 +39,12 @@ import {
   isBusinessDay,
   addBusinessDays,
   diffInBusinessDays,
+  isBankBusinessDay,
+  addBankBusinessDays,
+  diffInBankBusinessDays,
 } from "./operations/business-days.js";
-import { isPublicHoliday } from "./operations/holidays.js";
+import { isPublicHoliday, isBankHoliday } from "./operations/holidays.js";
+import { timeAgo, type TimeAgoOptions } from "./operations/relative-time.js";
 import { daysInMonth, isLeapYear } from "./operations/validate.js";
 import { addDuration, subtractDuration } from "./operations/duration-ops.js";
 import {
@@ -483,6 +487,43 @@ export class Chronera {
     return diffInBusinessDays(this.toLocalDate(), otherLd, opts);
   }
 
+  isBankHoliday(
+    country: HolidayTarget | readonly HolidayTarget[] = "TH",
+  ): boolean {
+    return isBankHoliday(this.toLocalDate(), country);
+  }
+
+  isBankBusinessDay(
+    country: HolidayTarget | readonly HolidayTarget[] = "TH",
+  ): boolean {
+    return isBankBusinessDay(this.toLocalDate(), country);
+  }
+
+  addBankBusinessDays(
+    amount: number,
+    country: HolidayTarget | readonly HolidayTarget[] = "TH",
+  ): Chronera {
+    const ld = this.toLocalDate();
+    const res = addBankBusinessDays(ld, amount, country);
+    return new Chronera(res);
+  }
+
+  subtractBankBusinessDays(
+    amount: number,
+    country: HolidayTarget | readonly HolidayTarget[] = "TH",
+  ): Chronera {
+    return this.addBankBusinessDays(-amount, country);
+  }
+
+  diffInBankBusinessDays(
+    other: ChroneraInput,
+    country: HolidayTarget | readonly HolidayTarget[] = "TH",
+  ): number {
+    const thisLd = this.toLocalDate();
+    const otherLd = chronera(other).toLocalDate();
+    return diffInBankBusinessDays(thisLd, otherLd, country);
+  }
+
   // --- Predicates & Comparison ---
 
   isBefore(other: ChroneraInput): boolean {
@@ -585,6 +626,57 @@ export class Chronera {
    */
   formatDayjs(pattern: string): string {
     return this.format(convertDayjsPattern(pattern));
+  }
+
+  /**
+   * Returns a relative time string comparing this date to now (e.g. "3 minutes ago", "3 นาทีที่แล้ว").
+   *
+   * @example
+   * ```ts
+   * chronera().subtractMinutes(3).fromNow(); // "3 minutes ago" or "3 นาทีที่แล้ว"
+   * chronera().addDays(2).fromNow();         // "in 2 days" or "อีก 2 วัน"
+   * chronera().subtractSeconds(15).fromNow({ compact: true }); // "15s" or "เมื่อสักครู่"
+   * ```
+   */
+  fromNow(options?: TimeAgoOptions): string {
+    return timeAgo(this, options);
+  }
+
+  /**
+   * Returns a relative time string from now to this date (e.g. "in 3 minutes", "อีก 3 นาที").
+   */
+  toNow(options?: TimeAgoOptions): string {
+    return timeAgo(this, {
+      ...options,
+      relativeTo: getNowDate(),
+    });
+  }
+
+  /**
+   * Returns a relative time string (synonymous with .fromNow()).
+   */
+  timeAgo(options?: TimeAgoOptions): string {
+    return this.fromNow(options);
+  }
+
+  /**
+   * Returns a relative time string from this date compared to a reference date.
+   */
+  from(relativeTo: ChroneraInput, options?: TimeAgoOptions): string {
+    return timeAgo(this, {
+      ...options,
+      relativeTo,
+    });
+  }
+
+  /**
+   * Returns a relative time string from a reference date to this date.
+   */
+  to(relativeTo: ChroneraInput, options?: TimeAgoOptions): string {
+    return timeAgo(relativeTo, {
+      ...options,
+      relativeTo: this,
+    });
   }
 
   toISOString(): string {

@@ -1,5 +1,5 @@
 import { BoundedLRU } from "../runtime/bounded-lru.js";
-import { BUILT_IN_HOLIDAYS } from "./countries/index.js";
+import { BUILT_IN_HOLIDAYS, thailandBankHolidays } from "./countries/index.js";
 import { evaluateRule } from "./rules/index.js";
 import { ChroneraError } from "../errors/errors.js";
 
@@ -12,6 +12,11 @@ import type {
 
 const holidayCache = new BoundedLRU<readonly PublicHoliday[]>(128);
 const customCalendars = new Map<string, HolidayCalendar>();
+
+const SPECIAL_CALENDARS: Record<string, HolidayCalendar> = {
+  "TH-BOT": thailandBankHolidays,
+  "TH-BANK": thailandBankHolidays,
+};
 
 /**
  * Registers a custom or corporate holiday calendar.
@@ -34,7 +39,10 @@ export function getHolidayCalendar(
   }
 
   const code = countryCodeOrCalendar.toUpperCase() as CountryCode;
-  const calendar = customCalendars.get(code) ?? BUILT_IN_HOLIDAYS[code];
+  const calendar =
+    customCalendars.get(code) ??
+    SPECIAL_CALENDARS[code] ??
+    BUILT_IN_HOLIDAYS[code];
 
   if (!calendar) {
     throw new ChroneraError(

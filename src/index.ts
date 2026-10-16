@@ -180,6 +180,9 @@ export {
   addBusinessDays,
   subtractBusinessDays,
   diffInBusinessDays,
+  isBankBusinessDay,
+  addBankBusinessDays,
+  diffInBankBusinessDays,
   createCorporateCalendar,
 } from "./operations/business-days.js";
 
@@ -198,7 +201,21 @@ export {
   getPublicHolidays,
   getHolidayDetails,
   getHolidayDetailsAll,
+  isBankHoliday,
+  getBankHolidays,
 } from "./operations/holidays.js";
+
+export {
+  timeAgo,
+  formatDistance,
+  formatDistanceToNow,
+} from "./operations/relative-time.js";
+
+export type {
+  TimeAgoOptions,
+  FormatDistanceOptions,
+  RelativeTimeUnit,
+} from "./operations/relative-time.js";
 
 export {
   registerHolidayCalendar,
@@ -211,6 +228,7 @@ export {
   calculateWhitMonday,
   BUILT_IN_HOLIDAYS,
   thailandHolidays,
+  thailandBankHolidays,
   japanHolidays,
   saudiArabiaHolidays,
   uaeHolidays,

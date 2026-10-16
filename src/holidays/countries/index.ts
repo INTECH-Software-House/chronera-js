@@ -1,4 +1,5 @@
 import { thailandHolidays } from "./th.js";
+import { thailandBankHolidays } from "./th-bank.js";
 import { japanHolidays } from "./jp.js";
 import { saudiArabiaHolidays } from "./sa.js";
 import { uaeHolidays } from "./ae.js";
@@ -36,6 +37,7 @@ export const BUILT_IN_HOLIDAYS: Record<CountryCode, HolidayCalendar> = {
 
 export {
   thailandHolidays,
+  thailandBankHolidays,
   japanHolidays,
   saudiArabiaHolidays,
   uaeHolidays,
