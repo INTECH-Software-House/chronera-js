@@ -43,6 +43,13 @@ All examples use `@intech-software/chronera` consistently.
 - [Quick start](#quick-start)
   - [Fluent ergonomics (`chronera()`)](#fluent-ergonomics-chronera)
   - [Modular subpath exports & tree-shaking](#modular-subpath-exports--tree-shaking)
+  - [Thai Enterprise Suite (`thai.*`)](#thai-enterprise-suite-thai)
+  - [Drizzle ORM & SQL integration](#drizzle-orm--sql-integration)
+  - [React 19 reactive hooks](#react-19-reactive-hooks)
+  - [Schema validation (Zod, Valibot, ArkType, Standard Schema)](#schema-validation-zod-valibot-arktype-standard-schema)
+  - [SuperJSON & Fullstack RPC serialization](#superjson--fullstack-rpc-serialization)
+  - [Day.js drop-in compatibility & migration](#dayjs-drop-in-compatibility--migration)
+  - [Testing & mock clock helper](#testing--mock-clock-helper)
   - [Complete Temporal `ZonedDateTime` implementation](#complete-temporal-zoneddatetime-implementation)
   - [Performance & benchmarks](#performance--benchmarks)
 - [Installation](#installation)
@@ -276,35 +283,257 @@ console.log(deadline.format({ locale: "th-TH", style: "long" }));
 
 ### Modular subpath exports & tree-shaking
 
-Chronera provides dedicated subpath entrypoints to keep bundle footprints minimal. Consumers import only what they need:
+Chronera provides 15 dedicated subpath entrypoints to keep bundle footprints minimal while preserving a strict **zero-dependency core** (`"dependencies": {}`):
 
-| Subpath Import                         | Bundle Size (Brotli) | Contents                                                                    |
-| -------------------------------------- | -------------------- | --------------------------------------------------------------------------- |
-| `@intech-software/chronera`            | ~39 kB               | Core dates, calendars, operations, and full API                             |
-| `@intech-software/chronera/calendar`   | ~5 kB                | Multi-calendar conversion (Buddhist, Hijri, Japanese, ROC, Indian, Persian) |
-| `@intech-software/chronera/holidays`   | ~9.5 kB              | 15-country statutory holidays engine                                        |
-| `@intech-software/chronera/format`     | ~11.5 kB             | Internationalized formatting, presets, pattern formatter                    |
-| `@intech-software/chronera/parse`      | ~3.5 kB              | Zero-allocation ISO parser & pattern parser                                 |
-| `@intech-software/chronera/scheduling` | ~14.5 kB             | Cron parser & matcher, RRULE (RFC 5545), iCalendar generator                |
+| Subpath Import                         | Bundle Size (Brotli) | Contents                                                                        |
+| -------------------------------------- | -------------------- | ------------------------------------------------------------------------------- |
+| `@intech-software/chronera`            | ~45.8 kB             | Core dates, calendars, operations, `thai.*` Enterprise Suite, and full API      |
+| `@intech-software/chronera/calendar`   | ~5.0 kB              | Multi-calendar conversion (Buddhist, Hijri, Japanese, ROC, Indian, Persian)     |
+| `@intech-software/chronera/holidays`   | ~10.4 kB             | 15-country statutory & Bank of Thailand (`TH-BOT`) financial holidays engine    |
+| `@intech-software/chronera/format`     | ~11.6 kB             | Internationalized formatting, presets, LDML pattern formatter                   |
+| `@intech-software/chronera/parse`      | ~3.5 kB              | Zero-allocation ISO 8601 parser & pattern parser                                |
+| `@intech-software/chronera/scheduling` | ~14.7 kB             | Cron parser & matcher, RRULE (RFC 5545), iCalendar generator, financial periods |
+| `@intech-software/chronera/drizzle`    | ~25.1 kB             | Drizzle ORM custom column types & universal SQL serializers                     |
+| `@intech-software/chronera/react`      | ~26.9 kB             | React 18/19 reactive hooks (`useNow`, `useTimeAgo`, `useCalendarGrid`, etc.)    |
+| `@intech-software/chronera/zod`        | ~25.3 kB             | Zod v3/v4 schema validators and transformers                                    |
+| `@intech-software/chronera/valibot`    | ~25.7 kB             | Valibot v1 modular pipeline validators and actions                              |
+| `@intech-software/chronera/arktype`    | ~25.3 kB             | ArkType v2 schema validators and pipe helpers                                   |
+| `@intech-software/chronera/standard`   | ~25.3 kB             | Zero-dependency Standard Schema v1 (`~standard`) compliance                     |
+| `@intech-software/chronera/superjson`  | ~25.4 kB             | Zero-loss SuperJSON transformers for Next.js Server Actions & tRPC              |
+| `@intech-software/chronera/compat`     | ~25.7 kB             | Day.js / Moment drop-in migration wrapper & pattern converter                   |
+| `@intech-software/chronera/testing`    | ~25.2 kB             | Deterministic clock mocking (`setSystemTime`) & test seed generators            |
 
 Example backend scheduling import:
 
 ```ts
-import {
-  parseCronExpression,
-  generateICalendarEvent,
-} from "@intech-software/chronera/scheduling";
+import { parseCron, generateICS } from "@intech-software/chronera/scheduling";
 
-const schedule = parseCronExpression("0 9 * * 1-5"); // Every weekday at 9:00 AM
-const ical = generateICalendarEvent({
-  summary: "Sprint Planning",
-  start: {
-    kind: "local-date-time",
-    date: { kind: "local-date", year: 2026, month: 10, day: 1 },
-    time: { kind: "local-time", hour: 9, minute: 0, second: 0, millisecond: 0 },
+const schedule = parseCron("0 9 * * 1-5"); // Every weekday at 9:00 AM
+const ics = generateICS([
+  {
+    uid: "sprint-planning-2026",
+    summary: "Sprint Planning",
+    start: {
+      kind: "local-date-time",
+      date: { kind: "local-date", year: 2026, month: 10, day: 1 },
+      time: {
+        kind: "local-time",
+        hour: 9,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      },
+    },
+    end: {
+      kind: "local-date-time",
+      date: { kind: "local-date", year: 2026, month: 10, day: 1 },
+      time: {
+        kind: "local-time",
+        hour: 10,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      },
+    },
   },
-  duration: { hours: 1 },
+]);
+```
+
+### Thai Enterprise Suite (`thai.*`)
+
+Built specifically for ERP, HRMS, FinTech, and accounting systems in Thailand. Available via the unified `thai` namespace or standalone functions:
+
+```ts
+import {
+  thai,
+  getThaiFiscalYear,
+  getTaxFilingDeadline,
+  calculateThaiOvertimePay,
+  getThaiLunarDate,
+  isWanPhra,
+} from "@intech-software/chronera";
+
+// 1. Thai Government Fiscal Year (ปีงบประมาณไทย: 1 Oct – 30 Sep)
+const fy = thai.fiscalYear(new Date("2026-10-15"));
+// -> { fiscalYearBE: 2570, fiscalYearCE: 2027, quarter: 1, quarterBE: "ไตรมาส 1", ... }
+
+// 2. Revenue Department Tax Deadlines (ภ.ง.ด. 1, 3, 53, 50, 51, ภ.พ. 30 + e-Filing +8 days)
+// Automatically rolls forward if falling on a weekend or Thai public/bank holiday!
+const pnd53 = thai.taxDeadline("PND53", 2026, 9, { eFiling: true });
+// -> { standardDeadline: 2026-10-15, adjustedDeadline: 2026-10-15, isEFiling: true, ... }
+
+// 3. Thai Labour Law Overtime (OT 1.5x, Holiday 1.0x/2.0x, Holiday OT 3.0x) & Net Shift SLA
+const ot = thai.overtimePay({
+  monthlySalary: 24000, // Automatically derives 100 THB/hr (24000 / 30 / 8)
+  workdayOvertimeHours: 4, // 1.5x = 600 THB
+  holidayRegularHours: 8, // 1.0x = 800 THB
+  holidayOvertimeHours: 2, // 3.0x = 600 THB
 });
+console.log(ot.totalOvertimePay); // 2000 THB
+
+// 4. Thai Buddhist Lunar Calendar (ข้างขึ้น-ข้างแรม 1-15 ค่ำ) & Wan Phra (วันพระ)
+const lunar = thai.lunar("2026-10-26");
+console.log(thai.formatLunar(lunar)); // "ขึ้น ๑๕ ค่ำ เดือน ๑๑"
+console.log(thai.isWanPhra("2026-10-26")); // true
+
+// 5. Bank of Thailand (BOT / ธปท.) Financial Settlement Calendar
+console.log(thai.isBankHoliday("2026-05-01")); // true (National Labour Day)
+const settlementDate = thai.addBankBusinessDays("2026-04-30", 2); // Skips May 1 & weekend
+```
+
+### Drizzle ORM & SQL integration
+
+Eliminate timezone drift between application code and PostgreSQL, MySQL, or SQLite databases using `@intech-software/chronera/drizzle`:
+
+```ts
+import { pgTable, serial, customType } from "drizzle-orm/pg-core";
+import {
+  createChroneraDateColumn,
+  createChroneraTimestampColumn,
+  toSqlDate,
+  fromSqlDate,
+} from "@intech-software/chronera/drizzle";
+
+const chroneraDate = createChroneraDateColumn(customType);
+const chroneraTimestamp = createChroneraTimestampColumn(customType);
+
+export const invoices = pgTable("invoices", {
+  id: serial("id").primaryKey(),
+  issueDate: chroneraDate("issue_date").notNull(),
+  settledAt: chroneraTimestamp("settled_at"),
+});
+
+// Standalone zero-drift SQL serializers
+const sqlStr = toSqlDate(new Date(2026, 9, 17)); // "2026-10-17" (preserves local calendar date)
+const domainDate = fromSqlDate("2026-10-17"); // Chronera instance
+```
+
+### React 19 reactive hooks
+
+Build zero-lag, self-updating frontend UIs with `@intech-software/chronera/react`:
+
+```tsx
+import {
+  useNow,
+  useTimeAgo,
+  useCalendarGrid,
+  useCountdown,
+  useBusinessHours,
+} from "@intech-software/chronera/react";
+
+export function LiveDashboard({
+  createdAt,
+  launchDate,
+}: {
+  createdAt: string;
+  launchDate: string;
+}) {
+  // Live ticking Chronera instance
+  const now = useNow({ intervalMs: 1000 });
+
+  // Smart self-scaling interval (updates every 2s under 1 min, 30s under 1 hr, 60s otherwise)
+  const relativeLabel = useTimeAgo(createdAt, { locale: "th" }); // e.g. "3 นาทีที่แล้ว"
+
+  // Memoized 6-week calendar matrix with holiday & weekend metadata
+  const grid = useCalendarGrid({ year: 2026, month: 10, holidays: "TH" });
+
+  // Live countdown timer with automatic cleanup on expiration
+  const remaining = useCountdown(launchDate);
+
+  // Real-time store/support open status
+  const { isOpen } = useBusinessHours({
+    schedule: { shifts: [{ start: "09:00", end: "18:00" }], holidays: "TH" },
+  });
+
+  return (
+    <div>
+      <p>Current Time: {now.format("yyyy-MM-dd HH:mm:ss")}</p>
+      <p>Created: {relativeLabel}</p>
+      <p>Support Status: {isOpen ? "🟢 Open" : "🔴 Closed"}</p>
+      <p>
+        Launch in: {remaining.days}d {remaining.hours}h {remaining.minutes}m{" "}
+        {remaining.seconds}s
+      </p>
+    </div>
+  );
+}
+```
+
+### Schema validation (Zod, Valibot, ArkType, Standard Schema)
+
+First-class support for all major TypeScript validation libraries plus zero-dependency [Standard Schema (`~standard`)](https://standardschema.dev/) compliance for TanStack Form, React Hook Form, tRPC, Hono, and Fastify:
+
+```ts
+import { zChronera } from "@intech-software/chronera/zod";
+import { vChronera } from "@intech-software/chronera/valibot";
+import { aChronera } from "@intech-software/chronera/arktype";
+import { standardChronera } from "@intech-software/chronera/standard";
+import { chroneraToJsonSchema } from "@intech-software/chronera";
+
+// 1. Zod
+const zodSchema = zChronera({ businessDay: "TH", future: true });
+
+// 2. Valibot
+const valibotSchema = vChronera({ weekday: true, min: "2026-01-01" });
+
+// 3. ArkType
+const arkSchema = aChronera({ min: "2026-01-01", max: "2026-12-31" });
+
+// 4. Zero-dependency Standard Schema (~standard) — plugs directly into TanStack Form / tRPC
+const stdSchema = standardChronera({ businessDay: "TH-BOT" });
+
+// 5. OpenAPI 3.1 / JSON Schema Generator
+const openApiSchema = chroneraToJsonSchema("local-date", {
+  description: "Settlement date",
+  min: "2026-01-01",
+});
+```
+
+### SuperJSON & Fullstack RPC serialization
+
+Serialize `Chronera`, `LocalDate`, `Instant`, `ZonedDateTime`, and `CalendarDate` seamlessly across Next.js Server Actions, RSC, and tRPC with `@intech-software/chronera/superjson`:
+
+```ts
+import SuperJSON from "superjson";
+import { registerChroneraSuperJSON } from "@intech-software/chronera/superjson";
+
+// One-line registration for tRPC or Next.js
+registerChroneraSuperJSON(SuperJSON);
+```
+
+### Day.js drop-in compatibility & migration
+
+Migrate legacy Day.js or Moment.js codebases incrementally without rewriting format strings using `@intech-software/chronera/compat`:
+
+```ts
+import { chronera, formatDayjs } from "@intech-software/chronera";
+import { dayjs } from "@intech-software/chronera/compat";
+
+// 1. Tolerant Day.js / Moment token formatting ("YYYY-MM-DD HH:mm:ss")
+const formatted = chronera("2026-10-17").formatDayjs("DD/MM/YYYY [at] HH:mm");
+
+// 2. Universal Duck-Typing: pass a real Day.js or Moment instance directly into chronera()!
+const converted = chronera(dayjs("2026-10-17"));
+```
+
+### Testing & mock clock helper
+
+Write deterministic unit tests for time-sensitive business logic without mutating global `Date` using `@intech-software/chronera/testing`:
+
+```ts
+import {
+  withMockTime,
+  mockBusinessDay,
+  mockHoliday,
+} from "@intech-software/chronera/testing";
+import { chronera } from "@intech-software/chronera";
+
+withMockTime("2026-10-17T09:00:00Z", () => {
+  console.log(chronera().format("yyyy-MM-dd")); // Always "2026-10-17"
+});
+
+const sampleWorkday = mockBusinessDay("TH", 2026);
+const sampleHoliday = mockHoliday("TH", 2026);
 ```
 
 ### Complete Temporal `ZonedDateTime` implementation

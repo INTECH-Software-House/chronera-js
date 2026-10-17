@@ -7,6 +7,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.9] - 2026-10-17
+
+### Added
+
+- **Thai Enterprise, FinTech & HR Suite**:
+  - **Thai Government Fiscal Year Engine (`src/operations/thai-fiscal.ts`)**:
+    - Complete calculation of Thai government fiscal year (1 October – 30 September) with Buddhist Era (`fiscalYearBE`, พ.ศ.) and Common Era (`fiscalYearCE`, ค.ศ.) mappings.
+    - Fiscal quarters (Q1: Oct–Dec, Q2: Jan–Mar, Q3: Apr–Jun, Q4: Jul–Sep), quarter ranges, and remaining fiscal days.
+    - `getThaiFiscalYear(date)`, `getThaiFiscalQuarter(date)`, `getThaiFiscalYearRange(yearCE)`.
+    - Fluent methods on `Chronera`: `.getThaiFiscalYear()`.
+  - **Thai Revenue Department Tax Filing Deadline Engine**:
+    - Computes official filing deadlines for withholding and corporate taxes (PND1, PND3, PND53, PND50, PND51, PP30).
+    - Supports normal paper filing (7th or 15th) and e-Filing extensions (+8 calendar days).
+    - Automatic weekend and official government holiday rollover (`rollDirection: "forward" | "backward"`).
+    - `getTaxFilingDeadline(taxType, year, period, options?)`.
+  - **Advanced Shift & Overtime (OT) Engine (`src/operations/advanced-shifts.ts`)**:
+    - Net working duration calculations (`calculateNetBusinessMinutes`) deducting scheduled break intervals (e.g. lunch 12:00–13:00) and holidays.
+    - Thai Labour Protection Act compliant Overtime (OT) calculation:
+      - Normal workday OT: 1.5x regular hourly rate.
+      - Holiday standard shift: 1.0x (monthly salaried) / 2.0x (daily wage).
+      - Holiday overtime: 3.0x regular hourly rate.
+    - `calculateWorkShiftDuration(shift)` and `calculateThaiOvertimePay(options)`.
+  - **Thai Lunar Phase & Wan Phra Engine (`src/operations/thai-lunar.ts`)**:
+    - Astronomical lunar phase calculations determining waxing/waning days (ข้างขึ้น / ข้างแรม 1–15 ค่ำ).
+    - Thai Wan Phra detection (วันพระ: ขึ้น 8 ค่ำ, ขึ้น 15 ค่ำ, แรม 8 ค่ำ, แรม 14 หรือ 15 ค่ำ).
+    - `getThaiLunarDate(date)`, `isWanPhra(date)`, `formatThaiLunarDate(lunarDate)`.
+    - Fluent methods on `Chronera`: `.getThaiLunarDate()`, `.isWanPhra()`, `.formatThaiLunarDate()`.
+  - **Unified `thai` Namespace Helper (`thai.*`)**:
+    - Clean, ergonomic namespace grouping all Thai enterprise operations: `thai.fiscalYear`, `thai.fiscalQuarter`, `thai.fiscalYearRange`, `thai.taxDeadline`, `thai.allMonthlyTaxDeadlines`, `thai.overtime`, `thai.overtimePay`, `thai.netBusinessMinutes`, `thai.slaDeadline`, `thai.workShiftDuration`, `thai.lunar`, `thai.isWanPhra`, `thai.wanPhraInMonth`, `thai.formatLunar`, `thai.isBankHoliday`, `thai.getBankHolidays`, `thai.isBankBusinessDay`, `thai.addBankBusinessDays`, `thai.diffInBankBusinessDays`.
+- **Modern ORM & Fullstack Database Suite**:
+  - **Universal SQL & Drizzle ORM Integration (`@intech-software/chronera/drizzle`)**:
+    - Universal SQL date/timestamp serializers: `toSqlDate`, `fromSqlDate`, `toSqlTimestamp`, `fromSqlTimestamp`.
+    - Custom column type factories compatible with any Drizzle ORM dialect (`pg-core`, `mysql-core`, `sqlite-core`): `createChroneraDateColumn`, `createChroneraTimestampColumn`, `createChroneraInstantColumn`.
+    - Turnkey column configs: `chroneraDateConfig`, `chroneraTimestampConfig`, `chroneraInstantConfig`.
+  - **ArkType Schema Validation (`@intech-software/chronera/arktype`)**:
+    - Completes the TypeScript validation trinity (`zod`, `valibot`, `arktype`).
+    - Dedicated subpath export `./arktype` with `aChronera`, `aLocalDate`, `aInstant`, `aZonedDateTime`.
+    - Standalone pipeline helpers: `toChronera`, `toLocalDate`, `toInstant`.
+  - **JSON Schema & OpenAPI 3.0/3.1 Generator (`src/operations/json-schema.ts`)**:
+    - Turnkey JSON Schema generator for Fastify, Hono, Swagger, and OpenAPI DTO specifications.
+    - `chroneraToJsonSchema(type, options?)` exporting ISO 8601 date, date-time, and time schemas with boundary constraints.
+- **React & UI Reactive Hooks (`@intech-software/chronera/react`)**:
+  - High-performance reactive React 19 hooks for modern frontend applications:
+    - `useNow({ intervalMs, enabled })`: Live reactive Chronera instance.
+    - `useTimeAgo(date, options)`: Relative time string with intelligent self-scaling refresh intervals (sub-minute: 2s, sub-hour: 30s, older: 60s).
+    - `useCalendarGrid({ year, month, ...options })`: Memoized interactive monthly calendar grid layout.
+    - `useCountdown(targetDate, { intervalMs, onFinish })`: Ticking countdown breakdown with auto-cleanup on expiry.
+    - `useBusinessHours({ intervalMs, schedule })`: Real-time open/closed business status watcher.
+
 ## [0.2.8] - 2026-10-17
 
 ### Added

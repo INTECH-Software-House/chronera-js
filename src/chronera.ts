@@ -65,6 +65,16 @@ import { type BusinessDaysOptions } from "./operations/business-days.js";
 import { ChroneraError } from "./errors/errors.js";
 import { getNowDate } from "./runtime/clock.js";
 import { convertDayjsPattern, isDayjsPattern } from "./compat/patterns.js";
+import {
+  getThaiFiscalYear,
+  type ThaiFiscalYearInfo,
+} from "./operations/thai-fiscal.js";
+import {
+  getThaiLunarDate,
+  isWanPhra,
+  formatThaiLunarDate,
+  type ThaiLunarDate,
+} from "./operations/thai-lunar.js";
 
 import type { CountryCode, HolidayTarget } from "./holidays/types.js";
 import type {
@@ -677,6 +687,34 @@ export class Chronera {
       ...options,
       relativeTo: this,
     });
+  }
+
+  /**
+   * Returns Thai Government Fiscal Year (ปีงบประมาณแผ่นดิน) information for this date.
+   */
+  getThaiFiscalYear(): ThaiFiscalYearInfo {
+    return getThaiFiscalYear(this.toLocalDate());
+  }
+
+  /**
+   * Returns Thai Buddhist Lunar Calendar (ปฏิทินจันทรคติไทย) details for this date.
+   */
+  getThaiLunarDate(): ThaiLunarDate {
+    return getThaiLunarDate(this.toLocalDate());
+  }
+
+  /**
+   * Returns true if this date is a Buddhist Holy Day (วันพระ).
+   */
+  isWanPhra(): boolean {
+    return isWanPhra(this.toLocalDate());
+  }
+
+  /**
+   * Formats Thai Lunar date into traditional phrase (e.g. "ขึ้น ๑๕ ค่ำ เดือน ๘").
+   */
+  formatThaiLunarDate(options?: { thaiDigits?: boolean }): string {
+    return formatThaiLunarDate(this.getThaiLunarDate(), options);
   }
 
   toISOString(): string {

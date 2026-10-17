@@ -1,6 +1,6 @@
 {
   "name": "@intech-software/chronera",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.",
   "keywords": [
     "date",
@@ -17,7 +17,22 @@
     "cldr",
     "clean-architecture",
     "zero-dependencies",
-    "typescript"
+    "typescript",
+    "drizzle",
+    "drizzle-orm",
+    "arktype",
+    "zod",
+    "valibot",
+    "react",
+    "react-hooks",
+    "thai",
+    "thai-calendar",
+    "tax",
+    "fiscal-year",
+    "overtime",
+    "superjson",
+    "standard-schema",
+    "dayjs-compat"
   ],
   "author": "Pawapon Thammalangka <108130529+ParkPawapon@users.noreply.github.com> (https://github.com/ParkPawapon)",
   "license": "Apache-2.0",
@@ -85,6 +100,18 @@
     "./superjson": {
       "types": "./dist/superjson/index.d.ts",
       "import": "./dist/superjson/index.js"
+    },
+    "./drizzle": {
+      "types": "./dist/drizzle/index.d.ts",
+      "import": "./dist/drizzle/index.js"
+    },
+    "./arktype": {
+      "types": "./dist/arktype/index.d.ts",
+      "import": "./dist/arktype/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js"
     }
   },
   "files": [
@@ -94,11 +121,23 @@
   ],
   "sideEffects": false,
   "peerDependencies": {
+    "arktype": "^2.0.0",
+    "drizzle-orm": ">=0.30.0",
+    "react": "^18.0.0 || ^19.0.0",
     "superjson": "^1.12.0 || ^2.0.0",
     "valibot": "^1.0.0",
     "zod": "^3.22.0 || ^4.0.0"
   },
   "peerDependenciesMeta": {
+    "arktype": {
+      "optional": true
+    },
+    "drizzle-orm": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
     "superjson": {
       "optional": true
     },
@@ -187,32 +226,47 @@
     {
       "name": "Zod (@intech-software/chronera/zod)",
       "path": "dist/zod/index.js",
-      "limit": "25 KB"
+      "limit": "28 KB"
     },
     {
       "name": "Valibot (@intech-software/chronera/valibot)",
       "path": "dist/valibot/index.js",
-      "limit": "25 KB"
+      "limit": "28 KB"
     },
     {
       "name": "Compat (@intech-software/chronera/compat)",
       "path": "dist/compat/index.js",
-      "limit": "25 KB"
+      "limit": "28 KB"
     },
     {
       "name": "Testing (@intech-software/chronera/testing)",
       "path": "dist/testing/index.js",
-      "limit": "25 KB"
+      "limit": "28 KB"
     },
     {
       "name": "Standard (@intech-software/chronera/standard)",
       "path": "dist/standard/index.js",
-      "limit": "25 KB"
+      "limit": "28 KB"
     },
     {
       "name": "SuperJSON (@intech-software/chronera/superjson)",
       "path": "dist/superjson/index.js",
-      "limit": "25 KB"
+      "limit": "28 KB"
+    },
+    {
+      "name": "Drizzle (@intech-software/chronera/drizzle)",
+      "path": "dist/drizzle/index.js",
+      "limit": "28 KB"
+    },
+    {
+      "name": "ArkType (@intech-software/chronera/arktype)",
+      "path": "dist/arktype/index.js",
+      "limit": "28 KB"
+    },
+    {
+      "name": "React (@intech-software/chronera/react)",
+      "path": "dist/react/index.js",
+      "limit": "30 KB"
     }
   ],
   "publishConfig": {
@@ -228,14 +282,20 @@
     "@size-limit/file": "13.0.3",
     "@size-limit/preset-small-lib": "^13.0.3",
     "@types/node": "26.6.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@typescript-eslint/eslint-plugin": "8.70.1",
     "@typescript-eslint/parser": "8.70.1",
     "@vitest/coverage-v8": "4.1.11",
+    "arktype": "^2.2.8",
+    "drizzle-orm": "^0.45.4",
     "eslint": "10.11.0",
     "fast-check": "4.10.2",
     "lint-staged": "^17.6.0",
     "prettier": "3.9.9",
     "publint": "0.3.24",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "simple-git-hooks": "^2.14.0",
     "size-limit": "13.0.3",
     "superjson": "^2.2.6",

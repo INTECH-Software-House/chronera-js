@@ -22,6 +22,9 @@ describe("package exports", () => {
     expect(pkg.exports["./testing"]).toBeDefined();
     expect(pkg.exports["./standard"]).toBeDefined();
     expect(pkg.exports["./superjson"]).toBeDefined();
+    expect(pkg.exports["./drizzle"]).toBeDefined();
+    expect(pkg.exports["./arktype"]).toBeDefined();
+    expect(pkg.exports["./react"]).toBeDefined();
   });
 
   it("exports all expected symbols from root", () => {
@@ -138,6 +141,28 @@ describe("package exports", () => {
     expect(typeof Root.formatDistance).toBe("function");
     expect(typeof Root.formatDistanceToNow).toBe("function");
     expect(typeof Root.thailandBankHolidays).toBe("object");
+    // v0.2.9 — Thai Fiscal, Advanced Shifts, Thai Lunar, JSON Schema, thai namespace
+    expect(typeof Root.getThaiFiscalYear).toBe("function");
+    expect(typeof Root.getThaiFiscalQuarter).toBe("function");
+    expect(typeof Root.getThaiFiscalYearRange).toBe("function");
+    expect(typeof Root.getTaxFilingDeadline).toBe("function");
+    expect(typeof Root.getAllMonthlyTaxDeadlines).toBe("function");
+    expect(typeof Root.calculateWorkShiftDuration).toBe("function");
+    expect(typeof Root.calculateNetBusinessMinutes).toBe("function");
+    expect(typeof Root.calculateSlaDeadline).toBe("function");
+    expect(typeof Root.calculateOvertime).toBe("function");
+    expect(typeof Root.calculateThaiOvertimePay).toBe("function");
+    expect(typeof Root.getThaiLunarDate).toBe("function");
+    expect(typeof Root.isWanPhra).toBe("function");
+    expect(typeof Root.getWanPhraInMonth).toBe("function");
+    expect(typeof Root.formatThaiLunarDate).toBe("function");
+    expect(typeof Root.chroneraToJsonSchema).toBe("function");
+    expect(typeof Root.thai).toBe("object");
+    expect(typeof Root.thai.fiscalYear).toBe("function");
+    expect(typeof Root.thai.taxDeadline).toBe("function");
+    expect(typeof Root.thai.overtimePay).toBe("function");
+    expect(typeof Root.thai.lunar).toBe("function");
+    expect(typeof Root.thai.isWanPhra).toBe("function");
   });
 
   it("exports calendar symbols from ./calendar", () => {
@@ -231,5 +256,30 @@ describe("package exports", () => {
     expect(typeof Superjson.instantSuperJSONTransformer).toBe("object");
     expect(typeof Superjson.zonedDateTimeSuperJSONTransformer).toBe("object");
     expect(typeof Superjson.calendarDateSuperJSONTransformer).toBe("object");
+  });
+
+  it("exports drizzle symbols from ./drizzle", async () => {
+    const Drizzle = await import("../../dist/drizzle/index.js");
+    expect(typeof Drizzle.toSqlDate).toBe("function");
+    expect(typeof Drizzle.fromSqlDate).toBe("function");
+    expect(typeof Drizzle.toSqlTimestamp).toBe("function");
+    expect(typeof Drizzle.fromSqlTimestamp).toBe("function");
+    expect(typeof Drizzle.createChroneraDateColumn).toBe("function");
+  });
+
+  it("exports arktype symbols from ./arktype", async () => {
+    const ArkType = await import("../../dist/arktype/index.js");
+    expect(typeof ArkType.aChronera).toBe("function");
+    expect(typeof ArkType.aLocalDate).toBe("function");
+    expect(typeof ArkType.aInstant).toBe("function");
+  });
+
+  it("exports react symbols from ./react", async () => {
+    const ReactExports = await import("../../dist/react/index.js");
+    expect(typeof ReactExports.useNow).toBe("function");
+    expect(typeof ReactExports.useTimeAgo).toBe("function");
+    expect(typeof ReactExports.useCalendarGrid).toBe("function");
+    expect(typeof ReactExports.useCountdown).toBe("function");
+    expect(typeof ReactExports.useBusinessHours).toBe("function");
   });
 });
