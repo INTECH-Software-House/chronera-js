@@ -25,6 +25,8 @@ describe("package exports", () => {
     expect(pkg.exports["./drizzle"]).toBeDefined();
     expect(pkg.exports["./arktype"]).toBeDefined();
     expect(pkg.exports["./react"]).toBeDefined();
+    expect(pkg.exports["./thai"]).toBeDefined();
+    expect(pkg.exports["./temporal"]).toBeDefined();
   });
 
   it("exports all expected symbols from root", () => {
@@ -163,6 +165,37 @@ describe("package exports", () => {
     expect(typeof Root.thai.overtimePay).toBe("function");
     expect(typeof Root.thai.lunar).toBe("function");
     expect(typeof Root.thai.isWanPhra).toBe("function");
+    // v0.3.0 — Thai Banking & SSO Payroll
+    expect(typeof Root.adjustBusinessDate).toBe("function");
+    expect(typeof Root.calculateDayCountFraction).toBe("function");
+    expect(typeof Root.calculateAccruedInterest).toBe("function");
+    expect(typeof Root.calculatePaymentDueDate).toBe("function");
+    expect(typeof Root.getThaiSsoWageCeiling).toBe("function");
+    expect(typeof Root.calculateThaiSsoContribution).toBe("function");
+    expect(typeof Root.getSsoFilingDeadline).toBe("function");
+    expect(typeof Root.thai.dayCountFraction).toBe("function");
+    expect(typeof Root.thai.accruedInterest).toBe("function");
+    expect(typeof Root.thai.paymentDueDate).toBe("function");
+    expect(typeof Root.thai.ssoWageCeiling).toBe("function");
+    expect(typeof Root.thai.ssoContribution).toBe("function");
+    expect(typeof Root.thai.ssoDeadline).toBe("function");
+    // v0.3.0 — TC39 Temporal Interop Bridge
+    expect(typeof Root.temporal).toBe("object");
+    expect(typeof Root.fromTemporal).toBe("function");
+    expect(typeof Root.isTemporalSupported).toBe("function");
+    expect(typeof Root.isTemporalObject).toBe("function");
+    expect(typeof Root.toTemporalPlainDate).toBe("function");
+    expect(typeof Root.toTemporalPlainTime).toBe("function");
+    expect(typeof Root.toTemporalPlainDateTime).toBe("function");
+    expect(typeof Root.toTemporalInstant).toBe("function");
+    expect(typeof Root.toTemporalZonedDateTime).toBe("function");
+    expect(typeof Root.toTemporalDuration).toBe("function");
+    expect(typeof Root.fromTemporalPlainDate).toBe("function");
+    expect(typeof Root.fromTemporalPlainTime).toBe("function");
+    expect(typeof Root.fromTemporalPlainDateTime).toBe("function");
+    expect(typeof Root.fromTemporalInstant).toBe("function");
+    expect(typeof Root.fromTemporalZonedDateTime).toBe("function");
+    expect(typeof Root.fromTemporalDuration).toBe("function");
   });
 
   it("exports calendar symbols from ./calendar", () => {
@@ -281,5 +314,25 @@ describe("package exports", () => {
     expect(typeof ReactExports.useCalendarGrid).toBe("function");
     expect(typeof ReactExports.useCountdown).toBe("function");
     expect(typeof ReactExports.useBusinessHours).toBe("function");
+  });
+
+  it("exports thai enterprise symbols from ./thai", async () => {
+    const ThaiExports = await import("../../dist/thai/index.js");
+    expect(typeof ThaiExports.thai).toBe("object");
+    expect(typeof ThaiExports.getThaiFiscalYear).toBe("function");
+    expect(typeof ThaiExports.getTaxFilingDeadline).toBe("function");
+    expect(typeof ThaiExports.calculateThaiOvertimePay).toBe("function");
+    expect(typeof ThaiExports.getThaiLunarDate).toBe("function");
+    expect(typeof ThaiExports.isWanPhra).toBe("function");
+  });
+
+  it("exports temporal bridge symbols from ./temporal", async () => {
+    const TemporalExports = await import("../../dist/temporal/index.js");
+    expect(typeof TemporalExports.temporal).toBe("object");
+    expect(typeof TemporalExports.fromTemporal).toBe("function");
+    expect(typeof TemporalExports.toTemporalPlainDate).toBe("function");
+    expect(typeof TemporalExports.toTemporalInstant).toBe("function");
+    expect(typeof TemporalExports.toTemporalZonedDateTime).toBe("function");
+    expect(typeof TemporalExports.fromTemporalPlainDate).toBe("function");
   });
 });

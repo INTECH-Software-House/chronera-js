@@ -1,6 +1,6 @@
 {
   "name": "@intech-software/chronera",
-  "version": "0.2.9",
+  "version": "0.3.0",
   "description": "A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.",
   "keywords": [
     "date",
@@ -32,7 +32,14 @@
     "overtime",
     "superjson",
     "standard-schema",
-    "dayjs-compat"
+    "dayjs-compat",
+    "temporal",
+    "tc39-temporal",
+    "banking",
+    "sso",
+    "social-security",
+    "payroll",
+    "day-count"
   ],
   "author": "Pawapon Thammalangka <108130529+ParkPawapon@users.noreply.github.com> (https://github.com/ParkPawapon)",
   "license": "Apache-2.0",
@@ -112,6 +119,14 @@
     "./react": {
       "types": "./dist/react/index.d.ts",
       "import": "./dist/react/index.js"
+    },
+    "./thai": {
+      "types": "./dist/thai/index.d.ts",
+      "import": "./dist/thai/index.js"
+    },
+    "./temporal": {
+      "types": "./dist/temporal/index.d.ts",
+      "import": "./dist/temporal/index.js"
     }
   },
   "files": [
@@ -196,7 +211,7 @@
     {
       "name": "Root (@intech-software/chronera)",
       "path": "dist/index.js",
-      "limit": "48 KB"
+      "limit": "52 KB"
     },
     {
       "name": "Calendar (@intech-software/chronera/calendar)",
@@ -226,46 +241,56 @@
     {
       "name": "Zod (@intech-software/chronera/zod)",
       "path": "dist/zod/index.js",
-      "limit": "28 KB"
+      "limit": "30 KB"
     },
     {
       "name": "Valibot (@intech-software/chronera/valibot)",
       "path": "dist/valibot/index.js",
-      "limit": "28 KB"
+      "limit": "30 KB"
     },
     {
       "name": "Compat (@intech-software/chronera/compat)",
       "path": "dist/compat/index.js",
-      "limit": "28 KB"
+      "limit": "30 KB"
     },
     {
       "name": "Testing (@intech-software/chronera/testing)",
       "path": "dist/testing/index.js",
-      "limit": "28 KB"
+      "limit": "30 KB"
     },
     {
       "name": "Standard (@intech-software/chronera/standard)",
       "path": "dist/standard/index.js",
-      "limit": "28 KB"
+      "limit": "30 KB"
     },
     {
       "name": "SuperJSON (@intech-software/chronera/superjson)",
       "path": "dist/superjson/index.js",
-      "limit": "28 KB"
+      "limit": "30 KB"
     },
     {
       "name": "Drizzle (@intech-software/chronera/drizzle)",
       "path": "dist/drizzle/index.js",
-      "limit": "28 KB"
+      "limit": "30 KB"
     },
     {
       "name": "ArkType (@intech-software/chronera/arktype)",
       "path": "dist/arktype/index.js",
-      "limit": "28 KB"
+      "limit": "30 KB"
     },
     {
       "name": "React (@intech-software/chronera/react)",
       "path": "dist/react/index.js",
+      "limit": "32 KB"
+    },
+    {
+      "name": "Thai (@intech-software/chronera/thai)",
+      "path": "dist/thai/index.js",
+      "limit": "25 KB"
+    },
+    {
+      "name": "Temporal (@intech-software/chronera/temporal)",
+      "path": "dist/temporal/index.js",
       "limit": "30 KB"
     }
   ],

@@ -64,7 +64,10 @@ import {
 import { type BusinessDaysOptions } from "./operations/business-days.js";
 import { ChroneraError } from "./errors/errors.js";
 import { getNowDate } from "./runtime/clock.js";
-import { convertDayjsPattern, isDayjsPattern } from "./compat/patterns.js";
+import {
+  convertDayjsPattern,
+  isDayjsPattern,
+} from "./format/dayjs-patterns.js";
 import {
   getThaiFiscalYear,
   type ThaiFiscalYearInfo,
@@ -75,6 +78,26 @@ import {
   formatThaiLunarDate,
   type ThaiLunarDate,
 } from "./operations/thai-lunar.js";
+import {
+  toTemporalPlainDate,
+  toTemporalPlainTime,
+  toTemporalPlainDateTime,
+  toTemporalInstant,
+  toTemporalZonedDateTime,
+  fromTemporalPlainDate,
+  fromTemporalPlainTime,
+  fromTemporalPlainDateTime,
+  fromTemporalInstant,
+  fromTemporalZonedDateTime,
+  isTemporalObject,
+  type AnyTemporalLike,
+  type TemporalPlainDateLike,
+  type TemporalPlainTimeLike,
+  type TemporalPlainDateTimeLike,
+  type TemporalInstantLike,
+  type TemporalZonedDateTimeLike,
+  type ToTemporalOptions,
+} from "./operations/temporal.js";
 
 import type { CountryCode, HolidayTarget } from "./holidays/types.js";
 import type {
@@ -109,6 +132,7 @@ export type ChroneraInput =
   | string
   | number
   | Chronera
+  | AnyTemporalLike
   | DateLike
   | null
   | undefined;
@@ -717,6 +741,54 @@ export class Chronera {
     return formatThaiLunarDate(this.getThaiLunarDate(), options);
   }
 
+  /**
+   * Converts this Chronera instance into a TC39 `Temporal.PlainDate` (or structural `TemporalPlainDateLike`).
+   */
+  toTemporalPlainDate(options?: ToTemporalOptions): TemporalPlainDateLike {
+    return toTemporalPlainDate(this.#value as LocalDate, options);
+  }
+
+  /**
+   * Converts this Chronera instance into a TC39 `Temporal.PlainTime` (or structural `TemporalPlainTimeLike`).
+   */
+  toTemporalPlainTime(options?: ToTemporalOptions): TemporalPlainTimeLike {
+    return toTemporalPlainTime(this.#value as LocalTime, options);
+  }
+
+  /**
+   * Converts this Chronera instance into a TC39 `Temporal.PlainDateTime` (or structural `TemporalPlainDateTimeLike`).
+   */
+  toTemporalPlainDateTime(
+    options?: ToTemporalOptions,
+  ): TemporalPlainDateTimeLike {
+    return toTemporalPlainDateTime(this.#value as LocalDateTime, options);
+  }
+
+  /**
+   * Converts this Chronera instance into a TC39 `Temporal.Instant` (or structural `TemporalInstantLike`).
+   */
+  toTemporalInstant(options?: ToTemporalOptions): TemporalInstantLike {
+    return toTemporalInstant(this.toInstant(), options);
+  }
+
+  /**
+   * Converts this Chronera instance into a TC39 `Temporal.ZonedDateTime` (or structural `TemporalZonedDateTimeLike`).
+   */
+  toTemporalZonedDateTime(
+    timeZone?: TimeZoneId,
+    calendar?: CalendarId,
+    options?: ToTemporalOptions,
+  ): TemporalZonedDateTimeLike {
+    if (this.#value.kind === "zoned-date-time") {
+      return toTemporalZonedDateTime(this.#value, timeZone, calendar, options);
+    }
+    const zdt = this.toZoned(
+      timeZone ?? "UTC",
+      calendar ?? "gregory",
+    ).toZonedDateTime();
+    return toTemporalZonedDateTime(zdt, timeZone, calendar, options);
+  }
+
   toISOString(): string {
     return this.toDate().toISOString();
   }
@@ -789,6 +861,49 @@ export function chronera(input?: ChroneraInput): Chronera {
       );
     }
 
+    // TC39 Temporal object support (checked before valueOf, which throws on Temporal)
+    if (isTemporalObject(input)) {
+      const rec = input as unknown as Record<string, unknown>;
+      if (typeof rec["timeZoneId"] === "string") {
+        return new Chronera(
+          fromTemporalZonedDateTime(input as TemporalZonedDateTimeLike),
+        );
+      }
+      if (
+        typeof rec["epochMilliseconds"] === "number" ||
+        typeof rec["epochNanoseconds"] === "bigint"
+      ) {
+        return new Chronera(fromTemporalInstant(input as TemporalInstantLike));
+      }
+      if (
+        typeof rec["year"] === "number" &&
+        typeof rec["month"] === "number" &&
+        typeof rec["day"] === "number" &&
+        typeof rec["hour"] === "number"
+      ) {
+        return new Chronera(
+          fromTemporalPlainDateTime(input as TemporalPlainDateTimeLike),
+        );
+      }
+      if (
+        typeof rec["year"] === "number" &&
+        typeof rec["month"] === "number" &&
+        typeof rec["day"] === "number"
+      ) {
+        return new Chronera(
+          fromTemporalPlainDate(input as TemporalPlainDateLike),
+        );
+      }
+      if (
+        typeof rec["hour"] === "number" &&
+        typeof rec["minute"] === "number"
+      ) {
+        return new Chronera(
+          fromTemporalPlainTime(input as TemporalPlainTimeLike),
+        );
+      }
+    }
+
     // Duck-typing support for Day.js, Moment.js, Luxon, etc.
     if (
       "toDate" in input &&
@@ -814,12 +929,16 @@ export function chronera(input?: ChroneraInput): Chronera {
       "valueOf" in input &&
       typeof (input as { valueOf?: unknown }).valueOf === "function"
     ) {
-      const v = (input as { valueOf(): unknown }).valueOf();
-      if (typeof v === "number" && Number.isFinite(v)) {
-        return new Chronera(instantFromEpochMilliseconds(v));
-      }
-      if (v instanceof Date && !Number.isNaN(v.getTime())) {
-        return new Chronera(instantFromDate(v));
+      try {
+        const v = (input as { valueOf(): unknown }).valueOf();
+        if (typeof v === "number" && Number.isFinite(v)) {
+          return new Chronera(instantFromEpochMilliseconds(v));
+        }
+        if (v instanceof Date && !Number.isNaN(v.getTime())) {
+          return new Chronera(instantFromDate(v));
+        }
+      } catch {
+        // Ignore objects (like TC39 Temporal) that throw TypeError on .valueOf()
       }
     }
   }

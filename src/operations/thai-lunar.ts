@@ -1,10 +1,8 @@
 import { localDate } from "../core/local-date.js";
 import { toJulianDayNumber } from "./julian-day.js";
-import { ChroneraError } from "../errors/errors.js";
-import { Chronera, chronera } from "../chronera.js";
+import { resolveThaiLocalDate, type ThaiDateInput } from "./thai-fiscal.js";
 
-import type { CalendarDate, LocalDate } from "../public-types.js";
-import type { ThaiDateInput } from "./thai-fiscal.js";
+import type { LocalDate } from "../public-types.js";
 
 export interface ThaiLunarDate {
   /** true = ข้างขึ้น (Waxing), false = ข้างแรม (Waning) */
@@ -37,29 +35,7 @@ const SYNODIC_MONTH = 29.53058868;
 // Reference epoch: 2000-01-06 18:14 UTC (New Moon, JDN 2451550.26)
 const REFERENCE_NEW_MOON_JDN = 2451550.26;
 
-function resolveLocalDate(input: ThaiDateInput): LocalDate {
-  if (input instanceof Chronera) {
-    return input.toLocalDate();
-  }
-  if (
-    input instanceof Date ||
-    typeof input === "string" ||
-    typeof input === "number"
-  ) {
-    return chronera(input).toLocalDate();
-  }
-  if ("kind" in input && input.kind === "local-date") {
-    return input;
-  }
-  if ("kind" in input && input.kind === "calendar-date") {
-    const cd = input as CalendarDate;
-    return localDate(cd.year, cd.month ?? 1, cd.day);
-  }
-  throw new ChroneraError(
-    "CHRONERA_INVALID_DATE",
-    "Invalid date for Thai lunar calculation.",
-  );
-}
+const resolveLocalDate = resolveThaiLocalDate;
 
 /**
  * Calculates Thai Buddhist Lunar Calendar (ปฏิทินจันทรคติไทย) details,

@@ -1,6 +1,9 @@
 import { getNowDate } from "../runtime/clock.js";
 import { validateAndResolveLocale } from "../locale/resolve-locale.js";
-import { chronera, Chronera } from "../chronera.js";
+import { parseInstant } from "../parse/parse-instant.js";
+import { parseLocalDate } from "../parse/parse-local-date.js";
+import { isIXDTF, parseIXDTF } from "./ixdtf.js";
+import { ChroneraError } from "../errors/errors.js";
 
 import type { ChroneraInput } from "../chronera.js";
 
@@ -51,21 +54,101 @@ function toEpochMilliseconds(input: ChroneraInput): number {
   if (typeof input === "number") {
     return input;
   }
-  if (input instanceof Chronera) {
-    return input.toInstant().epochMilliseconds;
+  if (typeof input === "string") {
+    const trimmed = input.trim();
+    if (isIXDTF(trimmed)) {
+      return parseIXDTF(trimmed).instant.epochMilliseconds;
+    }
+    if (
+      trimmed.includes("T") ||
+      trimmed.endsWith("Z") ||
+      /[+-]\d{2}:?\d{2}$/.test(trimmed)
+    ) {
+      return parseInstant(trimmed).epochMilliseconds;
+    }
+    const ld = parseLocalDate(trimmed);
+    return Date.UTC(ld.year, ld.month - 1, ld.day);
   }
-  if (typeof input === "object" && "kind" in input) {
-    if (input.kind === "instant") {
-      return input.epochMilliseconds;
+  if (typeof input === "object") {
+    if (
+      "toInstant" in input &&
+      typeof (input as { toInstant?: unknown }).toInstant === "function"
+    ) {
+      return (
+        input as { toInstant(): { epochMilliseconds: number } }
+      ).toInstant().epochMilliseconds;
     }
-    if (input.kind === "zoned-date-time") {
-      return input.instant.epochMilliseconds;
+    if ("kind" in input) {
+      const domain = input as
+        | { readonly kind: "instant"; readonly epochMilliseconds: number }
+        | {
+            readonly kind: "zoned-date-time";
+            readonly instant: { readonly epochMilliseconds: number };
+          }
+        | {
+            readonly kind: "local-date";
+            readonly year: number;
+            readonly month: number;
+            readonly day: number;
+          }
+        | {
+            readonly kind: "local-date-time";
+            readonly date: {
+              readonly year: number;
+              readonly month: number;
+              readonly day: number;
+            };
+            readonly time: {
+              readonly hour: number;
+              readonly minute: number;
+              readonly second: number;
+              readonly millisecond: number;
+            };
+          };
+      if (domain.kind === "instant") {
+        return domain.epochMilliseconds;
+      }
+      if (domain.kind === "zoned-date-time") {
+        return domain.instant.epochMilliseconds;
+      }
+      if (domain.kind === "local-date") {
+        return Date.UTC(domain.year, domain.month - 1, domain.day);
+      }
+      if (domain.kind === "local-date-time") {
+        return Date.UTC(
+          domain.date.year,
+          domain.date.month - 1,
+          domain.date.day,
+          domain.time.hour,
+          domain.time.minute,
+          domain.time.second,
+          domain.time.millisecond,
+        );
+      }
     }
-    if (input.kind === "local-date") {
-      return Date.UTC(input.year, input.month - 1, input.day);
+    if (
+      "toDate" in input &&
+      typeof (input as { toDate?: unknown }).toDate === "function"
+    ) {
+      const d = (input as { toDate(): unknown }).toDate();
+      if (d instanceof Date && !Number.isNaN(d.getTime())) {
+        return d.getTime();
+      }
+    }
+    if (
+      "valueOf" in input &&
+      typeof (input as { valueOf?: unknown }).valueOf === "function"
+    ) {
+      const v = (input as { valueOf(): unknown }).valueOf();
+      if (typeof v === "number" && Number.isFinite(v)) {
+        return v;
+      }
     }
   }
-  return chronera(input).toInstant().epochMilliseconds;
+  throw new ChroneraError(
+    "CHRONERA_INVALID_DATE",
+    "Invalid date input for relative time calculation.",
+  );
 }
 
 interface UnitDiff {

@@ -49,6 +49,18 @@ import {
   formatUsLongPreset,
 } from "@intech-software/chronera/format";
 import { safeParseLocalDate } from "@intech-software/chronera/parse";
+import { thai } from "@intech-software/chronera/thai";
+import { temporal } from "@intech-software/chronera/temporal";
+
+const fy = thai.fiscalYear("2026-10-15");
+if (fy.fiscalYearBE !== 2570 || fy.quarter !== 1) {
+  throw new Error("Unexpected Thai fiscal year: " + JSON.stringify(fy));
+}
+
+const pd = temporal.toPlainDate("2026-10-29");
+if (pd.toString() !== "2026-10-29") {
+  throw new Error("Unexpected Temporal PlainDate: " + pd.toString());
+}
 
 const d = localDate(2026, 9, 2);
 const formatted = formatDate(d, { preset: "japanese-official" });

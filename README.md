@@ -43,7 +43,8 @@ All examples use `@intech-software/chronera` consistently.
 - [Quick start](#quick-start)
   - [Fluent ergonomics (`chronera()`)](#fluent-ergonomics-chronera)
   - [Modular subpath exports & tree-shaking](#modular-subpath-exports--tree-shaking)
-  - [Thai Enterprise Suite (`thai.*`)](#thai-enterprise-suite-thai)
+  - [Thai Enterprise Suite (`@intech-software/chronera/thai`)](#thai-enterprise-suite-intech-softwarechronerathai)
+  - [TC39 `Temporal` Interop Bridge (`@intech-software/chronera/temporal`)](#tc39-temporal-interop-bridge-intech-softwarechroneratemporal)
   - [Drizzle ORM & SQL integration](#drizzle-orm--sql-integration)
   - [React 19 reactive hooks](#react-19-reactive-hooks)
   - [Schema validation (Zod, Valibot, ArkType, Standard Schema)](#schema-validation-zod-valibot-arktype-standard-schema)
@@ -283,11 +284,13 @@ console.log(deadline.format({ locale: "th-TH", style: "long" }));
 
 ### Modular subpath exports & tree-shaking
 
-Chronera provides 15 dedicated subpath entrypoints to keep bundle footprints minimal while preserving a strict **zero-dependency core** (`"dependencies": {}`):
+Chronera provides 17 dedicated subpath entrypoints to keep bundle footprints minimal while preserving a strict **zero-dependency core** (`"dependencies": {}`):
 
 | Subpath Import                         | Bundle Size (Brotli) | Contents                                                                        |
 | -------------------------------------- | -------------------- | ------------------------------------------------------------------------------- |
-| `@intech-software/chronera`            | ~45.8 kB             | Core dates, calendars, operations, `thai.*` Enterprise Suite, and full API      |
+| `@intech-software/chronera`            | ~48.8 kB             | Core dates, calendars, operations, `thai.*`, `temporal.*`, and full API         |
+| `@intech-software/chronera/thai`       | ~21.6 kB             | Dedicated Thai Enterprise Suite (Fiscal Year, Tax, OT, Lunar/Wan Phra, BOT)     |
+| `@intech-software/chronera/temporal`   | ~28.1 kB             | Zero-dependency TC39 `Temporal` bidirectional interop bridge                    |
 | `@intech-software/chronera/calendar`   | ~5.0 kB              | Multi-calendar conversion (Buddhist, Hijri, Japanese, ROC, Indian, Persian)     |
 | `@intech-software/chronera/holidays`   | ~10.4 kB             | 15-country statutory & Bank of Thailand (`TH-BOT`) financial holidays engine    |
 | `@intech-software/chronera/format`     | ~11.6 kB             | Internationalized formatting, presets, LDML pattern formatter                   |
@@ -339,9 +342,9 @@ const ics = generateICS([
 ]);
 ```
 
-### Thai Enterprise Suite (`thai.*`)
+### Thai Enterprise Suite (`@intech-software/chronera/thai`)
 
-Built specifically for ERP, HRMS, FinTech, and accounting systems in Thailand. Available via the unified `thai` namespace or standalone functions:
+Built specifically for ERP, HRMS, FinTech, and accounting systems in Thailand. Available via the dedicated `@intech-software/chronera/thai` subpath (or root `@intech-software/chronera`):
 
 ```ts
 import {
@@ -351,7 +354,7 @@ import {
   calculateThaiOvertimePay,
   getThaiLunarDate,
   isWanPhra,
-} from "@intech-software/chronera";
+} from "@intech-software/chronera/thai";
 
 // 1. Thai Government Fiscal Year (ปีงบประมาณไทย: 1 Oct – 30 Sep)
 const fy = thai.fiscalYear(new Date("2026-10-15"));
@@ -379,6 +382,67 @@ console.log(thai.isWanPhra("2026-10-26")); // true
 // 5. Bank of Thailand (BOT / ธปท.) Financial Settlement Calendar
 console.log(thai.isBankHoliday("2026-05-01")); // true (National Labour Day)
 const settlementDate = thai.addBankBusinessDays("2026-04-30", 2); // Skips May 1 & weekend
+
+// 6. Thai Banking Day-Count (ACT/365, ACT/ACT, 30/360), Interest Accrual & Credit Terms
+const interest = thai.accruedInterest({
+  principal: 1_000_000,
+  annualRate: 0.0365, // 3.65% p.a.
+  startDate: "2026-01-01",
+  endDate: "2026-04-01",
+  convention: "ACT/365",
+  withholdingTaxRate: 0.15,
+});
+// -> { days: 90, grossInterest: 9000, withholdingTax: 1350, netInterest: 7650, ... }
+
+const dueDate = thai.paymentDueDate("2026-03-26", "EOM+30", {
+  billingCutOffDay: 25,
+  rollConvention: "modified-following",
+});
+
+// 7. Social Security (ประกันสังคม สปส. 1-10 & เพดานค่าจ้างใหม่ พ.ศ. 2569–2575)
+const sso = thai.ssoContribution({ salary: 35000, yearOrDate: "2026-10-29" });
+// -> { maxWageCeiling: 17500, employeeContribution: 875, employerContribution: 875, ... }
+const ssoDue = thai.ssoDeadline(2026, 10, { ePayment: true }); // +7 business days after 15th
+
+// 8. Thai Labour Law Section 118 Severance Pay (6 ขั้น สูงสุด 400 วัน) & 119-Day Probation
+const probation = thai.probation("2026-01-01");
+// -> { day119Date: 2026-04-29, day120SeveranceEligibleDate: 2026-04-30, ... }
+
+const severance = thai.severancePay({
+  hireDate: "2006-01-01",
+  terminationDate: "2025-12-31",
+  monthlySalary: 60_000,
+});
+// -> { severanceDays: 400, severanceAmount: 800000, taxExemptAmount: 600000, taxableAmount: 200000 }
+```
+
+### TC39 `Temporal` Interop Bridge (`@intech-software/chronera/temporal`)
+
+Zero-dependency, structural type-safe bridge between Chronera's domain primitives (`LocalDate`, `LocalTime`, `LocalDateTime`, `Instant`, `ZonedDateTime`, `Duration`) and the standard JavaScript `Temporal` API (`Temporal.PlainDate`, `Temporal.PlainTime`, `Temporal.PlainDateTime`, `Temporal.Instant`, `Temporal.ZonedDateTime`, `Temporal.Duration`). Automatically uses native `globalThis.Temporal` when available or provides spec-compliant immutable structural objects without requiring a polyfill:
+
+```ts
+import {
+  temporal,
+  toTemporalPlainDate,
+  toTemporalZonedDateTime,
+  fromTemporal,
+} from "@intech-software/chronera/temporal";
+import { chronera } from "@intech-software/chronera";
+
+// 1. Chronera -> TC39 Temporal
+const plainDate = toTemporalPlainDate("2026-10-29");
+console.log(plainDate.toString()); // "2026-10-29"
+console.log(plainDate.monthCode); // "M10"
+
+const zoned = chronera(
+  "2026-10-29T07:15:00+07:00[Asia/Bangkok][u-ca=buddhist]",
+).toTemporalZonedDateTime();
+console.log(zoned.timeZoneId); // "Asia/Bangkok"
+console.log(zoned.calendarId); // "buddhist"
+
+// 2. TC39 Temporal -> Chronera (fluent or domain primitives)
+const backToChronera = fromTemporal(zoned);
+console.log(backToChronera.getThaiFiscalYear().fiscalYearBE); // 2570
 ```
 
 ### Drizzle ORM & SQL integration

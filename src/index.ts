@@ -516,25 +516,13 @@ export type {
 
 export type { DateLike } from "./chronera.js";
 
-import { chronera as _chronera } from "./chronera.js";
-import {
-  isBankBusinessDay as _isBankBusinessDay,
-  addBankBusinessDays as _addBankBusinessDays,
-  diffInBankBusinessDays as _diffInBankBusinessDays,
-} from "./operations/business-days.js";
-import {
-  isBankHoliday as _isBankHoliday,
-  getBankHolidays as _getBankHolidays,
-} from "./operations/holidays.js";
-import {
+export {
+  thai,
   getThaiFiscalYear,
   getThaiFiscalQuarter,
   getThaiFiscalYearRange,
   getTaxFilingDeadline,
   getAllMonthlyTaxDeadlines,
-  type ThaiDateInput,
-} from "./operations/thai-fiscal.js";
-import {
   calculateWorkShiftDuration,
   calculateNetBusinessMinutes,
   calculateSlaDeadline,
@@ -542,23 +530,21 @@ import {
   calculateThaiOvertimePay,
   parseTimeToMinutes,
   formatMinutesToTime,
-} from "./operations/advanced-shifts.js";
-import {
   getThaiLunarDate,
   isWanPhra,
   getWanPhraInMonth,
   formatThaiLunarDate,
-} from "./operations/thai-lunar.js";
-import type { PublicHoliday } from "./holidays/types.js";
-import type { LocalDate } from "./public-types.js";
-
-export {
-  getThaiFiscalYear,
-  getThaiFiscalQuarter,
-  getThaiFiscalYearRange,
-  getTaxFilingDeadline,
-  getAllMonthlyTaxDeadlines,
-};
+  adjustBusinessDate,
+  calculateDayCountFraction,
+  calculateAccruedInterest,
+  calculatePaymentDueDate,
+  getThaiSsoWageCeiling,
+  calculateThaiSsoContribution,
+  getSsoFilingDeadline,
+  calculateProbationEndDate,
+  calculateServiceTenure,
+  calculateThaiSeverancePay,
+} from "./thai/index.js";
 
 export type {
   ThaiDateInput,
@@ -566,19 +552,6 @@ export type {
   ThaiTaxForm,
   TaxDeadlineOptions,
   TaxFilingDeadlineResult,
-} from "./operations/thai-fiscal.js";
-
-export {
-  calculateWorkShiftDuration,
-  calculateNetBusinessMinutes,
-  calculateSlaDeadline,
-  calculateOvertime,
-  calculateThaiOvertimePay,
-  parseTimeToMinutes,
-  formatMinutesToTime,
-};
-
-export type {
   WorkShiftWindow,
   WorkShiftDurationResult,
   BreakInterval,
@@ -590,68 +563,62 @@ export type {
   OvertimeResult,
   ThaiOvertimePayOptions,
   ThaiOvertimePayResult,
-} from "./operations/advanced-shifts.js";
+  ThaiLunarDate,
+  DayCountConvention,
+  BusinessDayConvention,
+  DayCountResult,
+  AccruedInterestOptions,
+  AccruedInterestResult,
+  CreditTermPreset,
+  CreditTermInput,
+  PaymentDueDateOptions,
+  PaymentDueDateResult,
+  ThaiSsoWageCeilingInfo,
+  ThaiSsoContributionOptions,
+  ThaiSsoContributionResult,
+  SsoDeadlineOptions,
+  SsoFilingDeadlineResult,
+  ProbationOptions,
+  ProbationScheduleResult,
+  ServiceTenureOptions,
+  ServiceTenureResult,
+  ThaiSeveranceTierCode,
+  ThaiSeverancePayOptions,
+  ThaiSeverancePayResult,
+} from "./thai/index.js";
 
-export { getThaiLunarDate, isWanPhra, getWanPhraInMonth, formatThaiLunarDate };
+export {
+  temporal,
+  fromTemporal,
+  isTemporalSupported,
+  isTemporalObject,
+  toTemporalPlainDate,
+  toTemporalPlainTime,
+  toTemporalPlainDateTime,
+  toTemporalInstant,
+  toTemporalZonedDateTime,
+  toTemporalDuration,
+  fromTemporalPlainDate,
+  fromTemporalPlainTime,
+  fromTemporalPlainDateTime,
+  fromTemporalInstant,
+  fromTemporalZonedDateTime,
+  fromTemporalDuration,
+} from "./temporal/index.js";
 
-export type { ThaiLunarDate } from "./operations/thai-lunar.js";
-
-/**
- * Unified Thai Enterprise Suite namespace for Fiscal Year, Revenue Department Tax Deadlines,
- * Labour Law Overtime (OT) & Shift SLA, Buddhist Lunar Phase (Wan Phra), and Bank of Thailand (BOT) settlement.
- */
-export const thai = {
-  /** Calculates Thai Government Fiscal Year (1 Oct – 30 Sep) and Buddhist Era details. */
-  fiscalYear: getThaiFiscalYear,
-  /** Returns the Thai Government Fiscal Quarter (1 to 4). */
-  fiscalQuarter: getThaiFiscalQuarter,
-  /** Returns the start and end dates for a given Thai Government Fiscal Year (CE or BE). */
-  fiscalYearRange: getThaiFiscalYearRange,
-  /** Computes official Revenue Department tax filing deadline (PND1, PND3, PND53, PP30, PND50, PND51). */
-  taxDeadline: getTaxFilingDeadline,
-  /** Computes all monthly withholding & VAT filing deadlines for a given year and month. */
-  allMonthlyTaxDeadlines: getAllMonthlyTaxDeadlines,
-  /** Classifies worked intervals into 1.0x, 1.5x, 2.0x, and 3.0x overtime hours per Thai Labour Law. */
-  overtime: calculateOvertime,
-  /** Calculates both overtime hours breakdown and monetary compensation (THB) per Thai Labour Law. */
-  overtimePay: calculateThaiOvertimePay,
-  /** Calculates net working business minutes deducting lunch/tea breaks, weekends, and holidays. */
-  netBusinessMinutes: calculateNetBusinessMinutes,
-  /** Calculates exact SLA completion date and time given required net working minutes. */
-  slaDeadline: calculateSlaDeadline,
-  /** Computes gross, break, and net working duration for a single shift window. */
-  workShiftDuration: calculateWorkShiftDuration,
-  /** Calculates Thai Buddhist Lunar Calendar phase (ข้างขึ้น/ข้างแรม 1-15 ค่ำ) and Wan Phra status. */
-  lunar: getThaiLunarDate,
-  /** Returns true if the given date is a Thai Buddhist Holy Day (วันพระ). */
-  isWanPhra,
-  /** Returns all Wan Phra dates in a given Gregorian year and month. */
-  wanPhraInMonth: getWanPhraInMonth,
-  /** Formats a Thai lunar date or input date into traditional Thai phrase (e.g. "ขึ้น ๑๕ ค่ำ เดือน ๑๑"). */
-  formatLunar: formatThaiLunarDate,
-  /** Checks if a date is an official Bank of Thailand (ธปท.) financial holiday. */
-  isBankHoliday: (date: ThaiDateInput): boolean =>
-    _isBankHoliday(_chronera(date).toLocalDate(), "TH-BOT"),
-  /** Returns all official Bank of Thailand (ธปท.) holidays for a given Gregorian year. */
-  getBankHolidays: (year: number): readonly PublicHoliday[] =>
-    _getBankHolidays(year, "TH-BOT"),
-  /** Checks if a date is an open financial settlement business day under Bank of Thailand rules. */
-  isBankBusinessDay: (date: ThaiDateInput): boolean =>
-    _isBankBusinessDay(_chronera(date).toLocalDate(), "TH-BOT"),
-  /** Adds financial settlement business days according to Bank of Thailand calendar. */
-  addBankBusinessDays: (date: ThaiDateInput, amount: number): LocalDate =>
-    _addBankBusinessDays(_chronera(date).toLocalDate(), amount, "TH-BOT"),
-  /** Computes difference in financial settlement business days according to Bank of Thailand calendar. */
-  diffInBankBusinessDays: (
-    startDate: ThaiDateInput,
-    endDate: ThaiDateInput,
-  ): number =>
-    _diffInBankBusinessDays(
-      _chronera(startDate).toLocalDate(),
-      _chronera(endDate).toLocalDate(),
-      "TH-BOT",
-    ),
-} as const;
+export type {
+  TemporalPlainDateLike,
+  TemporalPlainTimeLike,
+  TemporalPlainDateTimeLike,
+  TemporalInstantLike,
+  TemporalZonedDateTimeLike,
+  TemporalDurationLike,
+  AnyTemporalLike,
+  TemporalNamespaceLike,
+  ToTemporalOptions,
+  TemporalDateInput,
+  TemporalTimeInput,
+} from "./temporal/index.js";
 
 export { chroneraToJsonSchema } from "./operations/json-schema.js";
 

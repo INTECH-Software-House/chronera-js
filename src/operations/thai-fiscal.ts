@@ -1,11 +1,18 @@
 import { localDate } from "../core/local-date.js";
+import {
+  instantFromDate,
+  instantFromEpochMilliseconds,
+} from "../core/instant.js";
 import { parseGregorianMonthCode } from "../core/gregorian-math.js";
 import { ChroneraError } from "../errors/errors.js";
+import { parseLocalDate } from "../parse/parse-local-date.js";
+import { parseInstant } from "../parse/parse-instant.js";
 import { addDays } from "./convenience.js";
-import { isBusinessDay } from "./business-days.js";
-import { isBankBusinessDay } from "./business-days.js";
-import { Chronera, chronera } from "../chronera.js";
+import { isBusinessDay, isBankBusinessDay } from "./business-days.js";
+import { isIXDTF, parseIXDTF } from "./ixdtf.js";
+import { getZonedFields } from "./zoned-operations.js";
 
+import type { Chronera } from "../chronera.js";
 import type { CalendarDate, LocalDate } from "../public-types.js";
 
 export type ThaiDateInput =
@@ -42,36 +49,63 @@ export interface TaxFilingDeadlineResult {
   readonly description: string;
 }
 
-function resolveLocalDate(input: ThaiDateInput): LocalDate {
-  if (input instanceof Chronera) {
-    return input.toLocalDate();
+export function resolveThaiLocalDate(input: ThaiDateInput): LocalDate {
+  if (input instanceof Date) {
+    const inst = instantFromDate(input);
+    const d = new Date(inst.epochMilliseconds);
+    return localDate(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate());
   }
-  if (
-    input instanceof Date ||
-    typeof input === "string" ||
-    typeof input === "number"
-  ) {
-    return chronera(input).toLocalDate();
+  if (typeof input === "number") {
+    const inst = instantFromEpochMilliseconds(input);
+    const d = new Date(inst.epochMilliseconds);
+    return localDate(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate());
   }
-  if ("kind" in input && input.kind === "local-date") {
-    return input;
-  }
-  if ("kind" in input && input.kind === "calendar-date") {
-    const cd = input as CalendarDate;
-    const m = cd.month ?? parseGregorianMonthCode(cd.monthCode);
-    if (m === null) {
-      throw new ChroneraError(
-        "CHRONERA_INVALID_DATE",
-        `Invalid month code for fiscal calculations: ${cd.monthCode}`,
-      );
+  if (typeof input === "string") {
+    const trimmed = input.trim();
+    if (isIXDTF(trimmed)) {
+      const f = getZonedFields(parseIXDTF(trimmed));
+      return localDate(f.year, f.month, f.day);
     }
-    return localDate(cd.year, m, cd.day);
+    if (
+      trimmed.includes("T") ||
+      trimmed.endsWith("Z") ||
+      /[+-]\d{2}:?\d{2}$/.test(trimmed)
+    ) {
+      const inst = parseInstant(trimmed);
+      const d = new Date(inst.epochMilliseconds);
+      return localDate(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate());
+    }
+    return parseLocalDate(trimmed);
+  }
+  if (typeof input === "object" && input !== null) {
+    if (
+      "toLocalDate" in input &&
+      typeof (input as { toLocalDate?: unknown }).toLocalDate === "function"
+    ) {
+      return (input as { toLocalDate(): LocalDate }).toLocalDate();
+    }
+    if ("kind" in input && input.kind === "local-date") {
+      return input as LocalDate;
+    }
+    if ("kind" in input && input.kind === "calendar-date") {
+      const cd = input as CalendarDate;
+      const m = cd.month ?? parseGregorianMonthCode(cd.monthCode);
+      if (m === null) {
+        throw new ChroneraError(
+          "CHRONERA_INVALID_DATE",
+          `Invalid month code for fiscal calculations: ${cd.monthCode}`,
+        );
+      }
+      return localDate(cd.year, m, cd.day);
+    }
   }
   throw new ChroneraError(
     "CHRONERA_INVALID_DATE",
     "Invalid input for fiscal calculations; expected LocalDate, CalendarDate, Chronera, Date, or ISO string.",
   );
 }
+
+const resolveLocalDate = resolveThaiLocalDate;
 
 /**
  * Calculates Thai Government Fiscal Year (ปีงบประมาณแผ่นดิน) details for a given date.

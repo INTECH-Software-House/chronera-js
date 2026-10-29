@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-29
+
+### Added
+
+- **Dedicated Thai Enterprise Subpath (`@intech-software/chronera/thai`)**:
+  - Official standalone subpath export `./thai` providing `thai` namespace, Thai Fiscal Year (`getThaiFiscalYear`, `getThaiFiscalQuarter`, `getThaiFiscalYearRange`), Revenue Department Tax Deadlines (`getTaxFilingDeadline`, `getAllMonthlyTaxDeadlines`), Labour Law Overtime & SLA (`calculateThaiOvertimePay`, `calculateOvertime`, `calculateNetBusinessMinutes`, `calculateSlaDeadline`, `calculateWorkShiftDuration`), Thai Lunar / Wan Phra (`getThaiLunarDate`, `isWanPhra`, `getWanPhraInMonth`, `formatThaiLunarDate`), Bank of Thailand (`thailandBankHolidays`), and Thai format presets (`thai.formatOfficial`, `thai.formatShortDate`, `thai.formatSlashDate`).
+  - Zero circular dependencies with top-level `Chronera` facade (~22 kB Brotli standalone).
+  - Full 100% backward-compatible re-exports preserved on the root `@intech-software/chronera` entrypoint.
+- **Thai Banking, FinTech Interest & Commercial Credit Terms Engine (`src/operations/thai-banking.ts`)**:
+  - Financial day-count conventions (`calculateDayCountFraction`, `thai.dayCountFraction`): `"ACT/365"` / `"ACT/365F"` (Bank of Thailand commercial banking standard), `"ACT/360"`, `"ACT/ACT"` (ISDA leap-year split), and `"30/360"` (Bond Basis).
+  - Accrued interest calculator (`calculateAccruedInterest`, `thai.accruedInterest`) computing gross interest, withholding tax, and net interest in THB.
+  - Business Day Roll Conventions (`adjustBusinessDate`, `thai.adjustBusinessDate`): `"following"`, `"modified-following"` (rolls backward when crossing month end), `"preceding"`, and `"unadjusted"`.
+  - Commercial AP/AR Payment Due Date engine (`calculatePaymentDueDate`, `thai.paymentDueDate`) supporting `"NET30"`, `"NET60"`, `"EOM"`, `"EOM+30"`, monthly `billingCutOffDay`, and automatic `"TH-BOT"` holiday rollover.
+- **Thai Social Security (ประกันสังคม สปส. 1-10) & Stepped Wage Ceiling Payroll Engine (`src/operations/thai-sso.ts`)**:
+  - Multi-year stepped wage ceiling schedule (`getThaiSsoWageCeiling`, `thai.ssoWageCeiling`) per Ministry of Labour regulations: `15,000` THB (`<= 2025` / พ.ศ. 2568), `17,500` THB (`2026–2028` / พ.ศ. 2569–2571, max 875 THB), `20,000` THB (`2029–2031` / พ.ศ. 2572–2574, max 1,000 THB), and `23,000` THB (`>= 2032` / พ.ศ. 2575+, max 1,150 THB).
+  - Monthly SSO contribution calculator (`calculateThaiSsoContribution`, `thai.ssoContribution`) for Section 33 (มาตรา 33) and Section 39 (มาตรา 39 — 4,800 THB base @ 9% = 432 THB).
+  - Monthly SSO filing deadline calculator (`getSsoFilingDeadline`, `thai.ssoDeadline`) for **สปส. 1-10** (15th of the following month + `ePayment: true` +7 business days).
+- **Thai Labour Law Severance Pay (Section 118 — 6 Tiers up to 400 Days), Service Tenure & 119-Day Probation Engine (`src/operations/thai-labour.ts`)**:
+  - Probation milestone calculator (`calculateProbationEndDate`, `thai.probation`) computing exact `day119Date` (last day before statutory severance attaches), `day120SeveranceEligibleDate` (first day of 30-day severance under Section 118(1)), and `recommendedEvaluationDate`.
+  - Continuous service tenure calculator (`calculateServiceTenure`, `thai.serviceTenure`) returning `years`, `months`, `days`, `totalDays`, and `isSeveranceEligible`.
+  - Section 118 statutory severance calculator (`calculateThaiSeverancePay`, `thai.severancePay`) across all 6 legal tiers (`30`, `90`, `180`, `240`, `300`, and `400` days for 20+ years) plus Personal Income Tax exemption up to `600,000` THB per Ministerial Regulation No. 394 (B.E. 2567).
+- **TC39 `Temporal` Interop Bridge (`@intech-software/chronera/temporal`)**:
+  - Dedicated subpath export `./temporal` (and root re-exports) for zero-dependency, structural type-safe conversion between Chronera primitives and TC39 `Temporal` (`PlainDate`, `PlainTime`, `PlainDateTime`, `Instant`, `ZonedDateTime`, `Duration`).
+  - Bidirectional converters: `toTemporalPlainDate`, `toTemporalPlainTime`, `toTemporalPlainDateTime`, `toTemporalInstant`, `toTemporalZonedDateTime`, `toTemporalDuration`, `fromTemporalPlainDate`, `fromTemporalPlainTime`, `fromTemporalPlainDateTime`, `fromTemporalInstant`, `fromTemporalZonedDateTime`, `fromTemporalDuration`, `fromTemporal`, `isTemporalSupported`, `isTemporalObject`, and unified `temporal.*` namespace.
+  - Fluent methods on `Chronera`: `.toTemporalPlainDate()`, `.toTemporalPlainTime()`, `.toTemporalPlainDateTime()`, `.toTemporalInstant()`, `.toTemporalZonedDateTime()`.
+  - Native `chronera(temporalObject)` support that inspects `Temporal` objects prior to `.valueOf()` (which throws `TypeError` per TC39 specification).
+- **Clean Architecture 2.0 & Strict Adapter Isolation Gate (`scripts/check-architecture.ts`)**:
+  - Enforces 7 architectural invariants across all of `src/`:
+    1. Universal Runtime purity (zero Node.js built-ins anywhere in `src/`).
+    2. No root barrel circular imports.
+    3. Domain (`core/`, `errors/`) purity.
+    4. Calendar engine purity.
+    5. Zero runtime back-imports from lower layers (`operations/`, `format/`, `parse/`, etc.) to the top-level fluent facade (`chronera.ts`).
+    6. Strict Adapter Isolation: Core, Engine, Operations, and Feature Subpaths (`thai`, `temporal`, `scheduling`) never import from Ecosystem Adapters (`arktype`, `compat`, `drizzle`, `react`, `standard`, `superjson`, `testing`, `valibot`, `zod`).
+    7. Cross-Adapter Isolation: Ecosystem Adapters never import from sibling Adapters.
+
 ## [0.2.9] - 2026-10-17
 
 ### Added

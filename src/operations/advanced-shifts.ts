@@ -1,12 +1,10 @@
-import { localDate } from "../core/local-date.js";
 import { addDays, getAbsoluteDay } from "./convenience.js";
 import { isBusinessDay, isWeekend } from "./business-days.js";
 import { ChroneraError } from "../errors/errors.js";
-import { Chronera, chronera } from "../chronera.js";
+import { resolveThaiLocalDate, type ThaiDateInput } from "./thai-fiscal.js";
 
-import type { CalendarDate, LocalDate } from "../public-types.js";
+import type { LocalDate } from "../public-types.js";
 import type { CountryCode } from "../holidays/types.js";
-import type { ThaiDateInput } from "./thai-fiscal.js";
 
 export interface BreakInterval {
   readonly start: string; // "HH:mm"
@@ -128,29 +126,7 @@ export function formatMinutesToTime(totalMinutes: number): string {
   return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
 }
 
-function resolveLocalDate(input: ThaiDateInput): LocalDate {
-  if (input instanceof Chronera) {
-    return input.toLocalDate();
-  }
-  if (
-    input instanceof Date ||
-    typeof input === "string" ||
-    typeof input === "number"
-  ) {
-    return chronera(input).toLocalDate();
-  }
-  if ("kind" in input && input.kind === "local-date") {
-    return input;
-  }
-  if ("kind" in input && input.kind === "calendar-date") {
-    const cd = input as CalendarDate;
-    return localDate(cd.year, cd.month ?? 1, cd.day);
-  }
-  throw new ChroneraError(
-    "CHRONERA_INVALID_DATE",
-    "Invalid input date for shift operations.",
-  );
-}
+const resolveLocalDate = resolveThaiLocalDate;
 
 /**
  * Computes net working minutes in a shift, deducting lunch and tea breaks.
