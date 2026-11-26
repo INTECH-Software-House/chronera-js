@@ -1,3 +1,12 @@
 allowBuilds:
   esbuild: true
   simple-git-hooks: true
+
+overrides:
+  source-map-js: ">=1.2.2"
+  fast-uri: ">=3.1.9"
+  "brace-expansion@>=4.0.0 <5.0.12": ">=5.0.12"
+  "minimatch@>=7.0.0 <11.0.1": ">=11.0.1"
+  "shell-quote@>=1.8.4 <1.11.0": ">=1.11.0"
+  "launch-editor@<=2.14.1": ">=2.14.2"
+  "vite@>=8.2.0 <=8.2.3": ">=8.2.4"
