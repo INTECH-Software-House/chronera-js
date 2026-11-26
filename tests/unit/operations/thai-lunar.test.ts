@@ -41,6 +41,47 @@ describe("Thai Lunar Phase & Wan Phra Engine", () => {
       expect(c.isWanPhra()).toBe(true);
       expect(c.formatThaiLunarDate()).toContain("ขึ้น ๑๕ ค่ำ");
     });
+
+    it("computes true Suriyayatra lunar months, Adhikamasa (อธิกมาส เดือน 8 สองหน), and Adhikavara (อธิกวาร)", () => {
+      // 2026 (BE 2569) is Adhikamasa:
+      // 2026-03-03 (Makha Bucha) -> ขึ้น ๑๕ ค่ำ เดือน ๔
+      const makha2026 = getThaiLunarDate("2026-03-03");
+      expect(makha2026.lunarMonth).toBe(4);
+      expect(makha2026.isLeapMonth).toBe(false);
+      expect(makha2026.isLeapMonthYear).toBe(true);
+      expect(formatThaiLunarDate(makha2026)).toBe("ขึ้น ๑๕ ค่ำ เดือน ๔");
+
+      // 2026-06-29 = ขึ้น ๑๕ ค่ำ เดือน ๘ แรก (first 8th month; 14d after May 31 + 15d = Jun 29)
+      const eighthFirst = getThaiLunarDate("2026-06-29");
+      expect(eighthFirst.lunarMonth).toBe(8);
+      expect(eighthFirst.isLeapMonth).toBe(false);
+      expect(eighthFirst.isWanPhra).toBe(true);
+
+      // 2026-07-29 (Asarnha Bucha) = ขึ้น ๑๕ ค่ำ เดือน ๘ หลัง (second 8th month)
+      const asarnha2026 = getThaiLunarDate("2026-07-29");
+      expect(asarnha2026.lunarMonth).toBe(8);
+      expect(asarnha2026.isLeapMonth).toBe(true);
+      expect(formatThaiLunarDate(asarnha2026)).toBe("ขึ้น ๑๕ ค่ำ เดือน ๘ หลัง");
+
+      // 2025 (BE 2568) is Adhikavara: Month 7 has 30 days (ends on แรม ๑๕ ค่ำ เดือน ๗ = 2025-06-25)
+      const month7End2025 = getThaiLunarDate("2025-06-25");
+      expect(month7End2025.isExtraDayYear).toBe(true);
+      expect(month7End2025.lunarMonth).toBe(7);
+      expect(month7End2025.isWaxing).toBe(false);
+      expect(month7End2025.phaseDay).toBe(15);
+      expect(month7End2025.isWanPhra).toBe(true);
+
+      // 2027 (BE 2570) normal year: Visakha 2027-05-20 = ขึ้น ๑๕ ค่ำ เดือน ๖, Asarnha 2027-07-18 = ขึ้น ๑๕ ค่ำ เดือน ๘
+      const visakha2027 = getThaiLunarDate("2027-05-20");
+      expect(visakha2027.lunarMonth).toBe(6);
+      expect(visakha2027.phaseDay).toBe(15);
+      expect(visakha2027.isWanPhra).toBe(true);
+
+      const asarnha2027 = getThaiLunarDate("2027-07-18");
+      expect(asarnha2027.lunarMonth).toBe(8);
+      expect(asarnha2027.phaseDay).toBe(15);
+      expect(asarnha2027.isWanPhra).toBe(true);
+    });
   });
 
   describe("getWanPhraInMonth", () => {

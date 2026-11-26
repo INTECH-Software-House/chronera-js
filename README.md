@@ -1,41 +1,30 @@
 # Chronera
 
+[![npm version](https://img.shields.io/npm/v/@intech-software/chronera?color=cb3837&logo=npm)](https://www.npmjs.com/package/@intech-software/chronera)
+[![npm downloads](https://img.shields.io/npm/dm/@intech-software/chronera?color=0ea5e9&logo=npm)](https://www.npmjs.com/package/@intech-software/chronera)
 [![CI](https://github.com/INTECH-Software-House/chronera-js/actions/workflows/ci.yml/badge.svg)](https://github.com/INTECH-Software-House/chronera-js/actions/workflows/ci.yml)
 [![Security Analysis](https://github.com/INTECH-Software-House/chronera-js/actions/workflows/security.yml/badge.svg)](https://github.com/INTECH-Software-House/chronera-js/actions/workflows/security.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/INTECH-Software-House/chronera-js/badge)](https://securityscorecards.dev/viewer/?run=github.com/INTECH-Software-House/chronera-js)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](package.json)
+[![Subpath Exports](https://img.shields.io/badge/subpaths-17%20modular%20entrypoints-8b5cf6.svg)](package.json)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Clean Architecture](https://img.shields.io/badge/architecture-Clean%20Architecture-informational.svg)](CONTRIBUTING.md)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict%205.x-3178c6.svg)](tsconfig.json)
+[![Clean Architecture](https://img.shields.io/badge/architecture-Clean%20Architecture%202.0-informational.svg)](CONTRIBUTING.md)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict%206.0-3178c6.svg)](tsconfig.json)
 [![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](prettier.config.js)
 
-> A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.
+> A universal, zero-dependency, type-safe date, time, calendar, era, locale, timezone, TC39 `Temporal` interop, and Thai Enterprise toolkit for JavaScript and TypeScript.
 
-- Architecture specification: Draft 0.1.
-- Implementation status: Pre-1.0; the repository is at the architecture stage and the API is subject to change.
-- Repository identity: `intech/chronera-js`.
-- Provisional npm identity: `@intech-software/chronera`.
+```bash
+pnpm add @intech-software/chronera
+# or: npm install @intech-software/chronera
+```
 
-Chronera is the JavaScript and TypeScript implementation of the Chronera ecosystem.
-It is designed as infrastructure for applications that need explicit date semantics,
-multiple calendar systems,
-era-aware representation,
-locale-sensitive formatting,
-strict parsing,
-numbering systems,
-and timezone-aware projection.
+- **Published Package**: [`@intech-software/chronera`](https://www.npmjs.com/package/@intech-software/chronera) (`0.3.x`, ESM-only, `"dependencies": {}`)
+- **Architecture**: Clean Architecture 2.0 with strict 7-rule boundary enforcement & **17 tree-shakable subpath exports** (`/thai`, `/temporal`, `/calendar`, `/holidays`, `/format`, `/parse`, `/scheduling`, `/drizzle`, `/react`, `/zod`, `/valibot`, `/arktype`, `/standard`, `/superjson`, `/compat`, `/testing`)
+- **Repository**: [`INTECH-Software-House/chronera-js`](https://github.com/INTECH-Software-House/chronera-js)
 
-This document is both the package README and the governing engineering specification.
-It defines the product contract before implementation begins.
-Statements using **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** are normative in the RFC 2119 sense.
-
-The official package scope `@intech-software` is owned and controlled by the project on npmjs.com.
-All examples use `@intech-software/chronera` consistently.
-
-> [!IMPORTANT]
-> No package has been published by this specification alone.
-> Installation commands become executable only after the first verified release.
-> Support claims become active only when the corresponding release matrix is green.
+Chronera provides one coherent model for operations that are often incorrectly collapsed into JavaScript `Date` manipulation.
+It separates date-only values (`LocalDate`) from instants (`Instant`), calendars (`buddhist`, `hijri`, `japanese`, `roc`, `persian`, `indian`, `gregory`) from eras, locales from numbering systems, and timezones (`ZonedDateTime`) from fixed UTC offsets — while shipping batteries-included integrations for **TC39 `Temporal`**, **Drizzle ORM**, **React 18/19**, **Zod / Valibot / ArkType**, **SuperJSON**, and the **Thai Enterprise Suite** (Tax, BOT Banking, Interest Day-Count, SSO 1-10, Labour Law Section 118, Payroll, and Royal Suriyayatra Lunar / Wan Phra).
 
 ## Table of contents
 
@@ -186,8 +175,7 @@ or process-heavy ceremony.
 
 ## Quick start
 
-The examples below describe the target public API.
-They become runnable when the corresponding feature is released.
+Every example below works out of the box with `@intech-software/chronera`:
 
 ### JavaScript
 
@@ -288,23 +276,23 @@ Chronera provides 17 dedicated subpath entrypoints to keep bundle footprints min
 
 | Subpath Import                         | Bundle Size (Brotli) | Contents                                                                        |
 | -------------------------------------- | -------------------- | ------------------------------------------------------------------------------- |
-| `@intech-software/chronera`            | ~48.8 kB             | Core dates, calendars, operations, `thai.*`, `temporal.*`, and full API         |
-| `@intech-software/chronera/thai`       | ~21.6 kB             | Dedicated Thai Enterprise Suite (Fiscal Year, Tax, OT, Lunar/Wan Phra, BOT)     |
-| `@intech-software/chronera/temporal`   | ~28.1 kB             | Zero-dependency TC39 `Temporal` bidirectional interop bridge                    |
+| `@intech-software/chronera`            | ~52.2 kB             | Core dates, calendars, operations, `thai.*`, `temporal.*`, and full API         |
+| `@intech-software/chronera/thai`       | ~25.2 kB             | Dedicated Thai Enterprise Suite (Fiscal, Tax, OT, Payday, Lunar/Wan Phra, BOT)  |
+| `@intech-software/chronera/temporal`   | ~29.6 kB             | Zero-dependency TC39 `Temporal` bidirectional interop bridge                    |
 | `@intech-software/chronera/calendar`   | ~5.0 kB              | Multi-calendar conversion (Buddhist, Hijri, Japanese, ROC, Indian, Persian)     |
-| `@intech-software/chronera/holidays`   | ~10.4 kB             | 15-country statutory & Bank of Thailand (`TH-BOT`) financial holidays engine    |
+| `@intech-software/chronera/holidays`   | ~10.7 kB             | 15-country statutory & Bank of Thailand (`TH-BOT`) financial holidays engine    |
 | `@intech-software/chronera/format`     | ~11.6 kB             | Internationalized formatting, presets, LDML pattern formatter                   |
 | `@intech-software/chronera/parse`      | ~3.5 kB              | Zero-allocation ISO 8601 parser & pattern parser                                |
 | `@intech-software/chronera/scheduling` | ~14.7 kB             | Cron parser & matcher, RRULE (RFC 5545), iCalendar generator, financial periods |
-| `@intech-software/chronera/drizzle`    | ~25.1 kB             | Drizzle ORM custom column types & universal SQL serializers                     |
-| `@intech-software/chronera/react`      | ~26.9 kB             | React 18/19 reactive hooks (`useNow`, `useTimeAgo`, `useCalendarGrid`, etc.)    |
-| `@intech-software/chronera/zod`        | ~25.3 kB             | Zod v3/v4 schema validators and transformers                                    |
-| `@intech-software/chronera/valibot`    | ~25.7 kB             | Valibot v1 modular pipeline validators and actions                              |
-| `@intech-software/chronera/arktype`    | ~25.3 kB             | ArkType v2 schema validators and pipe helpers                                   |
-| `@intech-software/chronera/standard`   | ~25.3 kB             | Zero-dependency Standard Schema v1 (`~standard`) compliance                     |
-| `@intech-software/chronera/superjson`  | ~25.4 kB             | Zero-loss SuperJSON transformers for Next.js Server Actions & tRPC              |
-| `@intech-software/chronera/compat`     | ~25.7 kB             | Day.js / Moment drop-in migration wrapper & pattern converter                   |
-| `@intech-software/chronera/testing`    | ~25.2 kB             | Deterministic clock mocking (`setSystemTime`) & test seed generators            |
+| `@intech-software/chronera/drizzle`    | ~29.0 kB             | Drizzle ORM custom column types & universal SQL serializers                     |
+| `@intech-software/chronera/react`      | ~30.7 kB             | React 18/19 reactive hooks (`useNow`, `useTimeAgo`, `useCalendarGrid`, etc.)    |
+| `@intech-software/chronera/zod`        | ~29.3 kB             | Zod v3/v4 schema validators and transformers                                    |
+| `@intech-software/chronera/valibot`    | ~29.5 kB             | Valibot v1 modular pipeline validators and actions                              |
+| `@intech-software/chronera/arktype`    | ~29.2 kB             | ArkType v2 schema validators and pipe helpers                                   |
+| `@intech-software/chronera/standard`   | ~29.1 kB             | Zero-dependency Standard Schema v1 (`~standard`) compliance                     |
+| `@intech-software/chronera/superjson`  | ~29.3 kB             | Zero-loss SuperJSON transformers for Next.js Server Actions & tRPC              |
+| `@intech-software/chronera/compat`     | ~29.6 kB             | Day.js / Moment drop-in migration wrapper & pattern converter                   |
+| `@intech-software/chronera/testing`    | ~29.0 kB             | Deterministic clock mocking (`setSystemTime`) & test seed generators            |
 
 Example backend scheduling import:
 
@@ -374,16 +362,16 @@ const ot = thai.overtimePay({
 });
 console.log(ot.totalOvertimePay); // 2000 THB
 
-// 4. Thai Buddhist Lunar Calendar (ข้างขึ้น-ข้างแรม 1-15 ค่ำ) & Wan Phra (วันพระ)
-const lunar = thai.lunar("2026-10-26");
-console.log(thai.formatLunar(lunar)); // "ขึ้น ๑๕ ค่ำ เดือน ๑๑"
-console.log(thai.isWanPhra("2026-10-26")); // true
+// 4. True Royal Suriyayatra Thai Buddhist Lunar Calendar (ข้างขึ้น-ข้างแรม & อธิกมาส เดือน 8 สองหน) & Wan Phra
+const lunar = thai.lunar("2026-07-29");
+console.log(thai.formatLunar(lunar)); // "ขึ้น ๑๕ ค่ำ เดือน ๘ หลัง"
+console.log(thai.isWanPhra("2026-07-29")); // true
 
-// 5. Bank of Thailand (BOT / ธปท.) Financial Settlement Calendar
+// 5. Bank of Thailand (BOT / ธปท.) Financial Settlement Calendar (with automatic holiday collision resolution)
 console.log(thai.isBankHoliday("2026-05-01")); // true (National Labour Day)
 const settlementDate = thai.addBankBusinessDays("2026-04-30", 2); // Skips May 1 & weekend
 
-// 6. Thai Banking Day-Count (ACT/365, ACT/ACT, 30/360), Interest Accrual & Credit Terms
+// 6. Thai Banking Day-Count (ACT/365, ACT/ACT, 30/360), Interest Accrual, Credit Terms & Corporate Payday
 const interest = thai.accruedInterest({
   principal: 1_000_000,
   annualRate: 0.0365, // 3.65% p.a.
@@ -399,13 +387,17 @@ const dueDate = thai.paymentDueDate("2026-03-26", "EOM+30", {
   rollConvention: "modified-following",
 });
 
+// Corporate Payroll Payday (rolls back across weekends & BOT holidays automatically)
+const payday = thai.payday(2026, 10, { payDay: 25 });
+// -> { scheduledDate: 2026-10-25 (Sun), actualPayday: 2026-10-22 (Thu — skips Chulalongkorn Day!) }
+
 // 7. Social Security (ประกันสังคม สปส. 1-10 & เพดานค่าจ้างใหม่ พ.ศ. 2569–2575)
 const sso = thai.ssoContribution({ salary: 35000, yearOrDate: "2026-10-29" });
 // -> { maxWageCeiling: 17500, employeeContribution: 875, employerContribution: 875, ... }
 const ssoDue = thai.ssoDeadline(2026, 10, { ePayment: true }); // +7 business days after 15th
 
-// 8. Thai Labour Law Section 118 Severance Pay (6 ขั้น สูงสุด 400 วัน) & 119-Day Probation
-const probation = thai.probation("2026-01-01");
+// 8. Thai Labour Law Section 118 Severance Pay (6 ขั้น สูงสุด 400 วัน) & 119-Day Probation (Standalone or Fluent)
+const probation = chronera("2026-01-01").getProbationEndDate();
 // -> { day119Date: 2026-04-29, day120SeveranceEligibleDate: 2026-04-30, ... }
 
 const severance = thai.severancePay({
@@ -661,17 +653,14 @@ The published tarball,
 its standard npm metadata,
 and its export map determine consumer compatibility.
 
-No install command should be presented as functional before a release exists.
-The first release checklist includes a clean-registry installation test.
+All packages are verified on clean installations across `npm`, `pnpm`, `Yarn` (including PnP), and `Bun` prior to every release.
 
 ## Status and compatibility contract
 
 ### Current status
 
-This README is an implementation blueprint.
-At this stage no runtime or calendar capability is claimed as shipped.
-Each release MUST publish a generated support matrix in its release notes.
-A capability is supported only when its conformance and consumer jobs pass for that release.
+`@intech-software/chronera` is published in active **Pre-1.0 (`0.3.x`)** production releases on npmjs.com.
+Every release is validated against full conformance vectors, architecture gates, type-level tests (`tstyche`), and cross-package-manager consumer checks.
 
 ### Runtime policy
 

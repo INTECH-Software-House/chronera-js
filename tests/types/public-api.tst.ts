@@ -4,6 +4,7 @@ import { parseLocalDate, safeParseLocalDate } from "../../dist/index.js";
 import {
   thai,
   type AccruedInterestResult,
+  type ThaiPaydayResult,
   type ThaiSsoContributionResult,
   type ThaiSeverancePayResult,
 } from "../../dist/thai/index.js";
@@ -35,5 +36,6 @@ test("public API return types", () => {
       monthlySalary: 45_000,
     }),
   ).type.toBe<ThaiSeverancePayResult>();
+  expect(thai.payday(2026, 5)).type.toBe<ThaiPaydayResult>();
   expect(temporal.toPlainDate("2026-10-18")).type.toBe<TemporalPlainDateLike>();
 });

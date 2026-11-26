@@ -1,6 +1,6 @@
 {
   "name": "@intech-software/chronera",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A universal, type-safe date, time, calendar, era, locale, and timezone toolkit for JavaScript and TypeScript.",
   "keywords": [
     "date",
@@ -39,7 +39,10 @@
     "sso",
     "social-security",
     "payroll",
-    "day-count"
+    "day-count",
+    "payday",
+    "severance",
+    "labour-law"
   ],
   "author": "Pawapon Thammalangka <108130529+ParkPawapon@users.noreply.github.com> (https://github.com/ParkPawapon)",
   "license": "Apache-2.0",
@@ -211,7 +214,7 @@
     {
       "name": "Root (@intech-software/chronera)",
       "path": "dist/index.js",
-      "limit": "52 KB"
+      "limit": "54 KB"
     },
     {
       "name": "Calendar (@intech-software/chronera/calendar)",
@@ -286,7 +289,7 @@
     {
       "name": "Thai (@intech-software/chronera/thai)",
       "path": "dist/thai/index.js",
-      "limit": "25 KB"
+      "limit": "27 KB"
     },
     {
       "name": "Temporal (@intech-software/chronera/temporal)",

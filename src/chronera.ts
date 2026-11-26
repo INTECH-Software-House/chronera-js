@@ -70,6 +70,7 @@ import {
 } from "./format/dayjs-patterns.js";
 import {
   getThaiFiscalYear,
+  type ThaiDateInput,
   type ThaiFiscalYearInfo,
 } from "./operations/thai-fiscal.js";
 import {
@@ -78,6 +79,25 @@ import {
   formatThaiLunarDate,
   type ThaiLunarDate,
 } from "./operations/thai-lunar.js";
+import {
+  adjustBusinessDate as _adjustBusinessDate,
+  getThaiPayday,
+  type BusinessDayConvention,
+  type ThaiPaydayOptions,
+  type ThaiPaydayResult,
+} from "./operations/thai-banking.js";
+import {
+  calculateProbationEndDate,
+  calculateServiceTenure,
+  type ProbationOptions,
+  type ProbationScheduleResult,
+  type ServiceTenureOptions,
+  type ServiceTenureResult,
+} from "./operations/thai-labour.js";
+import {
+  getThaiSsoWageCeiling,
+  type ThaiSsoWageCeilingInfo,
+} from "./operations/thai-sso.js";
 import {
   toTemporalPlainDate,
   toTemporalPlainTime,
@@ -739,6 +759,53 @@ export class Chronera {
    */
   formatThaiLunarDate(options?: { thaiDigits?: boolean }): string {
     return formatThaiLunarDate(this.getThaiLunarDate(), options);
+  }
+
+  /**
+   * Calculates HR probation milestones (119th day cutoff & 120th day severance eligibility)
+   * using this date as `hireDate`.
+   */
+  getProbationEndDate(options?: ProbationOptions): ProbationScheduleResult {
+    return calculateProbationEndDate(this.toLocalDate(), options);
+  }
+
+  /**
+   * Computes continuous employee service tenure (`years`, `months`, `days`, `totalDays`)
+   * from this date (as `hireDate`) to `terminationDate`.
+   */
+  getServiceTenure(
+    terminationDate: ThaiDateInput,
+    options?: ServiceTenureOptions,
+  ): ServiceTenureResult {
+    return calculateServiceTenure(this.toLocalDate(), terminationDate, options);
+  }
+
+  /**
+   * Returns Thai Social Security stepped wage ceiling rules active on this date.
+   */
+  getThaiSsoWageCeiling(): ThaiSsoWageCeilingInfo {
+    return getThaiSsoWageCeiling(this.toLocalDate());
+  }
+
+  /**
+   * Computes the actual Thai corporate payday for this date's year and month.
+   */
+  getThaiPayday(options?: ThaiPaydayOptions): ThaiPaydayResult {
+    const d = this.toLocalDate();
+    return getThaiPayday(d.year, d.month, options);
+  }
+
+  /**
+   * Adjusts this date to a banking business day under the given convention and calendar
+   * (defaults to `"modified-following"` on `"TH-BOT"`), returning a new `Chronera` instance.
+   */
+  adjustBusinessDate(
+    convention: BusinessDayConvention = "modified-following",
+    calendar: string = "TH-BOT",
+  ): Chronera {
+    return new Chronera(
+      _adjustBusinessDate(this.toLocalDate(), convention, calendar),
+    );
   }
 
   /**

@@ -67,9 +67,9 @@ export const THAI_LUNAR_HOLIDAYS_TABLE: Record<number, ThaiLunarHolidayDef> = {
   },
   2027: {
     makhaBucha: [2, 21],
-    visakhaBucha: [5, 19],
-    asarnhaBucha: [7, 17],
-    khaoPhansa: [7, 18],
+    visakhaBucha: [5, 20],
+    asarnhaBucha: [7, 18],
+    khaoPhansa: [7, 19],
     royalPloughing: [5, 10],
   },
   2028: {
@@ -80,7 +80,7 @@ export const THAI_LUNAR_HOLIDAYS_TABLE: Record<number, ThaiLunarHolidayDef> = {
     royalPloughing: [5, 8],
   },
   2029: {
-    makhaBucha: [2, 28],
+    makhaBucha: [2, 27],
     visakhaBucha: [5, 27],
     asarnhaBucha: [7, 25],
     khaoPhansa: [7, 26],
@@ -89,20 +89,20 @@ export const THAI_LUNAR_HOLIDAYS_TABLE: Record<number, ThaiLunarHolidayDef> = {
   2030: {
     makhaBucha: [2, 17],
     visakhaBucha: [5, 16],
-    asarnhaBucha: [7, 14],
-    khaoPhansa: [7, 15],
+    asarnhaBucha: [7, 15],
+    khaoPhansa: [7, 16],
     royalPloughing: [5, 10],
   },
   2031: {
-    makhaBucha: [2, 7],
-    visakhaBucha: [5, 6],
-    asarnhaBucha: [7, 5],
-    khaoPhansa: [7, 6],
+    makhaBucha: [3, 8],
+    visakhaBucha: [6, 5],
+    asarnhaBucha: [8, 3],
+    khaoPhansa: [8, 4],
     royalPloughing: [5, 9],
   },
   2032: {
-    makhaBucha: [2, 25],
-    visakhaBucha: [5, 23],
+    makhaBucha: [2, 26],
+    visakhaBucha: [5, 24],
     asarnhaBucha: [7, 22],
     khaoPhansa: [7, 23],
     royalPloughing: [5, 10],
@@ -124,8 +124,8 @@ export const THAI_LUNAR_HOLIDAYS_TABLE: Record<number, ThaiLunarHolidayDef> = {
   2035: {
     makhaBucha: [2, 22],
     visakhaBucha: [5, 21],
-    asarnhaBucha: [7, 19],
-    khaoPhansa: [7, 20],
+    asarnhaBucha: [7, 20],
+    khaoPhansa: [7, 21],
     royalPloughing: [5, 10],
   },
 };

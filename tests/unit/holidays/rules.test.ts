@@ -5,6 +5,7 @@ import {
   evaluateEasterRule,
   evaluateHijriRule,
 } from "../../../src/holidays/rules/index.js";
+import { resolveAnnualHolidays } from "../../../src/holidays/registry.js";
 
 describe("Holiday Rules Evaluators", () => {
   describe("evaluateFixedRule", () => {
@@ -446,6 +447,16 @@ describe("Holiday Rules Evaluators", () => {
         "SA",
       );
       expect(past).toHaveLength(0);
+    });
+  });
+
+  describe("Multi-Rule Observed Substitution Collision Resolution", () => {
+    it("advances consecutive GB Christmas/Boxing Day weekend substitutions (2027: Dec 25 Sat + Dec 26 Sun -> Dec 27 Mon & Dec 28 Tue)", () => {
+      const gb2027 = resolveAnnualHolidays("GB", 2027);
+      const observedDec = gb2027.filter(
+        (h) => h.isObserved && h.date.month === 12,
+      );
+      expect(observedDec.map((h) => h.date.day)).toEqual([27, 28]);
     });
   });
 });

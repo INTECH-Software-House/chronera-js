@@ -2,7 +2,10 @@ import { BoundedLRU } from "../runtime/bounded-lru.js";
 import { BUILT_IN_HOLIDAYS, thailandBankHolidays } from "./countries/index.js";
 import { evaluateRule } from "./rules/index.js";
 import { ChroneraError } from "../errors/errors.js";
+import { getIsoDayOfWeek } from "../core/iso-week.js";
+import { addDays, getAbsoluteDay } from "../operations/convenience.js";
 
+import type { LocalDate } from "../public-types.js";
 import type {
   CountryCode,
   HolidayCalendar,
@@ -54,6 +57,66 @@ export function getHolidayCalendar(
   return calendar;
 }
 
+function toDateKey(d: LocalDate): number {
+  return d.year * 10000 + d.month * 100 + d.day;
+}
+
+/**
+ * Resolves substitution holiday collisions (e.g. Songkran Apr 14 Sat + Apr 15 Sun,
+ * Asarnha Bucha Sunday followed by Khao Phansa Monday, UK Christmas/Boxing Day Sat/Sun)
+ * so each weekend holiday gets a distinct non-holiday, non-weekend observed date.
+ */
+function resolveObservedCollisions(
+  rawList: readonly PublicHoliday[],
+  defaultWeekendDays: readonly number[] | undefined,
+): PublicHoliday[] {
+  const weekendSet = new Set(defaultWeekendDays ?? [6, 7]);
+  const occupied = new Set<number>();
+  const primary: PublicHoliday[] = [];
+  const observed: PublicHoliday[] = [];
+
+  for (const h of rawList) {
+    if (h.isObserved) {
+      observed.push(h);
+    } else {
+      primary.push(h);
+      occupied.add(toDateKey(h.date));
+    }
+  }
+
+  // Process observed holidays chronologically by their original holiday date
+  observed.sort((a, b) => {
+    const ka = a.originalDate ? toDateKey(a.originalDate) : toDateKey(a.date);
+    const kb = b.originalDate ? toDateKey(b.originalDate) : toDateKey(b.date);
+    return ka - kb || toDateKey(a.date) - toDateKey(b.date);
+  });
+
+  const resolvedObserved: PublicHoliday[] = [];
+  for (const h of observed) {
+    let candidate = h.date;
+    const step =
+      h.originalDate && getAbsoluteDay(h.date) < getAbsoluteDay(h.originalDate)
+        ? -1
+        : 1;
+
+    while (
+      occupied.has(toDateKey(candidate)) ||
+      weekendSet.has(getIsoDayOfWeek(getAbsoluteDay(candidate)))
+    ) {
+      candidate = addDays(candidate, step);
+    }
+
+    occupied.add(toDateKey(candidate));
+    resolvedObserved.push(
+      toDateKey(candidate) === toDateKey(h.date)
+        ? h
+        : { ...h, date: candidate },
+    );
+  }
+
+  return [...primary, ...resolvedObserved];
+}
+
 /**
  * Resolves all public holidays for a given country and Gregorian year.
  * Uses bounded LRU caching for microsecond deterministic lookups.
@@ -70,7 +133,7 @@ export function resolveAnnualHolidays(
   let holidays = holidayCache.get(cacheKey);
 
   if (!holidays) {
-    const list: PublicHoliday[] = [];
+    const rawList: PublicHoliday[] = [];
     for (const rule of calendar.rules) {
       const evaluated = evaluateRule(
         rule,
@@ -79,9 +142,13 @@ export function resolveAnnualHolidays(
         includeObserved,
       );
       for (const h of evaluated) {
-        list.push(h);
+        rawList.push(h);
       }
     }
+
+    const list = includeObserved
+      ? resolveObservedCollisions(rawList, calendar.defaultWeekendDays)
+      : rawList;
 
     // Sort chronologically by date
     list.sort((a, b) => {

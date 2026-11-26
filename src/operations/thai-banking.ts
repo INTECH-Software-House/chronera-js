@@ -1,5 +1,8 @@
 import { localDate } from "../core/local-date.js";
-import { isGregorianLeapYear } from "../core/gregorian-math.js";
+import {
+  daysInGregorianMonth,
+  isGregorianLeapYear,
+} from "../core/gregorian-math.js";
 import { ChroneraError } from "../errors/errors.js";
 import { addDays, addMonths, diffInDays, endOfMonth } from "./convenience.js";
 import { isBankBusinessDay, isBusinessDay } from "./business-days.js";
@@ -452,5 +455,107 @@ export function calculatePaymentDueDate(
     isAdjusted,
     creditDays,
     termDescription: normalized.description,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Thai Corporate Payroll / Payday Engine
+// ---------------------------------------------------------------------------
+
+export interface ThaiPaydayOptions {
+  /**
+   * Scheduled day of the month for salary disbursement (`1–31`, clamped cleanly to the
+   * month's last calendar day such as 28/29 in February), or `"eom"` for end-of-month.
+   * Defaults to `"eom"`.
+   */
+  readonly payDay?: number | "eom";
+  /**
+   * Business day roll convention when the scheduled payday falls on a weekend or holiday.
+   * In Thai HR/payroll practice, salaries settle on the prior banking day (`"preceding"`).
+   * Defaults to `"preceding"`.
+   */
+  readonly rollConvention?: BusinessDayConvention;
+  /**
+   * Holiday calendar identifier (`"TH-BOT"` for Bank of Thailand settlement days,
+   * `"TH"` for civil public holidays, or any supported country code).
+   * Defaults to `"TH-BOT"`.
+   */
+  readonly calendar?: string;
+}
+
+export interface ThaiPaydayResult {
+  readonly yearCE: number;
+  readonly yearBE: number;
+  readonly month: number;
+  readonly scheduledDate: LocalDate;
+  readonly actualPayday: LocalDate;
+  readonly isAdjusted: boolean;
+  readonly daysShifted: number;
+}
+
+/**
+ * Calculates the actual corporate salary disbursement date (`actualPayday`) for a given year and month,
+ * defaulting to end-of-month (`"eom"`) and rolling backward (`"preceding"`) across weekends and
+ * Bank of Thailand (`"TH-BOT"`) financial holidays.
+ *
+ * Supports both Common Era (`2026`) and Buddhist Era (`2569 >= 2400`) year inputs.
+ */
+export function getThaiPayday(
+  year: number,
+  month: number,
+  options?: ThaiPaydayOptions,
+): ThaiPaydayResult {
+  if (
+    !Number.isInteger(year) ||
+    !Number.isInteger(month) ||
+    month < 1 ||
+    month > 12
+  ) {
+    throw new ChroneraError(
+      "CHRONERA_OUT_OF_RANGE",
+      `Invalid year/month for getThaiPayday: (${year}, ${month}).`,
+    );
+  }
+
+  const yearCE = year >= 2400 ? year - 543 : year;
+  const yearBE = yearCE + 543;
+  const payDayOption = options?.payDay ?? "eom";
+  const rollConvention = options?.rollConvention ?? "preceding";
+  const calendar = options?.calendar ?? "TH-BOT";
+
+  const maxDay = daysInGregorianMonth(yearCE, month);
+  let targetDay: number;
+  if (payDayOption === "eom") {
+    targetDay = maxDay;
+  } else {
+    if (
+      !Number.isInteger(payDayOption) ||
+      payDayOption < 1 ||
+      payDayOption > 31
+    ) {
+      throw new ChroneraError(
+        "CHRONERA_OUT_OF_RANGE",
+        `payDay must be "eom" or an integer between 1 and 31; received ${payDayOption}.`,
+      );
+    }
+    targetDay = Math.min(payDayOption, maxDay);
+  }
+
+  const scheduledDate = localDate(yearCE, month, targetDay);
+  const actualPayday = adjustBusinessDate(
+    scheduledDate,
+    rollConvention,
+    calendar,
+  );
+  const daysShifted = diffInDays(actualPayday, scheduledDate);
+
+  return {
+    yearCE,
+    yearBE,
+    month,
+    scheduledDate,
+    actualPayday,
+    isAdjusted: daysShifted !== 0,
+    daysShifted,
   };
 }

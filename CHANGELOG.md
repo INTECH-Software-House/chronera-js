@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-11-26
+
+### Fixed
+
+- **Multi-Holiday Substitution Collision Resolution (`src/holidays/registry.ts`)**:
+  - Resolves observed holiday overlaps across multi-day weekend holidays and adjacent primary holidays in `resolveAnnualHolidays`.
+  - Consecutive weekend holidays (e.g. Thailand Songkran Apr 14 Sat + Apr 15 Sun in `2029`, UK Christmas Dec 25 Sat + Boxing Day Dec 26 Sun in `2027`) now automatically roll to distinct Monday & Tuesday observed holidays instead of collapsing onto Monday.
+  - Properly distinguishes Thai civil vs BOT bank holidays when a Sunday lunar holiday (e.g. Asarnha Bucha `2027-07-18`) is followed by a Monday civil-only holiday (Khao Phansa `2027-07-19` -> civil substitution cascades to `2027-07-20`, while `TH-BOT` observes `2027-07-19`).
+- **Authentic Royal Suriyayatra Thai Buddhist Lunar Engine (`src/operations/thai-lunar.ts`) & 2027–2035 Holiday Table (`src/holidays/countries/th-lunar.ts`)**:
+  - Replaced simplified `(d.month + 1) % 12` lunar month approximation and static `isLeapMonth: false` with the complete Suriyayatra lunisolar cycle (`อธิกมาส` เดือน 8 สองหน and `อธิกวาร` เดือน 7 แรม 15 ค่ำ) and exact `วันพระ` detection across 29-day (`แรม ๑๔ ค่ำ`) and 30-day (`แรม ๑๕ ค่ำ`) months.
+  - `formatThaiLunarDate` now renders `"เดือน ๘ หลัง"` on second 8th lunar months.
+  - Corrected official Bank of Thailand & Royal Gazette lunar holiday dates in `THAI_LUNAR_HOLIDAYS_TABLE` for `2027–2035` (including official 2027 Visakha Bucha `2027-05-20`, Asarnha Bucha `2027-07-18`, Khao Phansa `2027-07-19`, and `2031` Adhikamasa).
+- **Zod v4 Issue Code Deprecation Cleanup (`src/zod/index.ts`)**:
+  - Switched `code: z.ZodIssueCode.custom` to `code: "custom"` for warning-free compatibility across both Zod v3 (`^3.22.0`) and Zod v4 (`^4.0.0`).
+- **Supply Chain & Dev Dependencies Hardening (`pnpm-workspace.yaml`, `package.json`, `pnpm-lock.yaml`)**:
+  - Updated GitHub Actions (`ossf/scorecard-action` v2.6.0, `pnpm/action-setup` v6.1.1) and devDependencies (`zod` `^4.6.7`, `prettier` `3.9.10`, `publint` `0.3.25`, `@playwright/test` `1.64.1`, `@typescript-eslint/*` `8.72.0`, `vitest` `4.1.12`) with pnpm v11 `overrides` eliminating all `pnpm audit` advisories.
+
+### Added
+
+- **Thai Corporate Payroll Payday Engine (`getThaiPayday`, `thai.payday` in `src/operations/thai-banking.ts` & `@intech-software/chronera/thai`)**:
+  - Computes actual salary disbursement dates (`payDay: number | "eom"`, Buddhist Era & Common Era year support, automatic day-of-month clamping for Feb 28/29) with `"preceding"` Bank of Thailand (`TH-BOT`) rollback by default.
+- **Chronera Fluent API v0.3 Parity (`src/chronera.ts`)**:
+  - Added `.getProbationEndDate()`, `.getServiceTenure()`, `.getThaiSsoWageCeiling()`, `.getThaiPayday()`, and `.adjustBusinessDate()` on `Chronera`.
+- **Production-Ready npm Documentation (`README.md`)**:
+  - Removed legacy Draft 0.1 pre-publication banners, updated TypeScript 6.0 / npm / Subpath badges, and showcased quick-start examples for all v0.3 capabilities.
+
 ## [0.3.0] - 2026-10-29
 
 ### Added

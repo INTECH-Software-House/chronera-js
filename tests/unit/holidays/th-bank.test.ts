@@ -133,4 +133,30 @@ describe("Bank of Thailand (BOT / ธปท.) Financial Holidays Calendar", () =
       expect(c1.diffInBankBusinessDays("2026-05-08", "TH")).toBe(2);
     });
   });
+
+  describe("Official BOT Holidays 2027 & Substitution Collision Rules", () => {
+    it("matches official Bank of Thailand 2027 (BE 2570) lunar & observed holidays", () => {
+      // Makha Bucha Sun Feb 21, 2027 -> Observed Mon Feb 22
+      expect(isBankHoliday("2027-02-22", "TH")).toBe(true);
+      // Labour Day Sat May 1, 2027 -> Observed Mon May 3; Coronation Tue May 4
+      expect(isBankHoliday("2027-05-03", "TH")).toBe(true);
+      expect(isBankHoliday("2027-05-04", "TH")).toBe(true);
+      // Visakha Bucha Thu May 20, 2027 (official BOT 2570)
+      expect(isBankHoliday("2027-05-20", "TH")).toBe(true);
+      expect(isBankHoliday("2027-05-19", "TH")).toBe(false);
+      // Asarnha Bucha Sun Jul 18, 2027 -> BOT observes Mon Jul 19 ONLY (Khao Phansa not a bank holiday)
+      expect(isBankHoliday("2027-07-19", "TH")).toBe(true);
+      expect(isBankHoliday("2027-07-20", "TH")).toBe(false);
+      // Civil offices: Jul 19 is Khao Phansa (primary holiday), so Asarnha observed cascades to Tue Jul 20!
+      expect(isPublicHoliday("2027-07-19", "TH")).toBe(true);
+      expect(isPublicHoliday("2027-07-20", "TH")).toBe(true);
+    });
+
+    it("resolves consecutive weekend Songkran collisions (2029: Apr 14 Sat + Apr 15 Sun -> Mon Apr 16 & Tue Apr 17)", () => {
+      expect(isBankHoliday("2029-04-13", "TH")).toBe(true);
+      expect(isBankHoliday("2029-04-16", "TH")).toBe(true);
+      expect(isBankHoliday("2029-04-17", "TH")).toBe(true);
+      expect(isPublicHoliday("2029-04-17", "TH")).toBe(true);
+    });
+  });
 });

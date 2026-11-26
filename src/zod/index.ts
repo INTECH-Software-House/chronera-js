@@ -126,7 +126,7 @@ export function zChronera(options: ZChroneraOptions = {}) {
         return chronera(val as ChroneraInput);
       } catch (err) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: "custom",
           message:
             options.invalidMessage ??
             (err instanceof Error ? err.message : "Invalid date input"),
@@ -143,7 +143,7 @@ export function zChronera(options: ZChroneraOptions = {}) {
           c.toInstant().epochMilliseconds <= now.toInstant().epochMilliseconds
         ) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: "custom",
             message:
               options.futureMessage ?? "Date and time must be in the future",
           });
@@ -156,7 +156,7 @@ export function zChronera(options: ZChroneraOptions = {}) {
           c.toInstant().epochMilliseconds >= now.toInstant().epochMilliseconds
         ) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: "custom",
             message: options.pastMessage ?? "Date and time must be in the past",
           });
         }
@@ -170,7 +170,7 @@ export function zChronera(options: ZChroneraOptions = {}) {
             : chronera(options.min as ChroneraInput);
         if (isBefore(c.toLocalDate(), minC.toLocalDate())) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: "custom",
             message:
               options.minMessage ??
               `Date must be on or after ${minC.format("yyyy-MM-dd")}`,
@@ -186,7 +186,7 @@ export function zChronera(options: ZChroneraOptions = {}) {
             : chronera(options.max as ChroneraInput);
         if (isAfter(c.toLocalDate(), maxC.toLocalDate())) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: "custom",
             message:
               options.maxMessage ??
               `Date must be on or before ${maxC.format("yyyy-MM-dd")}`,
@@ -210,7 +210,7 @@ export function zChronera(options: ZChroneraOptions = {}) {
           )
         ) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: "custom",
             message:
               options.businessDayMessage ??
               "Date must be a working business day",
@@ -222,7 +222,7 @@ export function zChronera(options: ZChroneraOptions = {}) {
       if (options.notPublicHoliday) {
         if (c.isPublicHoliday(options.notPublicHoliday)) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: "custom",
             message:
               options.notPublicHolidayMessage ??
               "Date must not be a public holiday",
@@ -234,7 +234,7 @@ export function zChronera(options: ZChroneraOptions = {}) {
       if (options.weekend) {
         if (!c.isWeekend()) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: "custom",
             message: options.weekendMessage ?? "Date must fall on a weekend",
           });
         }
@@ -244,7 +244,7 @@ export function zChronera(options: ZChroneraOptions = {}) {
       if (options.weekday) {
         if (!c.isWeekday()) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: "custom",
             message: options.weekdayMessage ?? "Date must fall on a weekday",
           });
         }

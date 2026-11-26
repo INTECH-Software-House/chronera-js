@@ -188,4 +188,29 @@ describe("Chronera Fluent Wrapper - Formatting & Serialization", () => {
     expect(c.toString()).toBe("2026-09-27");
     expect(c.toISOString()).toContain("2026-09-27");
   });
+
+  it("supports Thai Enterprise v0.3 fluent helpers (probation, tenure, SSO ceiling, payday, business adjustment)", () => {
+    const hire = chronera("2026-01-01");
+    expect(hire.getProbationEndDate().day119Date).toEqual({
+      kind: "local-date",
+      year: 2026,
+      month: 4,
+      day: 29,
+    });
+    expect(hire.getServiceTenure("2026-12-31").years).toBe(1);
+    expect(hire.getThaiSsoWageCeiling().maxWage).toBe(17_500);
+
+    const oct2026 = chronera("2026-10-15");
+    expect(oct2026.getThaiPayday({ payDay: 25 }).actualPayday).toEqual({
+      kind: "local-date",
+      year: 2026,
+      month: 10,
+      day: 22,
+    });
+
+    const mayEnd = chronera("2026-05-31");
+    expect(mayEnd.adjustBusinessDate("modified-following").toString()).toBe(
+      "2026-05-29",
+    );
+  });
 });

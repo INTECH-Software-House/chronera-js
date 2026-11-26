@@ -6,6 +6,7 @@ import {
   calculateDayCountFraction,
   calculateAccruedInterest,
   calculatePaymentDueDate,
+  getThaiPayday,
 } from "../../../src/index.js";
 
 describe("Thai Banking & FinTech Interest Engine", () => {
@@ -114,6 +115,33 @@ describe("Thai Banking & FinTech Interest Engine", () => {
       expect(eom30.billingBaseDate).toEqual(localDate(2026, 4, 1));
       expect(eom30.rawDueDate).toEqual(localDate(2026, 5, 30));
       expect(eom30.adjustedDueDate).toEqual(localDate(2026, 6, 2));
+    });
+  });
+
+  describe("getThaiPayday / thai.payday (Corporate Payroll Settlement)", () => {
+    it("defaults to EOM with preceding BOT business day rollback", () => {
+      // May 31, 2026 is Sunday (Visakha Bucha Day), May 30 is Saturday -> rolls back to Friday 2026-05-29
+      const may2026 = getThaiPayday(2026, 5);
+      expect(may2026.scheduledDate).toEqual(localDate(2026, 5, 31));
+      expect(may2026.actualPayday).toEqual(localDate(2026, 5, 29));
+      expect(may2026.isAdjusted).toBe(true);
+      expect(may2026.daysShifted).toBe(-2);
+    });
+
+    it("supports custom payDay (e.g. 25th or clamped 30th in Feb) and Buddhist Era years", () => {
+      // 2569 BE = 2026 CE; Feb 30 clamps to Feb 28 (Saturday) -> rolls back to Friday Feb 27
+      const febBE = thai.payday(2569, 2, { payDay: 30 });
+      expect(febBE.yearCE).toBe(2026);
+      expect(febBE.yearBE).toBe(2569);
+      expect(febBE.scheduledDate).toEqual(localDate(2026, 2, 28));
+      expect(febBE.actualPayday).toEqual(localDate(2026, 2, 27));
+      expect(febBE.daysShifted).toBe(-1);
+
+      // Oct 25, 2026 is Sunday -> rolls back to Thursday Oct 22 (since Oct 23 Fri is Chulalongkorn Day!)
+      const oct25 = thai.payday(2026, 10, { payDay: 25 });
+      expect(oct25.scheduledDate).toEqual(localDate(2026, 10, 25));
+      expect(oct25.actualPayday).toEqual(localDate(2026, 10, 22));
+      expect(oct25.daysShifted).toBe(-3);
     });
   });
 });

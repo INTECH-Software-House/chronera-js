@@ -52,6 +52,7 @@ import {
   calculateDayCountFraction,
   calculateAccruedInterest,
   calculatePaymentDueDate,
+  getThaiPayday,
   type DayCountConvention,
   type BusinessDayConvention,
   type DayCountResult,
@@ -61,6 +62,8 @@ import {
   type CreditTermInput,
   type PaymentDueDateOptions,
   type PaymentDueDateResult,
+  type ThaiPaydayOptions,
+  type ThaiPaydayResult,
 } from "../operations/thai-banking.js";
 import {
   getThaiSsoWageCeiling,
@@ -115,6 +118,7 @@ export {
   calculateDayCountFraction,
   calculateAccruedInterest,
   calculatePaymentDueDate,
+  getThaiPayday,
   getThaiSsoWageCeiling,
   calculateThaiSsoContribution,
   getSsoFilingDeadline,
@@ -155,6 +159,8 @@ export type {
   CreditTermInput,
   PaymentDueDateOptions,
   PaymentDueDateResult,
+  ThaiPaydayOptions,
+  ThaiPaydayResult,
   ThaiSsoWageCeilingInfo,
   ThaiSsoContributionOptions,
   ThaiSsoContributionResult,
@@ -279,4 +285,6 @@ export const thai = {
   serviceTenure: calculateServiceTenure,
   /** Computes statutory severance pay across all 6 tiers of Section 118 (30 to 400 days) + 600,000 THB tax exemption. */
   severancePay: calculateThaiSeverancePay,
+  /** Computes corporate payroll disbursement date rolling across weekends and BOT holidays (`preceding` by default). */
+  payday: getThaiPayday,
 } as const;
